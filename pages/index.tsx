@@ -46,7 +46,7 @@ export default function Home({ teachers  }:any)  {
 
 export async function getStaticProps() {
 
-    const { data } = await client.query({
+    const { data, error } = await client.query({
         query: gql`
         {
             teachers {
@@ -61,6 +61,9 @@ export async function getStaticProps() {
     })
 
     // console.log(data.teachers.data);
+    if(error) {
+        console.log(error)
+    }
 
     return {
         props: { 
