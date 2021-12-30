@@ -6,7 +6,7 @@ import theme from "../theme/theme";
 
 import type { AppProps } from "next/app";
 import CourseList from "../components/course/CourseList";
-import { Button } from "../components/course/Button";
+import { Button } from "../components/Button";
 
 // const client = new ApolloClient({
 //     uri: 'http://localhost:1337/graphql',
@@ -25,7 +25,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     <ThemeProvider theme={theme}>
       <Text>Hello there!</Text>
       <CourseList />
-      <Button />
+      <Button> Hello </Button>
 
       <Component {...pageProps} />
     </ThemeProvider>
