@@ -7,6 +7,7 @@ const ButtonStyle = styled.button`
   border: none;
   border-radius: 0.5rem;
   cursor: pointer;
+  background-color: ${(props) => props.theme.colors.primaryAccentColor};
 `;
 
 export interface ButtonProps {
