@@ -5,7 +5,7 @@ import Head from "next/head";
 import Image from "next/image";
 
 import { gql } from "@apollo/client";
-import client from "../apollo-client";
+import client from "../../apollo-client";
 
 // const Home: NextPage = ({ teachers }) => {
 export default function Home({ teachers }: any) {

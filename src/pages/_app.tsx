@@ -1,8 +1,12 @@
 import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
 
+import styled from "styled-components";
+import { ThemeProvider } from "styled-components";
+import theme from "../theme/theme";
+
 import type { AppProps } from "next/app";
 import CourseList from "../components/course/CourseList";
-import styled from "styled-components";
+import { Button } from "../components/course/Button";
 
 // const client = new ApolloClient({
 //     uri: 'http://localhost:1337/graphql',
@@ -18,12 +22,13 @@ const Text = styled.p`
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <>
+    <ThemeProvider theme={theme}>
       <Text>Hello there!</Text>
       <CourseList />
+      <Button />
 
       <Component {...pageProps} />
-    </>
+    </ThemeProvider>
   );
   //   return (
   // <ApolloProvider client={client}>
