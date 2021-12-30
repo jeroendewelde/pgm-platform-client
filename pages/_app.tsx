@@ -1,12 +1,8 @@
-import {
-    ApolloClient,
-    InMemoryCache,
-    ApolloProvider,
-  } from "@apollo/client";
+import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
 
-import '../styles/globals.css'
-import type { AppProps } from 'next/app'
-import CourseList from '../components/course/CourseList'
+import type { AppProps } from "next/app";
+import CourseList from "../components/course/CourseList";
+import styled from "styled-components";
 
 // const client = new ApolloClient({
 //     uri: 'http://localhost:1337/graphql',
@@ -16,34 +12,31 @@ import CourseList from '../components/course/CourseList'
 //     }
 // })
 
+const Text = styled.p`
+  color: red;
+`;
+
 function MyApp({ Component, pageProps }: AppProps) {
-    
-
-
   return (
-      <>
-
-      <p>
-          Hello there!
-      </p>
+    <>
+      <Text>Hello there!</Text>
       <CourseList />
 
       <Component {...pageProps} />
-      </>
+    </>
+  );
+  //   return (
+  // <ApolloProvider client={client}>
+  //       <>
+  //       <p>
+  //           Hello there!
+  //       </p>
+  //       <CourseList />
 
-  )
-//   return (
-// <ApolloProvider client={client}>  
-//       <>
-//       <p>
-//           Hello there!
-//       </p>
-//       <CourseList />
-
-//       <Component {...pageProps} />
-//       </>
-//       </ApolloProvider>
-//   )
+  //       <Component {...pageProps} />
+  //       </>
+  //       </ApolloProvider>
+  //   )
 }
 
-export default MyApp
+export default MyApp;
