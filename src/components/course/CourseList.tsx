@@ -1,7 +1,7 @@
 import { useQuery } from '@apollo/client'
 import React, { ReactElement } from 'react'
-import { GET_ALL_COURSES } from '../../graphql/courses'
-import { CourseDataInside, CourseInfo, CoursesData } from '../../interfaces'
+import { GET_ALL_COURSES } from '../../../graphql/courses'
+import { CourseDataInside, CourseInfo, CoursesData } from '../../../interfaces'
 
 interface Props {
     
