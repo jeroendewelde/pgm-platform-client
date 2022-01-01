@@ -4,9 +4,18 @@ const defaultTheme: DefaultTheme = {
   colors: {
     black: "#000",
     white: "#FFF",
-    primaryAccentColor: "#FF3131",
-    secondaryAccentColor: "#313244",
-    tertiaryAccentColor: "#C5DCEF",
+    gray: "#707070",
+
+    pink: "#D6014D",
+    purple: "#D6014D",
+    red: "#ED0034",
+    orange: "#F58732",
+    green: "#5AB946",
+    blue: "#00A5D9",
+    turquoise: "#30D9CE",
+
+    bg_gradient_color_1: "#030712",
+    bg_gradient_color_2: "#131029",
   },
   fontSizes: {
     small: "0.8rem",
@@ -21,6 +30,7 @@ const defaultTheme: DefaultTheme = {
   fontWeights: {
     light: 300,
     normal: 400,
+    semiBold: 600,
     bold: 700,
   },
   borderRadius: {
