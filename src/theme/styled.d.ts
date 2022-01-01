@@ -17,6 +17,10 @@ declare module "styled-components" {
       bg_gradient_color_1: string;
       bg_gradient_color_2: string;
     };
+    fontFamilies: {
+      primary: string;
+      secondary: string;
+    };
     fontSizes: {
       small: string;
       normal: string;

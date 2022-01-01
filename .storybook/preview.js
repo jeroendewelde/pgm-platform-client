@@ -18,4 +18,15 @@ export const parameters = {
       date: /Date$/,
     },
   },
+  backgrounds: {
+    default: "default",
+    values: [
+      { name: "default", value: "#030712" },
+      {
+        name: "gradient",
+        value:
+          "linear-gradient(31deg, rgba(3,7,18,1) 0%, rgba(19,16,41,1) 100%)",
+      },
+    ],
+  },
 };

@@ -17,6 +17,10 @@ const defaultTheme: DefaultTheme = {
     bg_gradient_color_1: "#030712",
     bg_gradient_color_2: "#131029",
   },
+  fontFamilies: {
+    primary: "Prompt",
+    secondary: "Source Code Pro",
+  },
   fontSizes: {
     small: "0.8rem",
     normal: "1rem",

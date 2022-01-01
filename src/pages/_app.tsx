@@ -25,7 +25,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     <ThemeProvider theme={theme}>
       <Text>Hello there!</Text>
       <CourseList />
-      <Button> Hello </Button>
+      <Button variant="primary"> Hello </Button>
 
       <Component {...pageProps} />
     </ThemeProvider>
