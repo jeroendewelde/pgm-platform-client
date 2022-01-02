@@ -16,9 +16,6 @@ declare module "styled-components" {
 
       bg_gradient_color_1: string;
       bg_gradient_color_2: string;
-
-      primary_button_bg: string;
-      secondary_button_bg: string;
     };
     fontFamilies: {
       primary: string;

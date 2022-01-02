@@ -7,6 +7,8 @@ import theme from "../theme/theme";
 import type { AppProps } from "next/app";
 import CourseList from "../components/course/CourseList";
 import { Button } from "../components/Button";
+import GlobalStyle from "../theme/globalStyles";
+import { GlitchTitle } from "../components/GlitchTitle";
 
 // const client = new ApolloClient({
 //     uri: 'http://localhost:1337/graphql',
@@ -23,6 +25,8 @@ const Text = styled.p`
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <ThemeProvider theme={theme}>
+      <GlobalStyle />
+      <GlitchTitle>Haalloo</GlitchTitle>
       <Text>Hello there!</Text>
       <CourseList />
       <Button variant="primary"> Hello </Button>

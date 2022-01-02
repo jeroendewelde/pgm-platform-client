@@ -1,7 +1,7 @@
 import { createGlobalStyle } from "styled-components";
 
 const GlobalStyle = createGlobalStyle`
-@import url('https://fonts.googleapis.com/css2?family=Prompt:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Source+Code+Pro:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,200;1,300;1,400;1,500;1,600;1,700&display=swap');
+
   * {
     margin: 0;
     padding: 0;
@@ -9,15 +9,19 @@ const GlobalStyle = createGlobalStyle`
   }
   body {
     font-family: 'Prompt', sans-serif;
-    color: ${(props) => props.theme.colors.black};
-    background-color: ${(props) => props.theme.colors.white};
+    color: ${(props) => props.theme.colors.white};
+    background: linear-gradient(31deg, rgba(3,7,18,1) 0%, rgba(19,16,41,1) 100%);
   }
-  h1 {
+  h1, .GlitchTitle {
+    color: ${(props) => props.theme.colors.white};
+    text-transform: uppercase;
+    font-family: 'Prompt', sans-serif;
     font-size: ${(props) => props.theme.fontSizes.emedium};
     line-height: 1.2;
     @media (min-width: ${(props) => props.theme.width.medium}) {
-      font-size: ${(props) => props.theme.fontSizes.large};
+      font-size: ${(props) => props.theme.fontSizes.elarge};
     }
+    font-weight: ${(props) => props.theme.fontWeights.bold};
   }
   h2 {
     font-size: ${(props) => props.theme.fontSizes.medium};
@@ -50,10 +54,20 @@ const GlobalStyle = createGlobalStyle`
     font-size: ${(props) => props.theme.fontSizes.small};
     padding-bottom: 1rem;
   }
-  button {
-    font-family: 'Poppins';
-    font-size: ${(props) => props.theme.fontSizes.normal};
+
+  @media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation-delay: -1ms !important;
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    background-attachment: initial !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0s !important;
+    transition-delay: 0s !important;
   }
+}
 `;
 
 export default GlobalStyle;

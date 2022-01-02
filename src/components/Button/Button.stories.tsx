@@ -13,6 +13,7 @@ const meta: Meta = {
       description: "The button's onClick handler",
     },
     children: {
+      name: "Label",
       defaultValue: "Button",
       type: "string",
       description: "The text to display inside the button",

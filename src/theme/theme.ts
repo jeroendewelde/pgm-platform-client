@@ -16,16 +16,6 @@ const defaultTheme: DefaultTheme = {
 
     bg_gradient_color_1: "#030712",
     bg_gradient_color_2: "#131029",
-
-    primary_button_bg: `linear-gradient(45deg, #7e57c5 50%, transparent 0) right / 350%
-      100% no-repeat,
-    linear-gradient(45deg, transparent 50%, #7e57c5 0) left / 350% 100%
-      no-repeat`,
-
-    secondary_button_bg: `linear-gradient(45deg, #FFF 50%, transparent 0) right / 350%
-      100% no-repeat,
-    linear-gradient(45deg, transparent 50%, #FFF 0) left / 350% 100%
-      no-repeat`,
   },
   fontFamilies: {
     primary: "Prompt",
