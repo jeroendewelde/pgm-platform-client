@@ -11,12 +11,13 @@ import { gql, useQuery, useLazyQuery } from "@apollo/client";
 export const GET_ALL_COURSES = gql`
 {
   courses {
-    data {
-      attributes {
-        name 
-        description 
-        periode
-      }
-    }
+    id
+    name
+    description
+    academicYear
+    term
+    tags
+    learningLineId
+    specialisationId
   }
 }`;
