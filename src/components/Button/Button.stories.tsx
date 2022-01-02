@@ -5,7 +5,7 @@ import Button from "./Button";
 import { ButtonProps } from "./Button";
 
 const meta: Meta = {
-  title: "Button",
+  title: "components/Button",
   component: Button,
   argTypes: {
     onClick: {

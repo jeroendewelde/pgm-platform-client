@@ -5,10 +5,11 @@ import { ThemeProvider } from "styled-components";
 import theme from "../theme/theme";
 
 import type { AppProps } from "next/app";
-import CourseList from "../components/course/CourseList";
+import CourseList from "../components/Course/CourseList";
 import { Button } from "../components/Button";
 import GlobalStyle from "../theme/globalStyles";
-import { GlitchTitle } from "../components/GlitchTitle";
+import { GlitchTitle } from "../components/Titles/GlitchTitle";
+import { CourseTitle } from "../components/Titles/CourseTitle";
 
 // const client = new ApolloClient({
 //     uri: 'http://localhost:1337/graphql',
@@ -27,6 +28,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     <ThemeProvider theme={theme}>
       <GlobalStyle />
       <GlitchTitle>Haalloo</GlitchTitle>
+      <CourseTitle>Computer Systems</CourseTitle>
       <Text>Hello there!</Text>
       <CourseList />
       <Button variant="primary"> Hello </Button>

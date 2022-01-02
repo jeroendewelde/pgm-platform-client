@@ -8,9 +8,11 @@ const GlobalStyle = createGlobalStyle`
     box-sizing: border-box;
   }
   body {
+
+    min-height: 100vh;
     font-family: 'Prompt', sans-serif;
     color: ${(props) => props.theme.colors.white};
-    background: linear-gradient(31deg, rgba(3,7,18,1) 0%, rgba(19,16,41,1) 100%);
+    background: linear-gradient(34deg, rgba(3,7,18,1) 51%, rgba(19,16,41,1) 100%);
   }
   h1, .GlitchTitle {
     color: ${(props) => props.theme.colors.white};

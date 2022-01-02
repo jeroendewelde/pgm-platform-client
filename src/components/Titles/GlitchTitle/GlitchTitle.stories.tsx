@@ -5,7 +5,7 @@ import GlitchTitle from "./GlitchTitle";
 import { GlitchTitleProps } from "./GlitchTitle";
 
 const meta: Meta = {
-  title: "Glitch Title",
+  title: "components/Titles/Glitch Title",
   component: GlitchTitle,
   argTypes: {
     children: {
