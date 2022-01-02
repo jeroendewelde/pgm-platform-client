@@ -34,8 +34,3 @@ export default meta;
 const Template: Story<ButtonProps> = (args) => <Button {...args} />;
 
 export const Default = Template.bind({});
-
-export const Secondary = Template.bind({});
-Secondary.args = {
-  variant: "secondary",
-};

@@ -16,6 +16,9 @@ declare module "styled-components" {
 
       bg_gradient_color_1: string;
       bg_gradient_color_2: string;
+
+      primary_button_bg: string;
+      secondary_button_bg: string;
     };
     fontFamilies: {
       primary: string;
@@ -29,7 +32,8 @@ declare module "styled-components" {
       large: string;
       elarge: string;
       slarge: string;
-      btn: string;
+      small_btn: string;
+      large_btn: string;
     };
     fontWeights: {
       light: number;
