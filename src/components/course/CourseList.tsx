@@ -1,38 +1,26 @@
-import { useQuery } from '@apollo/client'
 import React, { ReactElement } from 'react'
-import { GET_ALL_COURSES } from '../../../graphql/courses'
-import { CourseDataInside, CourseInfo, CoursesData } from '../../../interfaces'
 
-interface Props {
-    
+import { Course } from '../../../interfaces'
+
+interface CourseListProps {
+    courses?: Course[]
 }
 
-export default function CourseList({}: Props): ReactElement {
-
-    // const { data, loading, error } = useQuery<CoursesData>(GET_ALL_COURSES);
-
-    // if(loading) return <p>Loading...</p>
-    // if(error) return <p>Error....</p>
-    // console.log('error',error);
-
-    // if(!loading && data) {
-    //     console.log(data);
-    //     return (
-    //         <ul>
-    //             {data.courses.data.map(course => (
-    //                 <li key={course.attributes.name}>
-    //                     {course.attributes.name}<br/>
-    //                     {course.attributes.periode}<br/>
-    //                     {course.attributes.description}</li>
-    //             ))}
-    //         </ul>
-    //     )
-    // }
-
-
+export default function CourseList({ courses }: CourseListProps) {
     return (
-        <div>
-            .... component ....
-        </div>
+        <>
+            <h1>These are courses coming from graphql:</h1>
+            {courses &&
+                courses.map((course: Course) => (
+                <div key={course.id}>
+                    <h2>
+                        Term: {course.name} - {course.description}
+                    </h2>
+                    <p>
+                        Term: {course.term} - {course.academicYear}
+                    </p>
+                </div>
+                ))}
+        </>
     )
 }
