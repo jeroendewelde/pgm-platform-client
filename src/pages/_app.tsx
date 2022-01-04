@@ -26,10 +26,10 @@ function MyApp({ Component, pageProps }: AppProps) {
       <GlitchTitle>Haalloo</GlitchTitle>
       <CourseTitle learningLine={"green"}>Computer Systems</CourseTitle>
       <Text>
-        <Card tags={tags} />
-        <Card tags={tags} />
-        <Card tags={tags} />
-        <Card />
+        <Card tags={tags} title="computer systems" learningLine="red" />
+        <Card tags={tags} title="computer systems" learningLine="green" />
+        <Card tags={tags} title="computer systems" learningLine="blue" />
+        <Card title="computer systems" learningLine="pink" />
       </Text>
       <CourseList />
 
