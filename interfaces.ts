@@ -3,160 +3,159 @@
  */
 
 export interface Attachment {
-  id: number
-  name: string
-  url: string
+  id: number;
+  name: string;
+  url: string;
   // replace string by enum?
   // type: string
-  type: AttachmentType
+  type: AttachmentType;
 }
 
 export interface Company {
-  id: number
-  name: string
-  teaserImage: string
+  id: number;
+  name: string;
+  teaserImage: string;
   // Relations
-  interns: Intern[]
+  interns: Intern[];
 }
 
 export interface Course {
-  id: number
-  name: string
-  description: string
-  term: number
-  academicYear: string
-  tags: String[]
+  id: number;
+  name: string;
+  description: string;
+  term: number;
+  academicYear: string;
+  tags: string[];
   // Relations
-  learlingLineId: number
-  specialisationId: number
-  learlingLine: LearlingLine
-  specialisation: Specialisation
+  learningLineId: number;
+  specialisationId: number;
+  learningLine: learningLine;
+  specialisation: Specialisation;
 }
 
 export interface FieldExperience {
-  id: number
-  duration: string
-  company: string
-  function: string
-  description: string
+  id: number;
+  duration: string;
+  company: string;
+  function: string;
+  description: string;
   // Relations
-  personId: number
-  person: Person
+  personId: number;
+  person: Person;
 }
 
 export interface Generation {
-  id: number
-  name: string
-  years: string
+  id: number;
+  name: string;
+  years: string;
 }
 
 export interface Intern {
-  id: number
-  function: string
-  description: string
+  id: number;
+  function: string;
+  description: string;
   // check if best number or string
-  year: string
+  year: string;
   // Relations
-  studentId: number
-  companyId: number
-  student: Person
-  company: Company
+  studentId: number;
+  companyId: number;
+  student: Person;
+  company: Company;
 }
 
-export interface LearlingLine {
-  id: number
-  name: string
-  color: string
+export interface learningLine {
+  id: number;
+  name: string;
+  color: string;
 }
 
 export interface Person {
-  id: number
-  firstName: string
-  lastName: string
+  id: number;
+  firstName: string;
+  lastName: string;
   // enum student, person?
-  type: string
+  type: string;
   // Relations
-  generationId: number
-  generation: Generation
+  generationId: number;
+  generation: Generation;
 }
 
 export interface PersonInformation {
-  id: number
-  quote: string
-  bio: string
-  dob: string
+  id: number;
+  quote: string;
+  bio: string;
+  dob: string;
   // Relations
-  personId: number
-  person: Person
+  personId: number;
+  person: Person;
 }
 
 export interface Project {
-  id: number
-  name: string
-  teaserText: string
-  body: string
-  academicYear: string
-  tags: String[]
+  id: number;
+  name: string;
+  teaserText: string;
+  body: string;
+  academicYear: string;
+  tags: String[];
   // Relations
-  courseId: number
-  course: Course
+  courseId: number;
+  course: Course;
 }
 
 export interface SocialMedia {
-  id: number
-  platform: string
-  url: string
+  id: number;
+  platform: string;
+  url: string;
   // Relations
-  personId: number
-  person: Person
+  personId: number;
+  person: Person;
 }
 
 export interface Specialisation {
-  id: number
-  name: string
-  academicYear: string
+  id: number;
+  name: string;
+  academicYear: string;
 }
 
 export interface User {
-  id: number
-  username: string
-  email: string
-  password: string
+  id: number;
+  username: string;
+  email: string;
+  password: string;
   // enum?
   // role: string
-  role: Role
+  role: Role;
 }
 
 /**
  * Enums
  */
 export enum Role {
-  ADMIN = 'ADMIN',
-  STUDENT = 'STUDENT',
-  TEACHER = 'TEACHER',
-  LINEADMIN = 'LINEADMIN',
+  ADMIN = "ADMIN",
+  STUDENT = "STUDENT",
+  TEACHER = "TEACHER",
+  LINEADMIN = "LINEADMIN",
 }
 
 export enum PersonType {
-  STUDENT = 'STUDENT',
-  TEACHER = 'TEACHER',
+  STUDENT = "STUDENT",
+  TEACHER = "TEACHER",
 }
 
 export enum AttachmentType {
-  SCREENSHOT = 'SCREENSHOT',
-  MOODBOARD = 'MOODBOARD',
-  IDEABOARD = 'IDEABOARD',
-  SCREENCAST = 'SCREENCAST',
-  CODESNIPPET = 'CODESNIPPET',
-  
-  IMAGE = 'IMAGE',
-  VIDEO = 'VIDEO',
-  AUDIO = 'AUDIO',
-  DOCUMENT = 'DOCUMENT',
+  SCREENSHOT = "SCREENSHOT",
+  MOODBOARD = "MOODBOARD",
+  IDEABOARD = "IDEABOARD",
+  SCREENCAST = "SCREENCAST",
+  CODESNIPPET = "CODESNIPPET",
 
-  OTHER = 'OTHER',
+  IMAGE = "IMAGE",
+  VIDEO = "VIDEO",
+  AUDIO = "AUDIO",
+  DOCUMENT = "DOCUMENT",
+
+  OTHER = "OTHER",
 }
-
 
 /**
  * GraphQL returns

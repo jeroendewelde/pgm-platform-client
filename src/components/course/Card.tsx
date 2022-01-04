@@ -2,10 +2,10 @@ import React from "react";
 import Link from "next/link";
 import styled from "styled-components";
 import Image from "next/image";
-import { transparentize } from "polished";
+
+import Tag from "./Tag";
 
 import greenIcon from "../../assets/learning-line/green.svg";
-import Tag from "./Tag";
 import blueIcon from "../../assets/learning-line/blue.svg";
 import orangeIcon from "../../assets/learning-line/orange.svg";
 import redIcon from "../../assets/learning-line/red.svg";
@@ -130,7 +130,7 @@ const FlexContainer = styled.div`
 export interface CardProps {
   tags?: string[];
   title?: string;
-  learningLine: "blue" | "green" | "orange" | "pink" | "red";
+  learningLine: string;
 }
 
 const Icon = ({ learningLine = "blue" }: CardProps) => {
