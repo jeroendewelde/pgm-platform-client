@@ -4,9 +4,22 @@ declare module "styled-components" {
     colors: {
       black: string;
       white: string;
-      primaryAccentColor: string;
-      secondaryAccentColor: string;
-      tertiaryAccentColor: string;
+      gray: string;
+
+      pink: string;
+      purple: string;
+      red: string;
+      orange: string;
+      green: string;
+      blue: string;
+      turquoise: string;
+
+      bg_gradient_color_1: string;
+      bg_gradient_color_2: string;
+    };
+    fontFamilies: {
+      primary: string;
+      secondary: string;
     };
     fontSizes: {
       small: string;
@@ -16,11 +29,13 @@ declare module "styled-components" {
       large: string;
       elarge: string;
       slarge: string;
-      btn: string;
+      small_btn: string;
+      large_btn: string;
     };
     fontWeights: {
       light: number;
       normal: number;
+      semiBold: number;
       bold: number;
     };
     borderRadius: {
@@ -30,6 +45,7 @@ declare module "styled-components" {
       circle: string;
     };
     width: {
+      esmall: string;
       small: string;
       medium: string;
       large: string;

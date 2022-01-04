@@ -5,8 +5,12 @@ import { ThemeProvider } from "styled-components";
 import theme from "../theme/theme";
 
 import type { AppProps } from "next/app";
-import CourseList from "../components/course/CourseList";
+
 import { Button } from "../components/Button";
+import GlobalStyle from "../theme/globalStyles";
+import { GlitchTitle } from "../components/Titles/GlitchTitle";
+import { CourseTitle } from "../components/Titles/CourseTitle";
+import { Card, CourseList } from "../components/Course";
 
 // const client = new ApolloClient({
 //     uri: 'http://localhost:1337/graphql',
@@ -16,16 +20,31 @@ import { Button } from "../components/Button";
 //     }
 // })
 
-const Text = styled.p`
-  color: red;
+const Text = styled.div`
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  padding: 1rem;
 `;
+
+const tags = ["react", "javascript", "typescript"];
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <ThemeProvider theme={theme}>
-      <Text>Hello there!</Text>
+      <GlobalStyle />
+      <GlitchTitle>Haalloo</GlitchTitle>
+      <CourseTitle learningLine={"green"}>Computer Systems</CourseTitle>
+      <Text>
+        <Card tags={tags} />
+        <Card tags={tags} />
+        <Card tags={tags} />
+        <Card />
+      </Text>
       <CourseList />
-      <Button> Hello </Button>
+
+      <Button variant="primary"> Hello </Button>
 
       <Component {...pageProps} />
     </ThemeProvider>
