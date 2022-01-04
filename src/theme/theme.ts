@@ -6,7 +6,7 @@ const defaultTheme: DefaultTheme = {
     white: "#FFF",
     gray: "#707070",
 
-    pink: "#D6014D",
+    pink: "#D20082",
     purple: "#7E57C5",
     red: "#ED0034",
     orange: "#F58732",

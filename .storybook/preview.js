@@ -1,5 +1,7 @@
 import React from "react";
 import { ThemeProvider } from "styled-components";
+import * as NextImage from "next/image";
+
 import theme from "../src/theme/theme";
 import GlobalStyle from "../src/theme/globalStyles";
 
@@ -11,6 +13,13 @@ export const decorators = [
     </ThemeProvider>
   ),
 ];
+
+const OriginalNextImage = NextImage.default;
+
+Object.defineProperty(NextImage, "default", {
+  configurable: true,
+  value: (props) => <OriginalNextImage {...props} unoptimized />,
+});
 
 export const parameters = {
   actions: { argTypesRegex: "^on[A-Z].*" },

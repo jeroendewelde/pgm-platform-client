@@ -5,6 +5,7 @@ import greenIcon from "../../../assets/learning-line/green.svg";
 import orangeIcon from "../../../assets/learning-line/orange.svg";
 import redIcon from "../../../assets/learning-line/red.svg";
 import pinkIcon from "../../../assets/learning-line/pink.svg";
+import Image from "next/image";
 
 const Container = styled.div`
   display: flex;
@@ -62,15 +63,15 @@ export interface CourseTitleProps {
 
 const Icon = ({ learningLine = "blue" }: CourseTitleProps) => {
   if (learningLine === "blue") {
-    return <img src={blueIcon} alt="blue" />;
+    return <Image src={blueIcon} width={35} height={35} />;
   } else if (learningLine === "green") {
-    return <img src={greenIcon} alt="green" />;
+    return <Image src={greenIcon} width={35} height={35} />;
   } else if (learningLine === "orange") {
-    return <img src={orangeIcon} alt="orange" />;
+    return <Image src={orangeIcon} width={35} height={35} />;
   } else if (learningLine === "pink") {
-    return <img src={pinkIcon} alt="pink" />;
+    return <Image src={pinkIcon} width={35} height={35} />;
   } else if (learningLine === "red") {
-    return <img src={redIcon} alt="red" />;
+    return <Image src={redIcon} width={35} height={35} />;
   } else {
     return null;
   }
