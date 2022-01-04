@@ -14,7 +14,7 @@ export default function CourseList({ courses }: CourseListProps) {
                 courses.map((course: Course) => (
                 <div key={course.id}>
                     <h2>
-                        Term: {course.name} - {course.description}
+                        {course.name} - {course.description}
                     </h2>
                     <p>
                         Term: {course.term} - {course.academicYear}

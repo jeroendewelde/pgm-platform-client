@@ -3,8 +3,10 @@ import { ThemeProvider } from "styled-components";
 import theme from "../theme/theme";
 
 import type { AppProps } from "next/app";
-import CourseList from "../components/Course/CourseList";
-import { Button } from "../components/Button";
+import Head from "next/head";
+
+import '../styles/global.css';
+
 
 const Text = styled.p`
   color: red;
@@ -13,10 +15,9 @@ const Text = styled.p`
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <ThemeProvider theme={theme}>
-      <Text>Hello there!</Text>
-      {/* <CourseList {... pageProps } /> */}
-      <Button> Hello </Button>
-
+        <Head>
+            <link rel="shortcut icon" href="/logo_purple.ico" />
+        </Head>
       <Component {...pageProps} />
     </ThemeProvider>
   );
