@@ -9,6 +9,7 @@ import { GlitchTitle } from "../components/Titles/GlitchTitle";
 import { CourseTitle } from "../components/Titles/CourseTitle";
 import { Card, CourseList } from "../components/Course";
 import { Header } from "../components/layout/Header";
+import { Footer } from "../components/layout/Footer";
 
 const Text = styled.div`
   display: flex;
@@ -38,6 +39,8 @@ function MyApp({ Component, pageProps }: AppProps) {
       <Button variant="primary"> Hello </Button>
 
       <Component {...pageProps} />
+
+      <Footer />
     </ThemeProvider>
   );
 }
