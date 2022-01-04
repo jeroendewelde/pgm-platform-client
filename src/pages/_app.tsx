@@ -8,6 +8,7 @@ import GlobalStyle from "../theme/globalStyles";
 import { GlitchTitle } from "../components/Titles/GlitchTitle";
 import { CourseTitle } from "../components/Titles/CourseTitle";
 import { Card, CourseList } from "../components/Course";
+import { Header } from "../components/layout/Header";
 
 const Text = styled.div`
   display: flex;
@@ -22,6 +23,7 @@ const tags = ["react", "javascript", "typescript"];
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <ThemeProvider theme={theme}>
+      <Header />
       <GlobalStyle />
       <GlitchTitle>Haalloo</GlitchTitle>
       <CourseTitle learningLine={"green"}>Computer Systems</CourseTitle>
