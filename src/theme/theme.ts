@@ -24,7 +24,7 @@ const defaultTheme: DefaultTheme = {
   fontSizes: {
     small: "0.8rem",
     normal: "1rem",
-    medium: "1.5rem",
+    medium: "1.3rem",
     emedium: "2rem",
     large: "2.5rem",
     elarge: "3.5rem",
@@ -45,7 +45,8 @@ const defaultTheme: DefaultTheme = {
     circle: "50%",
   },
   width: {
-    small: "576px",
+    esmall: "576px",
+    small: "769px",
     medium: "912px",
     large: "1280px",
     elarge: "1600px",

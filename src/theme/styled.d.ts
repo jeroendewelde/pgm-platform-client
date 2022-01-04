@@ -45,6 +45,7 @@ declare module "styled-components" {
       circle: string;
     };
     width: {
+      esmall: string;
       small: string;
       medium: string;
       large: string;
