@@ -1,23 +1,22 @@
 import { gql, useQuery, useLazyQuery } from "@apollo/client";
 
 /**
- * All Course related queries
+ * All Project related queries
  */
 
 /**
  * Queries
  */
 
-export const GET_ALL_COURSES = gql`
+export const GET_ALL_PROJECTS = gql`
 {
-  courses {
+  projects {
     id
     name
-    description
-    term
+    teaserText
+    body
     academicYear
     tags
-    learningLineId
-    specialisationId
+    courseId
   }
 }`;

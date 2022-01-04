@@ -70,36 +70,7 @@ const colors = {
   pastelYellow: '#ebc37d'
 }
 
-const colInfo = [
-	{
-		dataName: 'id',
-		colName: 'id'
-	},
-	{
-		dataName: 'name',
-		colName: 'naam'
-	},
-	{
-		dataName: 'description',
-		colName: 'beschrijving'
-	},
-	{
-		dataName: 'term',
-		colName: 'periode'
-	},
-	{
-		dataName: 'academicYear',
-		colName: 'academiejaar'
-	},
-	{
-		dataName: 'learlingLineId',
-		colName: 'leerlijn ID'
-	},
-	{
-		dataName: 'specialisationId',
-		colName: 'specialisatie ID'
-	},
-];
+
 
 const openedMixin = (theme: Theme): CSSObject => ({
   width: drawerWidth,
@@ -170,8 +141,8 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
   }),
 );
 
-export default function MiniDrawer({ courses }:any) {
-console.log('courses from navigation', courses);
+export default function MiniDrawer({ courses, colInfo }:any) {
+// console.log('courses from navigation', courses);
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
 
@@ -227,7 +198,7 @@ console.log('courses from navigation', courses);
 		<Divider />
 		<MenuList />
         <Divider />
-		
+
       </Drawer>
 
       

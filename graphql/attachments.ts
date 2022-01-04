@@ -1,7 +1,7 @@
 import { gql, useQuery, useLazyQuery } from "@apollo/client";
 
 /**
- * All Course related queries
+ * All Agenda Item related queries
  */
 
 /**
@@ -14,8 +14,8 @@ export const GET_ALL_COURSES = gql`
     id
     name
     description
-    term
     academicYear
+    term
     tags
     learningLineId
     specialisationId

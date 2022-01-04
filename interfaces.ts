@@ -63,7 +63,7 @@ export interface Intern {
   company: Company
 }
 
-export interface LearlingLine {
+export interface LearningLine {
   id: number
   name: string
   color: string

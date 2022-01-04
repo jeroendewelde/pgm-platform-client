@@ -27,82 +27,106 @@ import {
 	ListItemText,
 } from '@mui/material'
 
+import { colors } from '../../utils/constants';
+
 const routes = [
   {
     label: "Home",
     path: "/admin",
     icon: <Home/>,
-    // activeIcon: DashboardIconActive,
+    activeIcon: <Home sx={{
+		color: colors.primary
+	}}/>,
     // component: Dashboard,
   },
   {
     label: "Vakken",
     path: "/admin/courses",
     icon: <CollectionsBookmark/>,
-    // activeIcon: DashboardIconActive,
+    activeIcon: <CollectionsBookmark sx={{
+		color: colors.primary
+	}}/>,
     // component: Dashboard,
   },
   {
     label: "Projecten",
     path: "/admin/projects",
     icon: <BackupTable/>,
-    // activeIcon: DashboardIconActive,
+    activeIcon: <BackupTable sx={{
+		color: colors.primary
+	}}/>,
     // component: Dashboard,
   },
   {
     label: "Docenten",
     path: "/admin/teachers",
     icon: <HistoryEdu/>,
-    // activeIcon: DashboardIconActive,
+    activeIcon: <HistoryEdu sx={{
+		color: colors.primary
+	}}/>,
     // component: Dashboard,
   },
   {
     label: "Studenten",
     path: "/admin/students",
     icon: <School/>,
-    // activeIcon: DashboardIconActive,
+    activeIcon: <School sx={{
+		color: colors.primary
+	}}/>,
     // component: Dashboard,
   },
   {
     label: "Leerlijnen",
-    path: "/admin/learling-lines",
+    path: "/admin/learning-lines",
     icon: <Category/>,
-    // activeIcon: DashboardIconActive,
+    activeIcon: <Category sx={{
+		color: colors.primary
+	}}/>,
     // component: Dashboard,
   },
   {
     label: "Afstudeerrichtingen",
     path: "/admin/specialisation",
     icon: <AltRoute/>,
-    // activeIcon: DashboardIconActive,
+    activeIcon: <AltRoute sx={{
+		color: colors.primary
+	}}/>,
     // component: Dashboard,
   },
   {
     label: "Bedrijven",
     path: "/admin/company",
     icon: <Business/>,
-    // activeIcon: DashboardIconActive,
+    activeIcon: <Business sx={{
+		color: colors.primary
+	}}/>,
     // component: Dashboard,
   },
   {
     label: "Bijlagen",
     path: "/admin/attachment",
     icon: <Attachment/>,
-    // activeIcon: DashboardIconActive,
+    activeIcon: <Attachment sx={{
+		color: colors.primary
+	}}/>,
     // component: Dashboard,
   },
   {
     label: "Generaties",
     path: "/admin/generation",
     icon: <Groups/>,
-    // activeIcon: DashboardIconActive,
+    activeIcon: <Groups sx={{
+		color: colors.primary
+	}}/>,
     // component: Dashboard,
   },
   {
     label: "Personen",
     path: "/admin/people",
     icon: <People/>,
-    // activeIcon: DashboardIconActive,
+    activeIcon: <People sx={{
+		color: colors.primary
+	}}/>,
     // component: Dashboard,
   },
   
@@ -124,6 +148,7 @@ export default function MenuList({}: Props): ReactElement {
 				<MenuItem
 				label={route.label}
 				icon={route.icon}
+				activeIcon={route.activeIcon}
 				path={route.path}
 				index={index}
 				>
