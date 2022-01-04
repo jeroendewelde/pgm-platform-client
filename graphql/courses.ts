@@ -19,5 +19,9 @@ export const GET_ALL_COURSES = gql`
     tags
     learningLineId
     specialisationId
+    learningLine {
+      id
+      color
+    }
   }
 }`;

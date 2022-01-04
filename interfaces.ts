@@ -29,7 +29,7 @@ export interface Course {
   // Relations
   learlingLineId: number
   specialisationId: number
-  learlingLine: LearlingLine
+  learlingLine: LearningLine
   specialisation: Specialisation
 }
 
