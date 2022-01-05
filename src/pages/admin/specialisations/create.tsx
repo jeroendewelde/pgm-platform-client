@@ -2,7 +2,6 @@ import React, { ReactElement } from 'react'
 import Router from 'next/router';
 
 
-
 import * as yup from 'yup'
 import { 
 	Field, 
@@ -23,11 +22,12 @@ import client from '../../../../apollo-client';
 // Custom Components
 import BasicContainer from '../../../components/Admin/style/BasicContainer';
 import Dashboard from '../../../components/Admin/Dashboard'
+import { CREATE_SPECIALISATION } from '../../../../graphql/specialisations';
 
 
 const validationSchema = yup.object({
 	name: yup.string().required('Naam is verplicht'),
-	color: yup.string().matches(/(^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$)/, 'Kleur moet een hexadecimaal getal zijn, bv. #FFFFFF').required('Kleur is verplicht')
+	academicYear: yup.string().matches(/20[0-9]{2}-20[0-9]{2}/, 'De duurtijd moet in het formaat 2019-2021 zijn').required('Academiejaren is verplicht')
 });
 
 interface createLearningLineProps {
@@ -36,8 +36,8 @@ interface createLearningLineProps {
 
 export default function createLearningLine({}: createLearningLineProps): ReactElement {
 	return (
-		<BasicContainer title="Nieuwe Leerlijn" >
-			<Dashboard title="Nieuwe Leerlijn">
+		<BasicContainer title="Nieuwe Afstudeerrichting" >
+			<Dashboard title="Nieuwe Afstudeerrichting">
 				<Box
 					sx={{
 						maxWidth: 'lg',
@@ -46,26 +46,24 @@ export default function createLearningLine({}: createLearningLineProps): ReactEl
 					<Formik
 						initialValues={{
 							name: '',
-							color: '',
+							academicYear: '',
 						}}
 						validationSchema={validationSchema}
 						onSubmit={(values, { setSubmitting }) => { 
 							setSubmitting(true);
 
 							const responseQuery = client.mutate({
-								mutation: CREATE_LEARNING_LINE, 
+								mutation: CREATE_SPECIALISATION, 
 								variables: {
 									input: {
 										name: values.name,
-										color: values.color,
+										academicYear: values.academicYear,
 									}
 								}
 							});
 
 							if(responseQuery) {
 								// setSubmitting(false);
-								
-								// console.log(Router.pathname.split('/create') );
 								Router.push(Router.pathname.split('/create')[0] );
 							}
 						}}
@@ -79,7 +77,7 @@ export default function createLearningLine({}: createLearningLineProps): ReactEl
 										name="name"
 										type="text"
 										label="Naam"
-										helperText="Naam van de leerlijn"
+										helperText="Naam van de afstudeerrichting"
 										multiline
 										maxRows={2}
 										sx={{
@@ -92,10 +90,10 @@ export default function createLearningLine({}: createLearningLineProps): ReactEl
 									<Field
 										required
 										component={TextField}
-										name="color"
+										name="academicYear"
 										type="text"
-										label="Kleur"
-										helperText="Kleur van de leerlijn"
+										label="Academiejaren"
+										helperText="Academiejaren in formaat 2019-2021"
 										// fullWidth
 										/>
 								</Box>

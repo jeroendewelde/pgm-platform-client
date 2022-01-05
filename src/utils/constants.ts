@@ -60,11 +60,21 @@ const tableColumns = {
       dataName: 'color',
       colName: 'kleur'
     },
-    // {
-    //   dataName: 'delete',
-    //   colName: 'wis'
-    // },
   ],
+    specialisations: [
+    {
+      dataName: 'id',
+      colName: 'id'
+    },
+    {
+      dataName: 'name',
+      colName: 'naam'
+    },
+    {
+      dataName: 'academicYear',
+      colName: 'academiejaren'
+    },
+  ]
 }
 
 export {

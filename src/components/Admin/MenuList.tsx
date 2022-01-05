@@ -76,7 +76,7 @@ const routes = [
   },
   {
     label: "Afstudeerrichtingen",
-    path: "/admin/specialisation",
+    path: "/admin/specialisations",
     icon: <AltRoute/>,
     activeIcon: <AltRoute sx={{
 		color: colors.primary
@@ -85,7 +85,7 @@ const routes = [
   },
   {
     label: "Bedrijven",
-    path: "/admin/company",
+    path: "/admin/companies",
     icon: <Business/>,
     activeIcon: <Business sx={{
 		color: colors.primary
@@ -94,7 +94,7 @@ const routes = [
   },
   {
     label: "Bijlagen",
-    path: "/admin/attachment",
+    path: "/admin/attachments",
     icon: <Attachment/>,
     activeIcon: <Attachment sx={{
 		color: colors.primary
@@ -103,7 +103,7 @@ const routes = [
   },
   {
     label: "Generaties",
-    path: "/admin/generation",
+    path: "/admin/generations",
     icon: <Groups/>,
     activeIcon: <Groups sx={{
 		color: colors.primary
@@ -112,7 +112,7 @@ const routes = [
   },
   {
     label: "Personen",
-    path: "/admin/people",
+    path: "/admin/peoples",
     icon: <People/>,
     activeIcon: <People sx={{
 		color: colors.primary

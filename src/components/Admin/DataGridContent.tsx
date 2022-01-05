@@ -14,15 +14,56 @@ import { ListItemIcon } from '@mui/material';
 import {
 	ModeEditOutlined,
 	DeleteOutline,
+	AddCircleOutline,
+	PausePresentationOutlined,
 } from '@mui/icons-material'
+
+// import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import { DELETE_LEARNING_LINE } from '../../../graphql/learningLines';
+import client from '../../../apollo-client';
+import Router from 'next/router';
+import { pathToArray } from 'graphql/jsutils/Path';
+// import DeleteRecord from './Form/DeleteRecord';
+
+// import DeleteRecord from './Form/DeleteRecord';
 
 interface DataGridContentProps {
 	data: any[],
 	info: any[],
 }
 
+// Delete queries
+let deleteQueries: any = {};
+deleteQueries['learning-lines']= DELETE_LEARNING_LINE;
+
+function deleteRecord( id: any, adminPath:string) {
+	
+	console.log('path....', adminPath);
+	const query = deleteQueries[adminPath + ''];
+	console.log('query....', query);
+	// console.log('query....', deleteQueries[entity]);
+	typeof id === 'string' ? id = parseInt(id) : id;
+
+
+	// console.log( Router.pathname.split('/admin/')[1]);
+	
+
+	const response = client.mutate({
+		mutation: query,
+		variables: {
+			id: id,
+		}
+	})
+
+	// if(response) {
+		Router.push(`/admin/${adminPath}`);
+	// }
+}
+
+
 export default function DataGridContent({data, info}: DataGridContentProps): ReactElement {
 	
+
 	// DATA
 	const rows: GridRowsProp = data.map((row: any, i) => {
 		let rowData: any = {};
@@ -34,6 +75,7 @@ export default function DataGridContent({data, info}: DataGridContentProps): Rea
 		});
 		return rowData;
 	});
+	
 
 	// COLUMN NAMES
 	let columns: GridColDef[] = info.map((column: any, i= 1) => {
@@ -53,7 +95,7 @@ export default function DataGridContent({data, info}: DataGridContentProps): Rea
 			headerName: 'bewerk',
 			renderCell: (params: GridRenderCellParams) => (
 				//TODO: CHANGE ROUTES FOR EDIT AND DELETE
-				<Link href={'/admin'} >
+				<Link href={`${Router.pathname}/${params.id}/edit`} >
 					<ListItemIcon 
 						sx={{
 							cursor: 'pointer',
@@ -69,8 +111,13 @@ export default function DataGridContent({data, info}: DataGridContentProps): Rea
 			headerName: 'wis',
 			renderCell: (params: GridRenderCellParams) => (
 				//TODO: CHANGE ROUTES FOR EDIT AND DELETE
-				<Link href={'/admin'}>
-					<ListItemIcon 
+				<Link href={'/admin'} >
+					<ListItemIcon
+						onClick={(e) => {
+							e.preventDefault();
+							deleteRecord(params.id, Router.pathname.split('/admin/')[1]);
+							// Router.push('/admin/learning-lines')
+						}}
 						sx={{
 							cursor: 'pointer',
 					}}
@@ -78,8 +125,9 @@ export default function DataGridContent({data, info}: DataGridContentProps): Rea
 					<DeleteOutline />
 				</ListItemIcon>
 			</Link>
-		)}
-	);
+		  )
+      }
+    );
 
 
 	return (

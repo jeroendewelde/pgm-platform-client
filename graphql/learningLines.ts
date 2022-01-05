@@ -31,9 +31,9 @@ mutation createLearningLine($input: CreateLearningLineInput!) {
   }
 }`;
 
-export const CREATE_LEARNING_LINE_NEW = gql`
-mutation createLearningLine($input: CreateLearningLineInput!) {
-  createLearningLine(createLearningLineInput: $input){
+export const DELETE_LEARNING_LINE = gql`
+mutation deleteLearningLine($id: Int!) {
+  removeLearningLine(id: $id){
     id
     name
     color
