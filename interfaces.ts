@@ -27,9 +27,9 @@ export interface Course {
   academicYear: string
   tags: String[]
   // Relations
-  learlingLineId: number
+  learningLineId: number
   specialisationId: number
-  learlingLine: LearningLine
+  learningLine: LearningLine
   specialisation: Specialisation
 }
 

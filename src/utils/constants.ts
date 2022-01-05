@@ -47,7 +47,7 @@ const tableColumns = {
       colName: 'specialisatie ID'
     },
   ],
-  learlingLines: [
+  learningLines: [
     {
       dataName: 'id',
       colName: 'id'

@@ -4,7 +4,7 @@ import {
  } from '@apollo/client';
 
 const client = new ApolloClient({
-  uri: process.env.HOST,
+  uri: process.env.NEXT_PUBLIC_HOST,
   cache: new InMemoryCache(),
   
 });

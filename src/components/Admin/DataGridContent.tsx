@@ -1,22 +1,27 @@
 import React, { ReactElement } from 'react'
-import { DataGrid, GridRowsProp, GridColDef, GridRenderCellParams } from '@mui/x-data-grid';
-import Box from '@mui/material/Box';
-import { sizing } from '@mui/system';
 
-import { Container, ListItem, ListItemIcon } from '@mui/material';
-import Grid from '@mui/material/Grid';
-import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import Link from 'next/link';
-import EditIcon from '@mui/icons-material/Edit';
-import ModeEditOutlinedIcon from '@mui/icons-material/ModeEditOutlined';
 
-interface Props {
+import { 
+	DataGrid, 
+	GridRowsProp, 
+	GridColDef, 
+	GridRenderCellParams 
+} from '@mui/x-data-grid';
+
+import { ListItemIcon } from '@mui/material';
+
+import {
+	ModeEditOutlined,
+	DeleteOutline,
+} from '@mui/icons-material'
+
+interface DataGridContentProps {
 	data: any[],
 	info: any[],
 }
 
-export default function DataGridContent({data, info}: Props): ReactElement {
-	
+export default function DataGridContent({data, info}: DataGridContentProps): ReactElement {
 	
 	// DATA
 	const rows: GridRowsProp = data.map((row: any, i) => {
@@ -27,8 +32,6 @@ export default function DataGridContent({data, info}: Props): ReactElement {
 
 			rowData[key] =  val;			
 		});
-		// rowData['delete'] = 'delete';
-		// rowData['edit'] = 'edit';
 		return rowData;
 	});
 
@@ -43,58 +46,52 @@ export default function DataGridContent({data, info}: Props): ReactElement {
 		}
 	});
 
-	columns.push({
-		field: 'edit',
-		headerName: 'bewerk',
-		renderCell: (params: GridRenderCellParams) => (
-			
-			<Link href={'/admin'} >
-				
-
-				<ListItemIcon sx={{
-					cursor: 'pointer',
-				}}>
-
-				<ModeEditOutlinedIcon />
+	// Add edit & delete to column names & icon + button on each row
+	columns.push(
+		{
+			field: 'edit',
+			headerName: 'bewerk',
+			renderCell: (params: GridRenderCellParams) => (
+				//TODO: CHANGE ROUTES FOR EDIT AND DELETE
+				<Link href={'/admin'} >
+					<ListItemIcon 
+						sx={{
+							cursor: 'pointer',
+						}}
+					>
+						<ModeEditOutlined />
+					</ListItemIcon>
+				</Link>
+			)
+		}, 
+		{
+			field: 'delete',
+			headerName: 'wis',
+			renderCell: (params: GridRenderCellParams) => (
+				//TODO: CHANGE ROUTES FOR EDIT AND DELETE
+				<Link href={'/admin'}>
+					<ListItemIcon 
+						sx={{
+							cursor: 'pointer',
+					}}
+				>
+					<DeleteOutline />
 				</ListItemIcon>
-				
 			</Link>
-				
-		)
-	}, {
-		field: 'delete',
-		headerName: 'wis',
-		renderCell: (params: GridRenderCellParams) => (
-			
-			<Link href={'/admin'} >
-				
-
-				<ListItemIcon sx={{
-					cursor: 'pointer',
-				}}>
-
-<DeleteOutlineIcon />
-				</ListItemIcon>
-				
-			</Link>
-		)
-	})
+		)}
+	);
 
 
 	return (
-	
-
-				<DataGrid 
-					rows={rows} 
-					columns={columns} 
-					// checkboxSelection
-					disableSelectionOnClick
-
-					sx={{  
-						flexGrow: 1,
-						height: 600
-					}}/>
-			
-
+		<DataGrid 
+			rows={rows} 
+			columns={columns} 
+			// checkboxSelection
+			disableSelectionOnClick
+			sx={{  
+				flexGrow: 1,
+				height: 600
+			}}
+		/>
 	)
 }

@@ -1,70 +1,38 @@
-import { NextPage } from "next";
-import Head from "next/head";
-import Link from "next/link";
-import styled from "styled-components";
-import { GET_ALL_LEARNINGLINES } from "../../../../graphql/learningLines";
-import client from "../../../../apollo-client";
-import { GET_ALL_COURSES } from "../../../../graphql/courses";
-import Header from "../../../components/Admin/Header";
-import LeftNavbar from "../../../components/Admin/LeftNavbar";
-import Navigation from "../../../components/Admin/Navigation";
-import Topbar from "../../../components/Admin/topbar/Topbar";
-import Dashboard from "../../../components/dashboard/Dashboard";
-import { tableColumns } from "../../../utils/constants";
+import React, { ReactElement } from 'react'
 
-// const colInfo = [
-// 	{
-// 		dataName: 'id',
-// 		colName: 'id'
-// 	},
-// 	{
-// 		dataName: 'name',
-// 		colName: 'naam'
-// 	},
-// 	{
-// 		dataName: 'color',
-// 		colName: 'kleur'
-// 	},
-// ];
+// Query
+import { GET_ALL_LEARNING_LINES } from '../../../../graphql/learningLines';
+import client from '../../../../apollo-client';
 
+// Custom Components
+import BasicContainer from '../../../components/Admin/style/BasicContainer';
+import Dashboard from '../../../components/Admin/Dashboard'
 
-// AdminPanel.title = "Admin Panel!";
-export default function AdminPanel({learningLines}: any) {
-	// console.log(courses);
-    return (
-        <>
-            <Head>
-                <title>Admin Panel</title>
-                {/* <link
-                    rel="stylesheet"
-                    href="https://fonts.googleapis.com/icon?family=Material+Icons"
-                /> */}
-            </Head>
-        <Container>
-            <Navigation courses={learningLines} colInfo={tableColumns.learlingLines}/>
-        </Container>
-        </>
-    )
-    
+// Variabels
+import { tableColumns } from '../../../utils/constants';
+import { LearningLine } from '../../../../interfaces';
+
+interface LearningLinesPageProps {
+	learningLines: LearningLine[]
 }
 
-const Container = styled.div`
-    color: red;
-  display: flex;
-  background-color: #FFF;
-  flex-direction: 'column';
-  justify-content: 'center';
-  align-items: 'center';
-  height: 100vh;  
-`;
-
-// export default AdminPanel;
+export default function LearningLinesPage({learningLines}: LearningLinesPageProps): ReactElement {
+	return (
+		<BasicContainer title="Leerlijnen" >
+			<Dashboard title="Leerlijnen">
+				<DataGridContent 
+					data={learningLines}
+					info={tableColumns.learningLines} 
+				/>
+			</Dashboard>
+		</BasicContainer>
+	)
+}
 
 export async function getStaticProps() {
     const { data, error } = await client.query({
-        query: GET_ALL_LEARNINGLINES
+        query: GET_ALL_LEARNING_LINES
     });
-	console.log('data....',data)
 
     if (error) {
         console.log(error);
