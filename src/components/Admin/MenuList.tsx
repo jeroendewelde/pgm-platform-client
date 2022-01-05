@@ -1,9 +1,4 @@
-// import PeopleIcon from '@mui/icons-material/People';
-// import BusinessIcon from '@mui/icons-material/Business';
-
-
-
-
+import React, { ReactElement } from 'react'
 
 import {
   AltRoute,
@@ -21,11 +16,6 @@ import {
 
 import List from '@mui/material/List';
 
-import { 
-	ListItem,
-	ListItemIcon,
-	ListItemText,
-} from '@mui/material'
 
 import { colors } from '../../utils/constants';
 
@@ -132,30 +122,28 @@ const routes = [
   
 ];
 
-import React, { ReactElement } from 'react'
-import MenuItem from './MenuItem';
-import Link from 'next/link';
 
-interface Props {
+
+// Custom imports
+import MenuItem from './MenuItem';
+
+interface MenuListProps {
 	
 }
 
-export default function MenuList({}: Props): ReactElement {
+export default function MenuList({}: MenuListProps): ReactElement {
 	return (
 		<List>
 			{routes.map((route, index) => (
 				
 				<MenuItem
-				label={route.label}
-				icon={route.icon}
-				activeIcon={route.activeIcon}
-				path={route.path}
-				index={index}
-				>
-					{/* <People/> */}
-					
-				</MenuItem>
-				
+					label={route.label}
+					icon={route.icon}
+					activeIcon={route.activeIcon}
+					path={route.path}
+					index={index}
+					key={index}
+				/>
 			))}
 		</List>
 	)

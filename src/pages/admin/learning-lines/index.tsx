@@ -7,6 +7,7 @@ import client from '../../../../apollo-client';
 // Custom Components
 import BasicContainer from '../../../components/Admin/style/BasicContainer';
 import Dashboard from '../../../components/Admin/Dashboard'
+import DataGridContent from '../../../components/Admin/DataGridContent';
 
 // Variabels
 import { tableColumns } from '../../../utils/constants';

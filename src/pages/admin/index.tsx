@@ -23,13 +23,15 @@ export default function AdminPanel({courses}: AdminPanelProps) {
     return (
 		<BasicContainer title="Home" >
 			<Dashboard title="Vakken">
-				<p>
-					Here comes an overview
-				</p>
-				<DataGridContent 
-					data={courses}
-					info={tableColumns.courses} 
-				/>
+				<>
+					<p>
+						Here comes an overview
+					</p>
+					<DataGridContent 
+						data={courses}
+						info={tableColumns.courses} 
+					/>
+				</>
 			</Dashboard>
 		</BasicContainer>
 		

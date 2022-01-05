@@ -107,14 +107,11 @@ const drawerWidth = 240;
 
 
 interface Props {
-	// data: any[];
-	// info: any[];
 	children: ReactElement;
 	title: String
 }
 
 export default function Dashboard({ title, children}: Props): ReactElement {
-// export default function Dashboard({data, info, title, children}: Props): ReactElement {
 	const theme = useTheme();
 	const [open, setOpen] = useState(false);
 
@@ -205,7 +202,7 @@ export default function Dashboard({ title, children}: Props): ReactElement {
 						{title}
 					</Typography>
 				{/* <DataGridContent data={data} info={info} /> */}
-			{children}
+				{children}
 
 			</Box>
 			</Box>

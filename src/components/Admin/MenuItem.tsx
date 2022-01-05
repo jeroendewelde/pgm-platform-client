@@ -8,6 +8,7 @@ import { useRouter } from 'next/router';
 import CollectionsBookmarkIcon from '@mui/icons-material/CollectionsBookmark';
 import Link from 'next/link';
 import { colors } from '../../utils/constants';
+import { color } from '@mui/system';
 
 interface MenuItemProps {
     label: String,
@@ -34,6 +35,7 @@ export default function MenuItem({label, icon, path, index, activeIcon}: MenuIte
 		<Link href={path + ''} >
         <ListItem 
 			button
+			// key={index}
 		>
 			<ListItemIcon
 			>
@@ -42,7 +44,10 @@ export default function MenuItem({label, icon, path, index, activeIcon}: MenuIte
 				}
 			</ListItemIcon>
 			<ListItemText primary={label} sx={{
-				color: active ? colors.primary : 'text'
+				color: active ? colors.primary : 'text',
+				// '&:hover': {
+				// 	color: colors.purple
+				// }
 
 			}}/>
 		</ListItem>
