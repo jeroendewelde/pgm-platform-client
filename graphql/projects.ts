@@ -20,3 +20,23 @@ export const GET_ALL_PROJECTS = gql`
     courseId
   }
 }`;
+
+/**
+ * Mutations
+ */
+
+ export const CREATE_PROJECT = gql`
+ mutation createProject($input: CreateProjectInput!) {
+  createProject(createProjectInput: $input){
+     id
+     name
+   }
+ }`;
+ 
+ export const DELETE_PROJECT = gql`
+ mutation deleteProject($id: Int!) {
+   removeProject(id: $id){
+     id
+     name
+   }
+ }`;
