@@ -10,6 +10,7 @@ import { CourseTitle } from "../components/Titles/CourseTitle";
 import { Card, CourseList } from "../components/Course";
 import { Header } from "../components/layout/Header";
 import { Footer } from "../components/layout/Footer";
+import { Quote } from "../components/Quote";
 
 const Text = styled.div`
   display: flex;
@@ -37,6 +38,13 @@ function MyApp({ Component, pageProps }: AppProps) {
       <CourseList />
 
       <Button variant="primary"> Hello </Button>
+
+      <Quote
+        source={"Phillipe De Pauw"}
+        content={
+          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+        }
+      />
 
       <Component {...pageProps} />
 
