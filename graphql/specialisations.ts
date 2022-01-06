@@ -31,11 +31,11 @@ export const GET_ALL_SPECIALISATIONS = gql`
    }
  }`;
  
-//  export const DELETE_LEARNING_LINE = gql`
-//  mutation deleteLearningLine($id: Int!) {
-//    removeLearningLine(id: $id){
-//      id
-//      name
-//      color
-//    }
-//  }`;
+ export const DELETE_SPECIALISATION = gql`
+ mutation deleteSpecialisation($id: Int!) {
+   removeSpecialisation(id: $id){
+     id
+     name
+     academicYear
+   }
+ }`;

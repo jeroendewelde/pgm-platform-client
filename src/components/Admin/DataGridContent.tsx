@@ -23,6 +23,7 @@ import { DELETE_LEARNING_LINE } from '../../../graphql/learningLines';
 import client from '../../../apollo-client';
 import Router from 'next/router';
 import { pathToArray } from 'graphql/jsutils/Path';
+import { DELETE_SPECIALISATION } from '../../../graphql/specialisations';
 // import DeleteRecord from './Form/DeleteRecord';
 
 // import DeleteRecord from './Form/DeleteRecord';
@@ -33,7 +34,9 @@ interface DataGridContentProps {
 }
 
 // Delete queries
-let deleteQueries: any = {};
+let deleteQueries: any = {
+	specialisations: DELETE_SPECIALISATION,
+};
 deleteQueries['learning-lines']= DELETE_LEARNING_LINE;
 
 function deleteRecord( id: any, adminPath:string) {
