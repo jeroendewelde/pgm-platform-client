@@ -16,3 +16,23 @@ export const GET_ALL_COMPANIES = gql`
     teaserImage
   }
 }`;
+
+/**
+ * Mutations
+ */
+
+ export const CREATE_COMPANY = gql`
+ mutation createCompany($input: CreateCompanyInput!) {
+  createCompany(createCompanyInput: $input){
+     id
+     name
+   }
+ }`;
+ 
+ export const DELETE_COMPANY = gql`
+ mutation deleteCompany($id: Int!) {
+   removeCompany(id: $id){
+     id
+     name
+   }
+ }`;

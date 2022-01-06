@@ -17,6 +17,20 @@ const colors = {
 }
 
 const tableColumns = {
+  companies: [
+    {
+      dataName: 'id',
+      colName: 'id',
+    },
+    {
+      dataName: 'name',
+      colName: 'name',
+    },
+    // {
+    //   dataName: 'teaserImage',
+    //   colName: 'teaserImage',
+    // }
+  ],
   courses : [
     {
       dataName: 'id',
