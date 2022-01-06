@@ -76,6 +76,7 @@ export default function DataGridContent({data, info}: DataGridContentProps): Rea
 
 			rowData[key] =  val;			
 		});
+		console.log(rowData);
 		return rowData;
 	});
 	

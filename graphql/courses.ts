@@ -21,6 +21,7 @@ export const GET_ALL_COURSES = gql`
     specialisationId
     learningLine {
       id
+      name
       color
     }
   }

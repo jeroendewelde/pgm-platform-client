@@ -112,7 +112,7 @@ const routes = [
   },
   {
     label: "Personen",
-    path: "/admin/peoples",
+    path: "/admin/persons",
     icon: <People/>,
     activeIcon: <People sx={{
 		color: colors.primary

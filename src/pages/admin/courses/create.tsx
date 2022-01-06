@@ -6,6 +6,7 @@ import Router from 'next/router';
 import * as yup from 'yup'
 import { 
 	Field, 
+	FieldArray, 
 	Form, 
 	Formik 
 } from 'formik';
@@ -35,6 +36,8 @@ const validationSchema = yup.object({
 	description: yup.string().required('Beschrijving is verplicht'),
 	academicYear: yup.string().matches(/20[0-9]{2}-20[0-9]{2}/, 'De duurtijd moet in het formaat 2019-2020 zijn').required('Academiejaar is verplicht'),
 	learningLineId: yup.number().required('Leerlijn is verplicht'),
+	tags: yup.array().of(yup.string()).required('Tags zijn verplicht'),
+	
 	// specialisationId: yup.string().required('Naam is verplicht'),
 	// color: yup.string().matches(/(^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$)/, 'Kleur moet een hexadecimaal getal zijn, bv. #FFFFFF').required('Kleur is verplicht')
 });
@@ -60,7 +63,7 @@ export default function createCourse({learningLines, specialisations}: createCou
 							description: '',
 							term: '',
 							academicYear: '',
-							// tags: [],
+							tags: [],
 							learningLineId: '',
 							specialisationId: '',
 							// attachments: [],
@@ -78,7 +81,7 @@ export default function createCourse({learningLines, specialisations}: createCou
 										description: values.description,
 										term: values.term,
 										academicYear: values.academicYear,
-										// tags: values.tags,
+										tags: values.tags,
 										learningLineId: values.learningLineId,
 										specialisationId: values.specialisationId,
 										// attachments: values.attachments,
@@ -228,24 +231,48 @@ export default function createCourse({learningLines, specialisations}: createCou
 								
 
 
-
+								
+								<Box margin={1}>
+								<FieldArray
+             name="tags"
+             render={arrayHelpers => (
+               <div>
+                 {values.tags && values.tags.length > 0 ? (
+                   values.tags.map((tag, index) => (
+                     <div key={index}>
+                       <Field name={`tags.${index}`} />
+                       <button
+                         type="button"
+                         onClick={() => arrayHelpers.remove(index)} // remove a friend from the list
+                       >
+                         -
+                       </button>
+                       <button
+                         type="button"
+                         onClick={() => arrayHelpers.insert(index, '')} // insert an empty string at a position
+                       >
+                         +
+                       </button>
+                     </div>
+                   ))
+                 ) : (
+                   <button type="button" onClick={() => arrayHelpers.push('')}>
+                     {/* show this when user has removed all friends from the list */}
+                     Add a tag
+                   </button>
+                 )}
+                 <div>
+                   <button type="submit">Submit</button>
+                 </div>
+               </div>
+             )}
+           />
+								</Box>
 
 
 
 								
-								<Box margin={1}>
-									<Button
-										sx={{ margin: 1 }}
-										variant="contained"
-										color="primary"
-										disabled={isSubmitting}
-										onClick={submitForm}
-										// type="submit"
-									>
-
-										Maak aan
-									</Button>
-								</Box>
+								
 								<pre>{JSON.stringify(values, null, 2)}</pre>
 							</Form>
 						)}

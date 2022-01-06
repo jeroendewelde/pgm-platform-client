@@ -39,9 +39,13 @@ const tableColumns = {
       colName: 'academiejaar'
     },
     {
-      dataName: 'learlingLineId',
+      dataName: 'learningLineId',
       colName: 'leerlijn ID'
     },
+    // {
+    //   dataName: 'learningLine["name"]',
+    //   colName: 'leerlijn'
+    // },
     {
       dataName: 'specialisationId',
       colName: 'specialisatie ID'
@@ -59,6 +63,64 @@ const tableColumns = {
     {
       dataName: 'color',
       colName: 'kleur'
+    },
+  ],
+  persons: [
+    {
+      dataName: 'id',
+      colName: 'id'
+    },
+    {
+      dataName: 'firstName',
+      colName: 'voornaam'
+    },
+    {
+      dataName: 'lastName',
+      colName: 'familienaam'
+    },
+    {
+      dataName: 'type',
+      colName: 'type'
+    },
+  ],
+  students: [
+    {
+      dataName: 'id',
+      colName: 'id'
+    },
+    {
+      dataName: 'firstName',
+      colName: 'voornaam'
+    },
+    {
+      dataName: 'lastName',
+      colName: 'familienaam'
+    },
+    {
+      dataName: 'type',
+      colName: 'type'
+    },
+    {
+      dataName: 'generationId',
+      colName: 'generation ID'
+    }
+  ],
+  teachers: [
+    {
+      dataName: 'id',
+      colName: 'id'
+    },
+    {
+      dataName: 'firstName',
+      colName: 'voornaam'
+    },
+    {
+      dataName: 'lastName',
+      colName: 'familienaam'
+    },
+    {
+      dataName: 'type',
+      colName: 'type'
     },
   ],
     specialisations: [
