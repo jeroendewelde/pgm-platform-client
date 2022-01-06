@@ -17,6 +17,17 @@ export const GET_ALL_SPECIALISATIONS = gql`
   }
 }`;
 
+export const GET_SPECIALISATION_BY_ID = gql`
+query getSpecialisationById($id: Int!) {
+  specialisation(id: $id) {
+    id
+    name
+    academicYear
+  }
+}`;
+
+
+
 
 /**
  * Mutations
@@ -25,6 +36,15 @@ export const GET_ALL_SPECIALISATIONS = gql`
  export const CREATE_SPECIALISATION = gql`
  mutation createSpecialisation($input: CreateSpecialisationInput!) {
   createSpecialisation(createSpecialisationInput: $input){
+     id
+     name
+     academicYear
+   }
+ }`;
+
+ export const UPDATE_SPECIALISATION = gql`
+ mutation updateSpecialisation($input: UpdateSpecialisationInput!, $id: Int!) {
+  updateSpecialisation(updateSpecialisationInput: $input, id: $id){
      id
      name
      academicYear
