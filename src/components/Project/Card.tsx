@@ -1,11 +1,11 @@
 import Image from "next/image";
 import React from "react";
 import styled from "styled-components";
+import { transparentize } from "polished";
 
 import Tag from "./Tag";
 import test from "../../assets/test/test.jpg";
 import profile from "../../assets/test/profile.jpg";
-import { transparentize } from "polished";
 
 const Container = styled.div`
   cursor: pointer;
