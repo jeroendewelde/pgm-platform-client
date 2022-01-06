@@ -32,8 +32,8 @@ export default function editSpecialisation({ specialisation }: editSpecialisatio
 				>
 					<Formik
 						initialValues={{
-							name: '',
-							academicYear: '',
+							name: specialisation.name ? specialisation.name : '', 
+							academicYear: specialisation.academicYear ? specialisation.academicYear : '',
 						}}
 						validationSchema={validationSchema}
 						onSubmit={(values, { setSubmitting }) => { 
@@ -100,7 +100,7 @@ export default function editSpecialisation({ specialisation }: editSpecialisatio
 										// type="submit"
 									>
 
-										Maak aan
+										Pas aan
 									</Button>
 								</Box>
 								<pre>{JSON.stringify(values, null, 2)}</pre>
