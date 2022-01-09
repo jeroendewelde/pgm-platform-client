@@ -9,6 +9,7 @@ import CollectionsBookmarkIcon from '@mui/icons-material/CollectionsBookmark';
 import Link from 'next/link';
 import { colors } from '../../utils/constants';
 import { color } from '@mui/system';
+import { Tooltip } from '@material-ui/core';
 
 interface MenuItemProps {
     label: String,
@@ -33,6 +34,7 @@ export default function MenuItem({label, icon, path, index, activeIcon}: MenuIte
 
     return (
 		<Link href={path + ''} >
+			<Tooltip title={label}>
         <ListItem 
 			button
 			// key={index}
@@ -51,6 +53,8 @@ export default function MenuItem({label, icon, path, index, activeIcon}: MenuIte
 
 			}}/>
 		</ListItem>
+
+			</Tooltip>
 		</Link>
     )
 }

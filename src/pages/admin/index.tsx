@@ -25,12 +25,12 @@ export default function AdminPanel({courses}: AdminPanelProps) {
 			<Dashboard title="Vakken">
 				<>
 					<p>
-						Here comes an overview
+						Choose an entity in the left navigation
 					</p>
-					<DataGridContent 
+					{/* <DataGridContent 
 						data={courses}
 						info={tableColumns.courses} 
-					/>
+					/> */}
 				</>
 			</Dashboard>
 		</BasicContainer>
