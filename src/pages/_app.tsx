@@ -11,6 +11,7 @@ import { Card, CourseList } from "../components/Course";
 import { Header } from "../components/layout/Header";
 import { Footer } from "../components/layout/Footer";
 import { Quote } from "../components/Quote";
+import { TeacherImage } from "../components/Teacher";
 
 const Text = styled.div`
   display: flex;
@@ -28,6 +29,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       <Header />
       <GlobalStyle />
       <GlitchTitle>Haalloo</GlitchTitle>
+      <TeacherImage />
       <CourseTitle learningLine={"green"}>Computer Systems</CourseTitle>
       <Text>
         <Card tags={tags} title="computer systems" learningLine="red" />
