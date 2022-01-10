@@ -18,3 +18,14 @@ export const GET_ALL_PERSONINFORMATIONS = gql`
     personId
   }
 }`;
+
+/**
+ * Mutations
+ */
+
+ export const CREATE_PERSONINFORMATION = gql`
+ mutation createPersonInformation($input: CreatePersonInformationInput!) {
+  createPersonInformation(createPersonInformationInput: $input){
+    id
+   }
+ }`;

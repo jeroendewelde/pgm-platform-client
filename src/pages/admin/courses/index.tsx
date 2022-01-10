@@ -13,6 +13,9 @@ import DataGridContent from '../../../components/Admin/DataGridContent';
 import { tableColumns } from '../../../utils/constants';
 import { Course } from '../../../../interfaces';
 
+import NavigationButton from '../../../components/Admin/NavigationButton';
+import Router from 'next/router';
+
 interface CoursesPageProps {
 	courses: Course[]
 }
@@ -21,10 +24,15 @@ export default function CoursesPage({courses}: CoursesPageProps): ReactElement {
 	return (
 		<BasicContainer title="Vakken" >
 			<Dashboard title="Vakken">
-				<DataGridContent 
-					data={courses}
-					info={tableColumns.courses} 
-				/>
+				<>
+					<NavigationButton
+						title='nieuw vak'
+					/>
+					<DataGridContent 
+						data={courses}
+						info={tableColumns.courses} 
+					/>
+				</>
 			</Dashboard>
 		</BasicContainer>	
 	)

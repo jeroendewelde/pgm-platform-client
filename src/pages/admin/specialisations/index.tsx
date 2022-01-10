@@ -13,6 +13,10 @@ import DataGridContent from '../../../components/Admin/DataGridContent';
 import { tableColumns } from '../../../utils/constants';
 import { Course } from '../../../../interfaces';
 import { GET_ALL_SPECIALISATIONS } from '../../../../graphql/specialisations';
+import Link from 'next/link';
+import { Button } from '@mui/material';
+import NavigationButton from '../../../components/Admin/NavigationButton';
+import Router from 'next/router';
 
 interface SpecialisationsPageProps {
 	courses: Course[]
@@ -23,10 +27,15 @@ export default function SpecialisationsPage({specialisations}: SpecialisationsPa
 		<>
 			<BasicContainer title="Afstudeerrichtingen" >
 				<Dashboard title="Afstudeerrichtingen">
-					<DataGridContent 
-						data={specialisations}
-						info={tableColumns.specialisations} 
-					/>
+					<>
+						<NavigationButton
+							title='nieuwe afstuderrichting'
+						/>
+						<DataGridContent 
+							data={specialisations}
+							info={tableColumns.specialisations} 
+						/>
+					</>
 				</Dashboard>
 			</BasicContainer>
 		</>

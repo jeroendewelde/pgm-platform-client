@@ -35,25 +35,24 @@ export default function MenuItem({label, icon, path, index, activeIcon}: MenuIte
     return (
 		<Link href={path + ''} >
 			<Tooltip title={label}>
-        <ListItem 
-			button
-			// key={index}
-		>
-			<ListItemIcon
-			>
-				{
-					active ? activeIcon : icon
-				}
-			</ListItemIcon>
-			<ListItemText primary={label} sx={{
-				color: active ? colors.primary : 'text',
-				// '&:hover': {
-				// 	color: colors.purple
-				// }
+				<ListItem 
+					button
+					// key={index}
+				>
+					<ListItemIcon
+					>
+						{
+							active ? activeIcon : icon
+						}
+					</ListItemIcon>
+					<ListItemText primary={label} sx={{
+						color: active ? colors.primary : 'text',
+						// '&:hover': {
+						// 	color: colors.purple
+						// }
 
-			}}/>
-		</ListItem>
-
+					}}/>
+				</ListItem>
 			</Tooltip>
 		</Link>
     )

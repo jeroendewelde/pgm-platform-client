@@ -11,26 +11,27 @@ import DataGridContent from '../../../components/Admin/DataGridContent';
 
 // Variabels
 import { tableColumns } from '../../../utils/constants';
-import { LearningLine } from '../../../../interfaces';
+import { LearningLine, Person } from '../../../../interfaces';
 import Link from 'next/link';
 import NavigationButton from '../../../components/Admin/NavigationButton';
 import Router from 'next/router';
+import { GET_ALL_TEACHERS } from '../../../../graphql/persons';
 
-interface LearningLinesPageProps {
-	learningLines: LearningLine[]
+interface TeachersPageProps {
+	teachers: Person[]
 }
 
-export default function LearningLinesPage({learningLines}: LearningLinesPageProps): ReactElement {
+export default function TeachersPage({teachers}: TeachersPageProps): ReactElement {
 	return (
-		<BasicContainer title="Leerlijnen" >
-			<Dashboard title="Leerlijnen">
+		<BasicContainer title="Docenten" >
+			<Dashboard title="Docenten">
 				<>
 				<NavigationButton
-					title='nieuwe leerlijn'
+					title='nieuwe docent'
 				/>
 					<DataGridContent 
-						data={learningLines}
-						info={tableColumns.learningLines} 
+						data={teachers}
+						info={tableColumns.teachers} 
 					/>
 				</>
 			</Dashboard>
@@ -41,7 +42,7 @@ export default function LearningLinesPage({learningLines}: LearningLinesPageProp
 // export async function getStaticProps() {
 	export async function getServerSideProps() {
     const { data, error } = await client.query({
-        query: GET_ALL_LEARNING_LINES
+        query: GET_ALL_TEACHERS
     });
 
     if (error) {
@@ -50,7 +51,7 @@ export default function LearningLinesPage({learningLines}: LearningLinesPageProp
 
     return {
         props: {
-            learningLines: data.learningLines,
+            teachers: data.teachers,
         },
     };
 }
