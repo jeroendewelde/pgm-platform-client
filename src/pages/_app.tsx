@@ -12,6 +12,8 @@ import { Header } from "../components/layout/Header";
 import { Footer } from "../components/layout/Footer";
 import { Quote } from "../components/Quote";
 import { TeacherImage } from "../components/Teacher";
+import { Navigation } from "../components/layout/Navigation";
+import { BaseLayout } from "../layouts";
 
 const Text = styled.div`
   display: flex;
@@ -26,31 +28,30 @@ const tags = ["react", "javascript", "typescript"];
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <ThemeProvider theme={theme}>
-      <Header />
-      <GlobalStyle />
-      <GlitchTitle>Haalloo</GlitchTitle>
-      <TeacherImage />
-      <CourseTitle learningLine={"green"}>Computer Systems</CourseTitle>
-      <Text>
-        <Card tags={tags} title="computer systems" learningLine="red" />
-        <Card tags={tags} title="computer systems" learningLine="green" />
-        <Card tags={tags} title="computer systems" learningLine="blue" />
-        <Card title="computer systems" learningLine="pink" />
-      </Text>
-      <CourseList />
+      <BaseLayout>
+        <GlobalStyle />
+        <GlitchTitle>Haalloo</GlitchTitle>
+        <TeacherImage />
+        <CourseTitle learningLine={"green"}>Computer Systems</CourseTitle>
+        <Text>
+          <Card tags={tags} title="computer systems" learningLine="red" />
+          <Card tags={tags} title="computer systems" learningLine="green" />
+          <Card tags={tags} title="computer systems" learningLine="blue" />
+          <Card title="computer systems" learningLine="pink" />
+        </Text>
+        <CourseList />
 
-      <Button variant="primary"> Hello </Button>
+        <Button variant="primary"> Hello </Button>
 
-      <Quote
-        source={"Phillipe De Pauw"}
-        content={
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
-        }
-      />
+        <Quote
+          source={"Phillipe De Pauw"}
+          content={
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+          }
+        />
 
-      <Component {...pageProps} />
-
-      <Footer />
+        <Component {...pageProps} />
+      </BaseLayout>
     </ThemeProvider>
   );
 }

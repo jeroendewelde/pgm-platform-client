@@ -1,5 +1,5 @@
 import { transparentize } from "polished";
-import React from "react";
+import React, { Dispatch, SetStateAction } from "react";
 import styled from "styled-components";
 
 const Container = styled.button`
@@ -35,9 +35,13 @@ const Container = styled.button`
   }
 `;
 
-const MenuButton = () => {
+interface menuButtonProps {
+  setMenuState: Dispatch<SetStateAction<boolean>>;
+}
+
+const MenuButton = ({ setMenuState }: menuButtonProps) => {
   return (
-    <Container>
+    <Container onClick={() => setMenuState(true)}>
       <p>Menu</p>
     </Container>
   );

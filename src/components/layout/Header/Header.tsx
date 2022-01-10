@@ -1,10 +1,11 @@
 import Image from "next/image";
 import Link from "next/link";
 import { transparentize } from "polished";
-import React from "react";
+import React, { Dispatch, SetStateAction, useState } from "react";
 import styled from "styled-components";
 
 import logo from "../../../assets/logo/logo.png";
+import { Navigation } from "../Navigation";
 import MenuButton from "./MenuButton";
 
 const Container = styled.header`
@@ -40,20 +41,25 @@ const Logo = styled.div`
 export interface HeaderProps {}
 
 const Header = () => {
-  return (
-    <Container>
-      <Wrapper>
-        <FlexContainer>
-          <Link href="/">
-            <Logo>
-              <Image src={logo} layout="fill" />
-            </Logo>
-          </Link>
+  const [menuState, setMenuState] = useState(false);
 
-          <MenuButton />
-        </FlexContainer>
-      </Wrapper>
-    </Container>
+  return (
+    <>
+      <Navigation menuState={menuState} setMenuState={setMenuState} />
+      <Container>
+        <Wrapper>
+          <FlexContainer>
+            <Link href="/">
+              <Logo>
+                <Image src={logo} layout="fill" />
+              </Logo>
+            </Link>
+
+            <MenuButton setMenuState={setMenuState} />
+          </FlexContainer>
+        </Wrapper>
+      </Container>
+    </>
   );
 };
 
