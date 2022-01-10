@@ -3,12 +3,37 @@ import Link from "next/link";
 import React, { Dispatch, SetStateAction } from "react";
 import styled from "styled-components";
 import { CgClose } from "react-icons/cg";
+import { motion, AnimatePresence } from "framer-motion";
 
 import logo from "../../../assets/logo/logo.png";
 import test from "../../../assets/test/company_test.jpg";
 import { transparentize } from "polished";
+import Panels from "./Panels";
 
-const Container = styled.div`
+// Transition
+const transition = {
+  duration: 0.8,
+  ease: [0.6, -0.05, 0.01, 0.9],
+};
+
+// Variants
+const parentVariants = {
+  animate: {
+    transition: { staggerChildren: 0.05, delayChildren: 1 },
+  },
+};
+
+const titleVariant = {
+  initial: { y: 200 },
+  animate: { y: 0 },
+};
+
+const maskAnimation = {
+  initial: { width: "100%" },
+  animate: { width: 0 },
+};
+
+const Container = styled(motion.div)`
   position: fixed;
   height: 100%;
   width: 100%;
@@ -101,7 +126,7 @@ const Menu = styled.div`
   }
 `;
 
-const MenuList = styled.ul`
+const MenuList = styled(motion.ul)`
   width: 100%;
   display: block;
 `;
@@ -124,7 +149,6 @@ const MenuListItem = styled.li`
         height: 1px;
         width: 100%;
         background: ${(props) => props.theme.colors.turquoise};
-        box-shadow: 0 0 10px ${(props) => props.theme.colors.turquoise};
         margin-bottom: 0.8rem;
         position: relative;
         display: flex;
@@ -164,6 +188,15 @@ const MenuListItem = styled.li`
         }
 
         .mask {
+          background-color: ${(props) => props.theme.colors.black};
+          width: 100%;
+          height: 6px;
+          z-index: 9;
+          position: absolute;
+
+          &.right {
+            right: 0;
+          }
         }
       }
     }
@@ -175,6 +208,7 @@ const MenuListItemTitle = styled.div`
 
   span {
     overflow: hidden;
+    display: block;
     margin: 0;
     font-size: ${(props) => props.theme.fontSizes.large};
     font-weight: ${(props) => props.theme.fontWeights.bold};
@@ -198,163 +232,260 @@ export interface NavigationProps {
 const Navigation = ({ menuState, setMenuState }: NavigationProps) => {
   return (
     <>
-      {menuState && (
-        <Container>
-          <div className="menu__logo">
-            <Link href="/">
-              <Logo>
-                <Image src={logo} layout="fill" />
-              </Logo>
-            </Link>
-          </div>
-          <div className="close">
-            <span>
-              <CgClose onClick={() => setMenuState(false)} />
-            </span>
-          </div>
-
-          <Menu>
-            <div className="container">
-              <div className="container__menu__inner">
-                <MenuList>
-                  <MenuListItem>
-                    <Link href="/">
-                      <a>
-                        <div className="wrapper">
-                          <div className="line left flex-1">
-                            {/* <div className="mask"></div> */}
-                          </div>
-                          <MenuListItemTitle>
-                            <span>
-                              <div className="title">Home</div>
-                            </span>
-                          </MenuListItemTitle>
-                          <MenuListItemFloatingImage>
-                            <Image src={test} width={300} height={300} />
-                          </MenuListItemFloatingImage>
-                          <div className="line right flex-1">
-                            {/* <div className="mask right"></div> */}
-                          </div>
-                        </div>
-                      </a>
-                    </Link>
-                  </MenuListItem>
-                  <MenuListItem>
-                    <Link href="/">
-                      <a>
-                        <div className="wrapper">
-                          <div className="line left flex-2">
-                            {/* <div className="mask"></div> */}
-                          </div>
-                          <MenuListItemTitle>
-                            <span>
-                              <div className="title">Leerlijn</div>
-                            </span>
-                          </MenuListItemTitle>
-                          <MenuListItemFloatingImage>
-                            <Image src={test} width={300} height={300} />
-                          </MenuListItemFloatingImage>
-                          <div className="line right flex-1">
-                            {/* <div className="mask right"></div> */}
-                          </div>
-                        </div>
-                      </a>
-                    </Link>
-                  </MenuListItem>
-                  <MenuListItem>
-                    <Link href="/">
-                      <a>
-                        <div className="wrapper">
-                          <div className="line left flex-1">
-                            {/* <div className="mask"></div> */}
-                          </div>
-                          <MenuListItemTitle>
-                            <span>
-                              <div className="title">Vakken</div>
-                            </span>
-                          </MenuListItemTitle>
-                          <MenuListItemFloatingImage>
-                            <Image src={test} width={300} height={300} />
-                          </MenuListItemFloatingImage>
-                          <div className="line right flex-3">
-                            {/* <div className="mask right"></div> */}
-                          </div>
-                        </div>
-                      </a>
-                    </Link>
-                  </MenuListItem>
-                  <MenuListItem>
-                    <Link href="/">
-                      <a>
-                        <div className="wrapper">
-                          <div className="line left flex-1">
-                            {/* <div className="mask"></div> */}
-                          </div>
-                          <MenuListItemTitle>
-                            <span>
-                              <div className="title">Projecten</div>
-                            </span>
-                          </MenuListItemTitle>
-                          <MenuListItemFloatingImage>
-                            <Image src={test} width={300} height={300} />
-                          </MenuListItemFloatingImage>
-                          <div className="line right flex-0">
-                            {/* <div className="mask right"></div> */}
-                          </div>
-                        </div>
-                      </a>
-                    </Link>
-                  </MenuListItem>
-                  <MenuListItem>
-                    <Link href="/">
-                      <a>
-                        <div className="wrapper">
-                          <div className="line left flex-1">
-                            {/* <div className="mask"></div> */}
-                          </div>
-                          <MenuListItemTitle>
-                            <span>
-                              <div className="title">PGM-Team</div>
-                            </span>
-                          </MenuListItemTitle>
-                          <MenuListItemFloatingImage>
-                            <Image src={test} width={300} height={300} />
-                          </MenuListItemFloatingImage>
-                          <div className="line right flex-3">
-                            {/* <div className="mask right"></div> */}
-                          </div>
-                        </div>
-                      </a>
-                    </Link>
-                  </MenuListItem>
-                  <MenuListItem>
-                    <Link href="/">
-                      <a>
-                        <div className="wrapper">
-                          <div className="line left flex-1">
-                            {/* <div className="mask"></div> */}
-                          </div>
-                          <MenuListItemTitle>
-                            <span>
-                              <div className="title">Contact</div>
-                            </span>
-                          </MenuListItemTitle>
-                          <MenuListItemFloatingImage>
-                            <Image src={test} width={300} height={300} />
-                          </MenuListItemFloatingImage>
-                          <div className="line right flex-1">
-                            {/* <div className="mask right"></div> */}
-                          </div>
-                        </div>
-                      </a>
-                    </Link>
-                  </MenuListItem>
-                </MenuList>
+      <AnimatePresence>
+        {menuState && (
+          <>
+            <Container>
+              <div className="menu__logo">
+                <Link href="/">
+                  <Logo>
+                    <Image src={logo} layout="fill" />
+                  </Logo>
+                </Link>
               </div>
-            </div>
-          </Menu>
-        </Container>
-      )}
+              <div className="close">
+                <span>
+                  <CgClose onClick={() => setMenuState(false)} />
+                </span>
+              </div>
+
+              <Menu>
+                <div className="container">
+                  <div className="container__menu__inner">
+                    <MenuList
+                      variants={parentVariants}
+                      initial="initial"
+                      animate="animate"
+                      exit="exit"
+                    >
+                      <MenuListItem>
+                        <Link href="/">
+                          <a>
+                            <div className="wrapper">
+                              <div className="line left flex-1">
+                                <motion.div
+                                  variants={maskAnimation}
+                                  transition={transition}
+                                  className="mask"
+                                ></motion.div>
+                              </div>
+                              <MenuListItemTitle>
+                                <span>
+                                  <motion.div
+                                    variants={titleVariant}
+                                    transition={transition}
+                                    className="title"
+                                  >
+                                    Home
+                                  </motion.div>
+                                </span>
+                              </MenuListItemTitle>
+                              <MenuListItemFloatingImage>
+                                <Image src={test} width={300} height={300} />
+                              </MenuListItemFloatingImage>
+                              <div className="line right flex-1">
+                                <motion.div
+                                  variants={maskAnimation}
+                                  transition={{
+                                    ...transition,
+                                    duration: 1,
+                                  }}
+                                  className="mask right"
+                                ></motion.div>
+                              </div>
+                            </div>
+                          </a>
+                        </Link>
+                      </MenuListItem>
+                      <MenuListItem>
+                        <Link href="/">
+                          <a>
+                            <div className="wrapper">
+                              <div className="line left flex-2">
+                                <motion.div
+                                  variants={maskAnimation}
+                                  transition={transition}
+                                  className="mask"
+                                ></motion.div>
+                              </div>
+                              <MenuListItemTitle>
+                                <span>
+                                  <motion.div
+                                    variants={titleVariant}
+                                    transition={transition}
+                                    className="title"
+                                  >
+                                    Leerlijn
+                                  </motion.div>
+                                </span>
+                              </MenuListItemTitle>
+                              <MenuListItemFloatingImage>
+                                <Image src={test} width={300} height={300} />
+                              </MenuListItemFloatingImage>
+                              <div className="line right flex-1">
+                                <motion.div
+                                  variants={maskAnimation}
+                                  transition={transition}
+                                  className="mask right"
+                                ></motion.div>
+                              </div>
+                            </div>
+                          </a>
+                        </Link>
+                      </MenuListItem>
+                      <MenuListItem>
+                        <Link href="/">
+                          <a>
+                            <div className="wrapper">
+                              <div className="line left flex-1">
+                                <motion.div
+                                  variants={maskAnimation}
+                                  transition={transition}
+                                  className="mask"
+                                ></motion.div>
+                              </div>
+                              <MenuListItemTitle>
+                                <span>
+                                  <motion.div
+                                    variants={titleVariant}
+                                    transition={transition}
+                                    className="title"
+                                  >
+                                    Vakken
+                                  </motion.div>
+                                </span>
+                              </MenuListItemTitle>
+                              <MenuListItemFloatingImage>
+                                <Image src={test} width={300} height={300} />
+                              </MenuListItemFloatingImage>
+                              <div className="line right flex-3">
+                                <motion.div
+                                  variants={maskAnimation}
+                                  transition={transition}
+                                  className="mask right"
+                                ></motion.div>
+                              </div>
+                            </div>
+                          </a>
+                        </Link>
+                      </MenuListItem>
+                      <MenuListItem>
+                        <Link href="/">
+                          <a>
+                            <div className="wrapper">
+                              <div className="line left flex-1">
+                                <motion.div
+                                  variants={maskAnimation}
+                                  transition={transition}
+                                  className="mask"
+                                ></motion.div>
+                              </div>
+                              <MenuListItemTitle>
+                                <span>
+                                  <motion.div
+                                    variants={titleVariant}
+                                    transition={transition}
+                                    className="title"
+                                  >
+                                    Projecten
+                                  </motion.div>
+                                </span>
+                              </MenuListItemTitle>
+                              <MenuListItemFloatingImage>
+                                <Image src={test} width={300} height={300} />
+                              </MenuListItemFloatingImage>
+                              <div className="line right flex-0">
+                                <motion.div
+                                  variants={maskAnimation}
+                                  transition={transition}
+                                  className="mask right"
+                                ></motion.div>
+                              </div>
+                            </div>
+                          </a>
+                        </Link>
+                      </MenuListItem>
+                      <MenuListItem>
+                        <Link href="/">
+                          <a>
+                            <div className="wrapper">
+                              <div className="line left flex-1">
+                                <motion.div
+                                  variants={maskAnimation}
+                                  transition={transition}
+                                  className="mask"
+                                ></motion.div>
+                              </div>
+                              <MenuListItemTitle>
+                                <span>
+                                  <motion.div
+                                    variants={titleVariant}
+                                    transition={transition}
+                                    className="title"
+                                  >
+                                    PGM-Team
+                                  </motion.div>
+                                </span>
+                              </MenuListItemTitle>
+                              <MenuListItemFloatingImage>
+                                <Image src={test} width={300} height={300} />
+                              </MenuListItemFloatingImage>
+                              <div className="line right flex-3">
+                                <motion.div
+                                  variants={maskAnimation}
+                                  transition={transition}
+                                  className="mask right"
+                                ></motion.div>
+                              </div>
+                            </div>
+                          </a>
+                        </Link>
+                      </MenuListItem>
+                      <MenuListItem>
+                        <Link href="/">
+                          <a>
+                            <div className="wrapper">
+                              <div className="line left flex-1">
+                                <motion.div
+                                  variants={maskAnimation}
+                                  transition={transition}
+                                  className="mask"
+                                ></motion.div>
+                              </div>
+                              <MenuListItemTitle>
+                                <span>
+                                  <motion.div
+                                    variants={titleVariant}
+                                    transition={transition}
+                                    className="title"
+                                  >
+                                    Contact
+                                  </motion.div>
+                                </span>
+                              </MenuListItemTitle>
+                              <MenuListItemFloatingImage>
+                                <Image src={test} width={300} height={300} />
+                              </MenuListItemFloatingImage>
+                              <div className="line right flex-1">
+                                <motion.div
+                                  variants={maskAnimation}
+                                  transition={transition}
+                                  className="mask right"
+                                ></motion.div>
+                              </div>
+                            </div>
+                          </a>
+                        </Link>
+                      </MenuListItem>
+                    </MenuList>
+                  </div>
+                </div>
+              </Menu>
+            </Container>
+            <Panels />
+          </>
+        )}
+      </AnimatePresence>
     </>
   );
 };

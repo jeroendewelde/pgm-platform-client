@@ -1,8 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
 import { transparentize } from "polished";
-import React, { Dispatch, SetStateAction, useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
+import { useRouter } from "next/router";
 
 import logo from "../../../assets/logo/logo.png";
 import { Navigation } from "../Navigation";
@@ -42,6 +43,11 @@ export interface HeaderProps {}
 
 const Header = () => {
   const [menuState, setMenuState] = useState(false);
+  const router = useRouter();
+
+  useEffect(() => {
+    setMenuState(false);
+  }, [router.pathname]);
 
   return (
     <>
