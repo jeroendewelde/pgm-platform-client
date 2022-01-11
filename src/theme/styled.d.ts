@@ -27,6 +27,7 @@ declare module "styled-components" {
       normal: string;
       medium: string;
       emedium: string;
+      semimedium: string;
       large: string;
       elarge: string;
       slarge: string;

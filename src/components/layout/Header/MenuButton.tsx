@@ -37,11 +37,21 @@ const Container = styled.button`
 
 interface menuButtonProps {
   setMenuState: Dispatch<SetStateAction<boolean>>;
+  setCursorHover: Dispatch<SetStateAction<boolean>>;
+  menuState: boolean;
 }
 
-const MenuButton = ({ setMenuState }: menuButtonProps) => {
+const MenuButton = ({
+  setMenuState,
+  setCursorHover,
+  menuState,
+}: menuButtonProps) => {
   return (
-    <Container onClick={() => setMenuState(true)}>
+    <Container
+      onClick={() => setMenuState(!menuState)}
+      onMouseEnter={() => setCursorHover(true)}
+      onMouseLeave={() => setCursorHover(false)}
+    >
       <p>Menu</p>
     </Container>
   );

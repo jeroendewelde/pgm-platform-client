@@ -72,12 +72,14 @@ const Container = styled.div<CardProps>`
     }};
   }
 
-  &:hover .Dot {
-    transform: scale(26.5);
-  }
+  @media (min-width: ${(props) => props.theme.width.small}) {
+    &:hover .Dot {
+      transform: scale(26.5);
+    }
 
-  &:hover .CTA_text {
-    color: ${(props) => props.theme.colors.white};
+    &:hover .CTA_text {
+      color: ${(props) => props.theme.colors.white};
+    }
   }
 `;
 

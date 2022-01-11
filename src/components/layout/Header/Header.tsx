@@ -1,13 +1,14 @@
 import Image from "next/image";
 import Link from "next/link";
 import { transparentize } from "polished";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Dispatch, SetStateAction } from "react";
 import styled from "styled-components";
 import { useRouter } from "next/router";
 
 import logo from "../../../assets/logo/logo.png";
 import { Navigation } from "../Navigation";
 import MenuButton from "./MenuButton";
+import { useMousePosition } from "../../../hooks/useMousePosition";
 
 const Container = styled.header`
   width: 100%;
@@ -34,24 +35,44 @@ const FlexContainer = styled.div`
 `;
 
 const Logo = styled.div`
+  cursor: pointer;
   position: relative;
   width: 9.72rem;
   height: 4rem;
 `;
 
-export interface HeaderProps {}
+export interface HeaderProps {
+  setCursorHover: Dispatch<SetStateAction<boolean>>;
+}
 
-const Header = () => {
+const Header = ({ setCursorHover }: HeaderProps) => {
   const [menuState, setMenuState] = useState(false);
+
   const router = useRouter();
+
+  const { x, y } = useMousePosition();
 
   useEffect(() => {
     setMenuState(false);
   }, [router.pathname]);
 
+  useEffect(() => {
+    if (menuState) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+  }, [menuState]);
+
   return (
     <>
-      <Navigation menuState={menuState} setMenuState={setMenuState} />
+      <Navigation
+        x={x}
+        y={y}
+        menuState={menuState}
+        setMenuState={setMenuState}
+        setCursorHover={setCursorHover}
+      />
       <Container>
         <Wrapper>
           <FlexContainer>
@@ -61,7 +82,11 @@ const Header = () => {
               </Logo>
             </Link>
 
-            <MenuButton setMenuState={setMenuState} />
+            <MenuButton
+              setMenuState={setMenuState}
+              setCursorHover={setCursorHover}
+              menuState={menuState}
+            />
           </FlexContainer>
         </Wrapper>
       </Container>

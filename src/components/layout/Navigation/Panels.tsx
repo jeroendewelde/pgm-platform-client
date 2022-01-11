@@ -17,7 +17,7 @@ const Container = styled.div<ContainerProps>`
   .right__panel {
     position: absolute;
     height: 100vh;
-    width: 50vw;
+    width: 100vw;
     z-index: 11;
     background-color: ${({ panel }) =>
       panel
