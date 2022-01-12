@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useContext } from "react";
 import Link from "next/link";
 import styled from "styled-components";
 import Image from "next/image";
 
 import Tag from "./Tag";
+import { CursorContext } from "../../context/CursorContext";
 
 import greenIcon from "../../assets/learning-line/green.svg";
 import blueIcon from "../../assets/learning-line/blue.svg";
@@ -19,8 +20,8 @@ const Container = styled.div<CardProps>`
   padding: 0.5rem;
   overflow: hidden;
   background-color: rgba(255, 255, 255, 0.279);
-  -webkit-backdrop-filter: blur(2em);
-  backdrop-filter: blur(2em);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
   width: 100%;
   height: 12rem;
   margin-bottom: 1rem;
@@ -152,8 +153,31 @@ const Icon = ({ learningLine = "blue" }: CardProps) => {
 };
 
 const Card = ({ tags, learningLine, title }: CardProps) => {
+  const { setCursorHover } = useContext(CursorContext);
+
+  const handleMouseEnter = () => {
+    setCursorHover(true);
+    //change z-index of the card to be on top of the other cursor
+    // if (document.querySelector(".cursor")) {
+    //   document.querySelector(".cursor").style.zIndex = "0";
+    // }
+  };
+
+  const handleMouseLeave = () => {
+    setCursorHover(false);
+    //change z-index of the card to be on top of the other cursor
+    // if (document.querySelector(".cursor")) {
+    //   document.querySelector(".cursor").style.zIndex = "11";
+    // }
+  };
+
   return (
-    <Container learningLine={learningLine}>
+    <Container
+      className="Card"
+      learningLine={learningLine}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    >
       <Title>
         <Icon learningLine={learningLine} />
         <h3>{title}</h3>

@@ -8,9 +8,11 @@ import logo from "../../../assets/logo/logo.png";
 
 const Container = styled.div`
   padding: 2rem 1rem;
-  background-color: ${(props) => transparentize(0.8, props.theme.colors.white)};
+  background-color: ${(props) => transparentize(0.9, props.theme.colors.white)};
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
+  z-index: 16;
+  position: relative;
 `;
 
 const Info = styled.div`

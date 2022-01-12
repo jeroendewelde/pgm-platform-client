@@ -4,7 +4,7 @@ import styled from "styled-components";
 
 import FooterContent from "./FooterContent";
 import FooterCopyrightYear from "./FooterCopyrightYear";
-import glowSpot from "../../../assets/glow-spots/footer.png";
+import glowSpot from "../../../assets/glow-spots-and-grid/glowspot-purple.png";
 
 const FooterStyle = styled.footer`
   position: relative;

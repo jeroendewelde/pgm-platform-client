@@ -1,5 +1,5 @@
 import { transparentize } from "polished";
-import React, { Children } from "react";
+import React from "react";
 import styled from "styled-components";
 
 const GlitchTitleStyle = styled.h1`

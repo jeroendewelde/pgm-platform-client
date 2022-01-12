@@ -8,7 +8,7 @@ const GlobalStyle = createGlobalStyle`
     box-sizing: border-box;
   }
   body {
-
+    overflow-x: hidden !important;
     min-height: 100vh;
     font-family: 'Prompt', sans-serif;
     color: ${(props) => props.theme.colors.white};
@@ -24,6 +24,7 @@ const GlobalStyle = createGlobalStyle`
       font-size: ${(props) => props.theme.fontSizes.elarge};
     }
     font-weight: ${(props) => props.theme.fontWeights.bold};
+    margin-bottom: 2rem;
   }
   h2 {
     font-size: ${(props) => props.theme.fontSizes.medium};
@@ -47,6 +48,10 @@ const GlobalStyle = createGlobalStyle`
     font-size: ${(props) => props.theme.fontSizes.normal};
     line-height: 1.5;
     margin-bottom: 0.5rem;
+
+    @media (min-width: ${(props) => props.theme.width.small}) {
+        font-size: ${(props) => props.theme.fontSizes.medium};
+    }
   }
   a {
     text-decoration: none;
