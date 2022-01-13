@@ -16,9 +16,11 @@ const Container = styled.div`
 const Info = styled.div`
   margin-bottom: 1.5rem;
 
-  p {
+  span {
+    display: block;
     margin: 0.5rem auto;
     text-align: center;
+    font-size: ${(props) => props.theme.fontSizes.normal};
 
     @media (min-width: ${(props) => props.theme.width.medium}) {
       max-width: 60rem;
@@ -127,14 +129,14 @@ const FooterContent = () => {
   return (
     <Container>
       <Info>
-        <p>
+        <span>
           © www.pgm.gent is een website van de opleiding Graduaat Programmeren
           van{" "}
           <Link href="https://www.arteveldehogeschool.be/">
             Arteveldehogeschool
           </Link>
           .
-        </p>
+        </span>
       </Info>
       <FlexContainer>
         <ContactInfo>
