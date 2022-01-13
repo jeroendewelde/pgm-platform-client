@@ -13,7 +13,6 @@ import GlobalStyle from "../theme/globalStyles";
 
 function MyApp({ Component, pageProps }: AppProps) {
 	const router = useRouter();
-	console.log(router.pathname.split('/admin'));
 	let isAdmin = false;
 	if(router.pathname.split('/admin').length >= 2) {
 		isAdmin = true;
