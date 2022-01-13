@@ -4,9 +4,8 @@ import React, { Dispatch, SetStateAction } from "react";
 import styled from "styled-components";
 import { CgClose } from "react-icons/cg";
 import { motion, AnimatePresence } from "framer-motion";
-
-import logo from "../../../assets/logo/logo.png";
 import { transparentize } from "polished";
+
 import Panels from "./Panels";
 import NavigationListItem from "./NavigationListItem";
 import NavigationListItemData from "../../../data/NavigationListItems.json";
@@ -177,7 +176,7 @@ const Navigation = ({
                     >
                       <Link href="/">
                         <Logo>
-                          <Image src={logo} layout="fill" />
+                          <Image src="/logo/logo.png" layout="fill" />
                         </Logo>
                       </Link>
                     </motion.div>

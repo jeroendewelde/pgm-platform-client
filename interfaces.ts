@@ -27,10 +27,10 @@ export interface Course {
   academicYear: string;
   tags: string[];
   // Relations
-  learningLineId: number
-  specialisationId: number
-  learningLine: LearningLine
-  specialisation: Specialisation
+  learningLineId: number;
+  specialisationId: number;
+  learningLine: LearningLine;
+  specialisation: Specialisation;
 }
 
 export interface FieldExperience {
@@ -93,6 +93,15 @@ export interface PersonInformation {
   // Relations
   personId: number;
   person: Person;
+}
+
+export interface AllQuotes {
+  id: number;
+  firstName: string;
+  lastName: string;
+  personInformation: {
+    quote: string;
+  };
 }
 
 export interface Project {

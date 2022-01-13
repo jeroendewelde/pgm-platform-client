@@ -5,7 +5,6 @@ import React, { useState, useEffect, Dispatch, SetStateAction } from "react";
 import styled from "styled-components";
 import { useRouter } from "next/router";
 
-import logo from "../../../assets/logo/logo.png";
 import { Navigation } from "../Navigation";
 import MenuButton from "./MenuButton";
 import { useMousePosition } from "../../../hooks/useMousePosition";
@@ -78,7 +77,7 @@ const Header = ({ setCursorHover }: HeaderProps) => {
           <FlexContainer>
             <Link href="/">
               <Logo>
-                <Image src={logo} layout="fill" />
+                <Image src="/logo/logo.png" layout="fill" />
               </Logo>
             </Link>
 

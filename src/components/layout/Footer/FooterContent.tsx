@@ -4,8 +4,6 @@ import { transparentize } from "polished";
 import React from "react";
 import styled from "styled-components";
 
-import logo from "../../../assets/logo/logo.png";
-
 const Container = styled.div`
   padding: 2rem 1rem;
   background-color: ${(props) => transparentize(0.9, props.theme.colors.white)};
@@ -174,7 +172,7 @@ const FooterContent = () => {
       <LogoContainer>
         <Link href="/">
           <div>
-            <Image src={logo} layout="fill" />
+            <Image src="/logo/logo.png" layout="fill" />
           </div>
         </Link>
       </LogoContainer>
