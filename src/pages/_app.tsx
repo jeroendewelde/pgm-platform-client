@@ -22,8 +22,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     <ThemeProvider theme={theme}>
         <Head>
             <link rel="shortcut icon" href="/logo_purple.ico" />
-        </Head>
-
+		</Head>
       <GlobalStyle />
 
 	  { !isAdmin ? (
@@ -32,8 +31,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 		</BaseLayout> ) : (
 			<Component {...pageProps} />
 		) }
-      {/* <BaseLayout>
-      </BaseLayout> */}
+
     </ThemeProvider>
   );
 }
