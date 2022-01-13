@@ -1,19 +1,24 @@
-import { useMemo } from 'react';
-import { ApolloClient, HttpLink, InMemoryCache, NormalizedCacheObject } from '@apollo/client';
+import { useMemo } from "react";
+import {
+  ApolloClient,
+  HttpLink,
+  InMemoryCache,
+  NormalizedCacheObject,
+} from "@apollo/client";
 import { relayStylePagination } from "@apollo/client/utilities";
-import merge from 'deepmerge';
-import isEqual from 'lodash/isEqual';
+import merge from "deepmerge";
+import isEqual from "lodash/isEqual";
 
-export const APOLLO_STATE_PROP_NAME = '__APOLLO_STATE__';
+export const APOLLO_STATE_PROP_NAME = "__APOLLO_STATE__";
 
 let apolloClient: ApolloClient<NormalizedCacheObject> | undefined;
 
 function createApolloClient() {
   return new ApolloClient({
-    ssrMode: typeof window === 'undefined',
+    ssrMode: typeof window === "undefined",
     link: new HttpLink({
       uri: process.env.NEXT_PUBLIC_WORDPRESS_API_URL, // Server URL (must be absolute)
-      credentials: 'same-origin', // Additional fetch() options like `credentials` or `headers`
+      credentials: "same-origin", // Additional fetch() options like `credentials` or `headers`
     }),
     cache: new InMemoryCache({
       // typePolicies is not required to use Apollo with Next.js - only for doing pagination.
@@ -25,10 +30,12 @@ function createApolloClient() {
         },
       },
     }),
-  })
+  });
 }
 
-export function initializeApollo(initialState: NormalizedCacheObject | null = null) {
+export function initializeApollo(
+  initialState: NormalizedCacheObject | null = null
+) {
   const _apolloClient = apolloClient ?? createApolloClient();
 
   // If your page has Next.js data fetching methods that use Apollo Client, the initial state
@@ -53,7 +60,7 @@ export function initializeApollo(initialState: NormalizedCacheObject | null = nu
   }
 
   // For SSG and SSR always create a new Apollo Client
-  if (typeof window === 'undefined') return _apolloClient;
+  if (typeof window === "undefined") return _apolloClient;
 
   // Create the Apollo Client once in the client
   if (!apolloClient) apolloClient = _apolloClient;
@@ -61,7 +68,10 @@ export function initializeApollo(initialState: NormalizedCacheObject | null = nu
   return _apolloClient;
 }
 
-export function addApolloState(client: ApolloClient<NormalizedCacheObject>, pageProps: any) {
+export function addApolloState(
+  client: ApolloClient<NormalizedCacheObject>,
+  pageProps: any
+) {
   if (pageProps?.props) {
     pageProps.props[APOLLO_STATE_PROP_NAME] = client.cache.extract();
   }

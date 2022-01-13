@@ -85,7 +85,7 @@ export default function Home({ quotes }: HomeProps) {
           {quotes.map((quote) => (
             <SwiperSlide key={quote.id}>
               <Quote
-                source={quote.firstName}
+                source={quote.firstName + " " + quote.lastName}
                 content={quote.personInformation.quote}
               />
             </SwiperSlide>

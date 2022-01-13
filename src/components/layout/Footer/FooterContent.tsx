@@ -1,8 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
 import { transparentize } from "polished";
-import React from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
+import { CursorContext } from "../../../context/CursorContext";
 
 const Container = styled.div`
   padding: 2rem 1rem;
@@ -126,6 +127,16 @@ const LogoContainer = styled.div`
 `;
 
 const FooterContent = () => {
+  const { setCursorHover } = useContext(CursorContext);
+
+  const handleMouseEnter = () => {
+    setCursorHover(true);
+  };
+
+  const handleMouseLeave = () => {
+    setCursorHover(false);
+  };
+
   return (
     <Container>
       <Info>
@@ -149,7 +160,7 @@ const FooterContent = () => {
           <span>Website made by PGM.GENT</span>
         </ContactInfo>
         <SocialMedia>
-          <li>
+          <li onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
             <Link href="https://www.facebook.com/Programmeren.ahs">
               Facebook
             </Link>
