@@ -69,6 +69,11 @@ export interface LearningLine {
   color: string
 }
 
+// export interface LearningLineData {
+//   count: number
+//   data: LearningLine[]
+// }
+
 export interface Person {
   id: number
   firstName: string

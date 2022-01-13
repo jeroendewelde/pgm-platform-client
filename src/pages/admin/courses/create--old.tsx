@@ -72,7 +72,6 @@ export default function createCourse({learningLines, specialisations}: createCou
 							tags: [],
 							learningLineId: '',
 							specialisationId: '',
-							fieldExperiences: [],
 							// attachments: [],
 							// teachers: [],
 						}}
@@ -91,7 +90,6 @@ export default function createCourse({learningLines, specialisations}: createCou
 										tags: values.tags,
 										learningLineId: values.learningLineId,
 										specialisationId: values.specialisationId,
-										fieldExperiences: values.fieldExperiences,
 										// attachments: values.attachments,
 										// teachers: values.teachers,
 									}
@@ -238,142 +236,95 @@ export default function createCourse({learningLines, specialisations}: createCou
 
 								
 
-<p>
-	Voeg Tags toe, de bovenste 5 zijn de belangrijkste tags.
-</p>
+
 								
 								<Box margin={1}>
 									<FieldArray
 										name="tags"
+										
 										render={arrayHelpers => (
 											<div> 
 												{values.tags && values.tags.length > 0 ? (
-													values.tags.map((tag, index) => (
-														<div key={index}>
-															<Field
-																component={TextField}
-																name={`tags.${index}`}
-																type="text"
-																label="Tag"
-															/>
-
-															<Button
-																sx={{ margin: 1 }}
-																variant="outlined"
-																disabled={isSubmitting}
-																onClick={() => arrayHelpers.remove(index)}
-															>
-																<Remove />
-															</Button>
-
-															<Button
-																sx={{ margin: 1 }}
-																variant="outlined"
-																disabled={isSubmitting}
-																onClick={() => arrayHelpers.insert(index, '')}
-															>
-																<Add />
-															</Button>
+												values.tags.map((tag, index) => (
+													<div key={index}>
+														<Field
+															component={TextField}
+															name={`tags.${index}`}
+															type="text"
+															label="Tag"
+															// helperText="Naam van het vak"
+															// multiline
+															// maxRows={2}
+															// sx={{
+															// 	width: '100%',
+															// 	// maxWidth: 'lg'
+															// }}
+														/>
+														{/* <Field name={`tags.${index}`} /> */}
+														{/* <button
+															type="button"
+															onClick={() => arrayHelpers.remove(index)} // remove a friend from the list
+														>
+															-
+														</button> */}
+														<Button
+															sx={{ margin: 1 }}
+															variant="outlined"
+															// color="primary"
+															disabled={isSubmitting}
+															onClick={() => arrayHelpers.remove(index)} // remove a friend from the list
+															// type="submit"
+														>
+															<Remove />
+														</Button>
+														{/* <button
+															type="button"
+															onClick={() => arrayHelpers.insert(index, '')} // insert an empty string at a position
+														>
+															<Add />
+														</button> */}
+														<Button
+															sx={{ margin: 1 }}
+															variant="outlined"
+															// color="primary"
+															disabled={isSubmitting}
+															onClick={() => arrayHelpers.insert(index, '')} // insert an empty string at a position
+															// type="submit"
+														>
+															<Add />
+														</Button>
 													</div>
-													))
+												))
 												) : (
-													<Button
-														sx={{ margin: 1 }}
-														variant="outlined"
-														disabled={isSubmitting}
-														onClick={() => arrayHelpers.push('')}
-													>
-														Tags toevoegen
-													</Button>
+												// <button type="button" onClick={() => arrayHelpers.push('')}>
+												// 	{/* show this when user has removed all friends from the list */}
+												// 	Add a tag
+												// </button>
+
+												<Button
+															sx={{ margin: 1 }}
+															variant="outlined"
+															// color="primary"
+															disabled={isSubmitting}
+															onClick={() => arrayHelpers.push('')}
+															// type="submit"
+														>
+															Tags toevoegen
+														</Button>
+
 												)}
+												<div>
+												<button type="submit">Submit</button>
+												</div>
 											</div>
 										)}
 									/>
 								</Box>
 
-								<Box margin={1}>
-									<FieldArray
-										name="fieldExperiences"
-										render={arrayHelpers => (
-											<div> 
-												{values.fieldExperiences && values.fieldExperiences.length > 0 ? (
-													values.fieldExperiences.map((tag, index) => (
-														<div key={index}>
-															<Field
-																component={TextField}
-																name={`fieldExperiences.${index}.duration`}
-																type="text"
-																label="Duurtijd"
-																helpText="-"
-															/>
-															<Field
-																component={TextField}
-																name={`fieldExperiences.${index}.company`}
-																type="text"
-																label="Bedrijf"
-																helpText="-"
-															/>
-															<Field
-																component={TextField}
-																name={`fieldExperiences.${index}.function`}
-																type="text"
-																label="Functie"
-																helpText="-"
-															/>
-															<Field
-																component={TextField}
-																name={`fieldExperiences.${index}.description`}
-																type="text"
-																label="Beschrijving"
-																helpText="-"
-															/>
 
-															<Button
-																sx={{ margin: 1 }}
-																variant="outlined"
-																disabled={isSubmitting}
-																onClick={() => arrayHelpers.remove(index)}
-															>
-																<Remove />
-															</Button>
 
-															<Button
-																sx={{ margin: 1 }}
-																variant="outlined"
-																disabled={isSubmitting}
-																onClick={() => arrayHelpers.insert(index, '')}
-															>
-																<Add />
-															</Button>
-													</div>
-													))
-												) : (
-													<Button
-														sx={{ margin: 1 }}
-														variant="outlined"
-														disabled={isSubmitting}
-														onClick={() => arrayHelpers.push('')}
-													>
-														Werk-ervaring toevoegen
-													</Button>
-												)}
-											</div>
-										)}
-									/>
-								</Box>
-
-								<Box margin={1}>
-									<Button
-										sx={{ margin: 1 }}
-										variant="contained"
-										color="primary"
-										disabled={isSubmitting}
-										onClick={submitForm}
-										// type="submit"
-									>
-										Maak aan
-									</Button>
-								</Box>
+								
+								
 								<pre>{JSON.stringify(values, null, 2)}</pre>
 							</Form>
 						)}

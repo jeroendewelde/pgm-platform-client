@@ -103,7 +103,7 @@ export default function createTeacher({}: createTeacherProps): ReactElement {
 								});
 
 								// REDIRECT
-								// 	// Router.push(Router.pathname.split('/create')[0] );
+								Router.push(Router.pathname.split('/create')[0] );
 							}
 
 							// const responseQueryPerson = client.mutate({

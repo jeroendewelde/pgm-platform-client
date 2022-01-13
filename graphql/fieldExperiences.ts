@@ -19,3 +19,14 @@ export const GET_ALL_FIELD_EXPERIENCES = gql`
     personId
   }
 }`;
+
+/**
+ * Mutations
+ */
+
+ export const CREATE_FIELD_EXPERIENCE = gql`
+ mutation createFieldExperience($input: CreateFieldExperienceInput!) {
+  createFieldExperience(createFieldExperienceInput: $input){
+    id
+   }
+ }`;
