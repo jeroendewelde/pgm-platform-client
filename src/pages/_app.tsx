@@ -1,41 +1,18 @@
-import styled from "styled-components";
 import { ThemeProvider } from "styled-components";
 import theme from "../theme/theme";
 
 import type { AppProps } from "next/app";
-import { Button } from "../components/Button";
+
+import { BaseLayout } from "../layouts";
 import GlobalStyle from "../theme/globalStyles";
-import { GlitchTitle } from "../components/Titles/GlitchTitle";
-import { CourseTitle } from "../components/Titles/CourseTitle";
-import { Card, CourseList } from "../components/Course";
-
-const Text = styled.div`
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  padding: 1rem;
-`;
-
-const tags = ["react", "javascript", "typescript"];
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <ThemeProvider theme={theme}>
       <GlobalStyle />
-      <GlitchTitle>Haalloo</GlitchTitle>
-      <CourseTitle learningLine={"green"}>Computer Systems</CourseTitle>
-      <Text>
-        <Card tags={tags} />
-        <Card tags={tags} />
-        <Card tags={tags} />
-        <Card />
-      </Text>
-      <CourseList />
-
-      <Button variant="primary"> Hello </Button>
-
-      <Component {...pageProps} />
+      <BaseLayout>
+        <Component {...pageProps} />
+      </BaseLayout>
     </ThemeProvider>
   );
 }

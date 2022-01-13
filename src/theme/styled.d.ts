@@ -22,10 +22,12 @@ declare module "styled-components" {
       secondary: string;
     };
     fontSizes: {
+      esmall: string;
       small: string;
       normal: string;
       medium: string;
       emedium: string;
+      semimedium: string;
       large: string;
       elarge: string;
       slarge: string;

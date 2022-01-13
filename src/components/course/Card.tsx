@@ -1,28 +1,44 @@
-import React from "react";
+import React, { useContext } from "react";
 import Link from "next/link";
 import styled from "styled-components";
 import Image from "next/image";
 
-import greenIcon from "../../assets/learning-line/green.svg";
-import { transparentize } from "polished";
 import Tag from "./Tag";
+import { CursorContext } from "../../context/CursorContext";
 
-const Container = styled.div`
+import greenIcon from "../../assets/learning-line/green.svg";
+import blueIcon from "../../assets/learning-line/blue.svg";
+import orangeIcon from "../../assets/learning-line/orange.svg";
+import redIcon from "../../assets/learning-line/red.svg";
+import pinkIcon from "../../assets/learning-line/pink.svg";
+
+const Container = styled.div<CardProps>`
   cursor: pointer;
-
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-
   padding: 0.5rem;
-  border-bottom: 3px solid ${(props) => props.theme.colors.green};
   overflow: hidden;
   background-color: rgba(255, 255, 255, 0.279);
-  -webkit-backdrop-filter: blur(2em);
-  backdrop-filter: blur(2em);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
   width: 100%;
   height: 12rem;
   margin-bottom: 1rem;
+
+  border-bottom: ${({ learningLine }) => {
+    if (learningLine === "blue") {
+      return (props) => `3px solid ${props.theme.colors.blue}`;
+    } else if (learningLine === "green") {
+      return (props) => `3px solid ${props.theme.colors.green}`;
+    } else if (learningLine === "orange") {
+      return (props) => `3px solid ${props.theme.colors.orange}`;
+    } else if (learningLine === "pink") {
+      return (props) => `3px solid ${props.theme.colors.pink}`;
+    } else if (learningLine === "red") {
+      return (props) => `3px solid ${props.theme.colors.red}`;
+    }
+  }};
 
   @media (min-width: ${(props) => props.theme.width.small}) {
     width: calc(50% - 1rem);
@@ -40,25 +56,31 @@ const Container = styled.div`
     bottom: 1rem;
     width: 1rem;
     height: 1rem;
-    background-color: ${(props) => props.theme.colors.green};
     border-radius: ${(props) => props.theme.borderRadius.circle};
     transition: ${(props) => props.theme.transition.normal};
+    background-color: ${({ learningLine }) => {
+      if (learningLine === "blue") {
+        return (props) => props.theme.colors.blue;
+      } else if (learningLine === "green") {
+        return (props) => props.theme.colors.green;
+      } else if (learningLine === "orange") {
+        return (props) => props.theme.colors.orange;
+      } else if (learningLine === "pink") {
+        return (props) => props.theme.colors.pink;
+      } else if (learningLine === "red") {
+        return (props) => props.theme.colors.red;
+      }
+    }};
   }
 
-  &:hover .Dot {
-    transform: scale(26.5);
-  }
+  @media (min-width: ${(props) => props.theme.width.small}) {
+    &:hover .Dot {
+      transform: scale(26.5);
+    }
 
-  &:hover .CTA_text {
-    color: ${(props) => props.theme.colors.white};
-  }
-
-  &:hover {
-    box-shadow: ${(props) => transparentize(0.9, props.theme.colors.green)} 0px
-        1px 1px 0px inset,
-      ${(props) => transparentize(0.75, props.theme.colors.green)} 0px 50px
-        100px -20px,
-      ${(props) => transparentize(0.7, props.theme.colors.green)} 0px 30px 60px -30px;
+    &:hover .CTA_text {
+      color: ${(props) => props.theme.colors.white};
+    }
   }
 `;
 
@@ -110,14 +132,55 @@ const FlexContainer = styled.div`
 
 export interface CardProps {
   tags?: string[];
+  title?: string;
+  learningLine: string;
 }
 
-const Card = ({ tags }: CardProps) => {
+const Icon = ({ learningLine = "blue" }: CardProps) => {
+  if (learningLine === "blue") {
+    return <Image src={blueIcon} width={35} height={35} />;
+  } else if (learningLine === "green") {
+    return <Image src={greenIcon} width={35} height={35} />;
+  } else if (learningLine === "orange") {
+    return <Image src={orangeIcon} width={35} height={35} />;
+  } else if (learningLine === "pink") {
+    return <Image src={pinkIcon} width={35} height={35} />;
+  } else if (learningLine === "red") {
+    return <Image src={redIcon} width={35} height={35} />;
+  } else {
+    return null;
+  }
+};
+
+const Card = ({ tags, learningLine, title }: CardProps) => {
+  const { setCursorHover } = useContext(CursorContext);
+
+  const handleMouseEnter = () => {
+    setCursorHover(true);
+    //change z-index of the card to be on top of the other cursor
+    // if (document.querySelector(".cursor")) {
+    //   document.querySelector(".cursor").style.zIndex = "0";
+    // }
+  };
+
+  const handleMouseLeave = () => {
+    setCursorHover(false);
+    //change z-index of the card to be on top of the other cursor
+    // if (document.querySelector(".cursor")) {
+    //   document.querySelector(".cursor").style.zIndex = "11";
+    // }
+  };
+
   return (
-    <Container>
+    <Container
+      className="Card"
+      learningLine={learningLine}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    >
       <Title>
-        <Image src={greenIcon} width={30} height={30} alt="Computer systems" />
-        <h3>Interactive Virtual Reality</h3>
+        <Icon learningLine={learningLine} />
+        <h3>{title}</h3>
       </Title>
       <CTA>
         <p className="CTA_text">Explore more</p>

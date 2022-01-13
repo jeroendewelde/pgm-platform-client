@@ -22,9 +22,11 @@ const defaultTheme: DefaultTheme = {
     secondary: "Source Code Pro",
   },
   fontSizes: {
+    esmall: "0.6rem",
     small: "0.8rem",
     normal: "1rem",
     medium: "1.3rem",
+    semimedium: "1.6rem",
     emedium: "2rem",
     large: "2.5rem",
     elarge: "3.5rem",

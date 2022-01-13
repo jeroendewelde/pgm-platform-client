@@ -1,11 +1,12 @@
 import React from "react";
 import styled from "styled-components";
+import Image from "next/image";
+
 import blueIcon from "../../../assets/learning-line/blue.svg";
 import greenIcon from "../../../assets/learning-line/green.svg";
 import orangeIcon from "../../../assets/learning-line/orange.svg";
 import redIcon from "../../../assets/learning-line/red.svg";
 import pinkIcon from "../../../assets/learning-line/pink.svg";
-import Image from "next/image";
 
 const Container = styled.div`
   display: flex;
@@ -57,7 +58,7 @@ const CourseTitleStyle = styled.h2<CourseTitleProps>`
 `;
 
 export interface CourseTitleProps {
-  children: React.ReactNode;
+  children?: React.ReactNode;
   learningLine: "blue" | "green" | "orange" | "pink" | "red";
 }
 
@@ -83,7 +84,7 @@ const CourseTitle = ({ children, learningLine = "blue" }: CourseTitleProps) => {
       <CourseTitleStyle learningLine={learningLine}>
         {children}
       </CourseTitleStyle>
-      <Icon learningLine={learningLine} children={undefined} />
+      <Icon learningLine={learningLine} />
     </Container>
   );
 };
