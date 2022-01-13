@@ -17,12 +17,14 @@ When using the local database, run the **pgm-platform-server**, and add the foll
 ### `.env.dev`
 ```
 HOST = 'http://localhost:3000/graphql'
+NEXT_PUBLIC_HOST_URL = 'http://localhost:3000/graphql'
 PORT = 4000
 ```
 
 ### `.env.prod`
 ```
 HOST = 'https://pgm-platform-server.herokuapp.com/graphql'
+NEXT_PUBLIC_HOST_URL = 'https://pgm-platform-server.herokuapp.com/graphql'
 PORT = 4000
 ```
 

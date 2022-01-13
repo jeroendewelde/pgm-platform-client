@@ -1,9 +1,11 @@
+import Head from "next/head";
+import Link from "next/link";
 import client from "../../apollo-client";
 
-import CourseList from "../components/Course/CourseList";
 
 import { GET_ALL_COURSES } from "../../graphql/courses";
 import { Course } from "../../interfaces";
+import CourseList from "../components/Course/CourseList";
 
 interface HomeProps {
     courses: Course[];
@@ -12,9 +14,21 @@ interface HomeProps {
 export default function Home({courses}: HomeProps) {
 
   return (
-    <>
+    <div className="container">
+        <Head>
+            <title>Home</title>
+            
+        </Head>
+        <h1 className="title">
+            Home page
+        </h1>
+            <Link href="/admin">
+                <a>admin panel</a>
+            </Link>
+
+
       <CourseList courses={courses} />
-    </>
+    </div>
   );
 }
 

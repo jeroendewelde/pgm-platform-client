@@ -1,7 +1,7 @@
 import { gql, useQuery, useLazyQuery } from "@apollo/client";
 
 /**
- * All Agenda Item related queries
+ * All Course related queries
  */
 
 /**
@@ -14,10 +14,36 @@ export const GET_ALL_COURSES = gql`
     id
     name
     description
-    academicYear
     term
+    academicYear
     tags
     learningLineId
     specialisationId
+    learningLine {
+      id
+      name
+      color
+    }
   }
 }`;
+
+
+/**
+ * Mutations
+ */
+
+ export const CREATE_COURSE = gql`
+ mutation createCourse($input: CreateCourseInput!) {
+  createCourse(createCourseInput: $input){
+     id
+     name
+   }
+ }`;
+ 
+ export const DELETE_COURSE = gql`
+ mutation deleteCourse($id: Int!) {
+   removeCourse(id: $id){
+     id
+     name
+   }
+ }`;

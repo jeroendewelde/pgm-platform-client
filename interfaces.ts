@@ -27,9 +27,9 @@ export interface Course {
   academicYear: string
   tags: String[]
   // Relations
-  learlingLineId: number
+  learningLineId: number
   specialisationId: number
-  learlingLine: LearlingLine
+  learningLine: LearningLine
   specialisation: Specialisation
 }
 
@@ -63,11 +63,16 @@ export interface Intern {
   company: Company
 }
 
-export interface LearlingLine {
+export interface LearningLine {
   id: number
   name: string
   color: string
 }
+
+// export interface LearningLineData {
+//   count: number
+//   data: LearningLine[]
+// }
 
 export interface Person {
   id: number
