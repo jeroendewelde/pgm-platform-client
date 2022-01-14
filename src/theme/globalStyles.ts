@@ -27,11 +27,11 @@ const GlobalStyle = createGlobalStyle`
     margin-bottom: 2rem;
   }
   h2 {
-    font-size: ${(props) => props.theme.fontSizes.medium};
+    font-size: ${(props) => props.theme.fontSizes.emedium};
     line-height: 1.2;
     color: ${(props) => props.theme.colors.white};
     @media (min-width: ${(props) => props.theme.width.medium}) {
-      font-size: ${(props) => props.theme.fontSizes.emedium};
+      font-size: ${(props) => props.theme.fontSizes.large};
     }
   }
   ul {

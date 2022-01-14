@@ -6,8 +6,12 @@ const Map = styled.div`
   top: 4rem;
   left: 0;
   width: 100%;
-  height: 80%;
   position: absolute;
+  height: 50vh;
+
+  @media (min-width: ${(props) => props.theme.width.small}) {
+    height: 80vh;
+  }
 
   .marker-popup {
     p {

@@ -1,6 +1,6 @@
 import Head from "next/head";
 import React from "react";
-import { MapBox } from "../components/Contact";
+import { ContactInfo, MapBox } from "../components/Contact";
 
 const contact = () => {
   return (
@@ -12,6 +12,7 @@ const contact = () => {
         />
       </Head>
       <MapBox />
+      <ContactInfo />
     </>
   );
 };
