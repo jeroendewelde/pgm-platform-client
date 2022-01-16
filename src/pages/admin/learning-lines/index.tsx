@@ -11,11 +11,11 @@ import {
 import BasicContainer from "../../../components/Admin/style/BasicContainer";
 import Dashboard from "../../../components/Admin/Dashboard";
 import DataGridContent from "../../../components/Admin/DataGridContent";
+import NavigationButton from "../../../components/Admin/NavigationButton";
+import CustomLoading from "../../../components/Admin/style/CustomLoading";
 
 // Variabels
 import { tableColumns } from "../../../utils/constants";
-import NavigationButton from "../../../components/Admin/NavigationButton";
-import CustomLoading from "../../../components/Admin/style/CustomLoading";
 
 export default function LearningLinesPage(): ReactElement {
   const { data, error, loading } = useQuery(GET_ALL_LEARNING_LINES, {

@@ -17,10 +17,10 @@ import CustomLoading from "./style/CustomLoading";
 import { EditButton, DeleteButton } from "./Datagrid/Buttons";
 
 interface DataGridContentProps {
-  deleteQuery: DocumentNode;
-  fetchAllQuery: DocumentNode;
   data: any[];
   info: any[];
+  deleteQuery: DocumentNode;
+  fetchAllQuery: DocumentNode;
 }
 
 export default function DataGridContent({

@@ -56,7 +56,6 @@ export const DELETE_SPECIALISATION = gql`
   mutation deleteSpecialisation($id: Int!) {
     removeSpecialisation(id: $id) {
       name
-      academicYear
     }
   }
 `;

@@ -11,13 +11,12 @@ import { Button } from "@mui/material";
 import { TextField } from "formik-mui";
 
 // Queries
+import { useMutation } from "@apollo/client";
 import { CREATE_LEARNING_LINE } from "../../../../graphql/learningLines";
-import client from "../../../../apollo-client";
 
 // Custom Components
 import BasicContainer from "../../../components/Admin/style/BasicContainer";
 import Dashboard from "../../../components/Admin/Dashboard";
-import { useMutation } from "@apollo/client";
 
 const validationSchema = yup.object({
   name: yup.string().required("Naam is verplicht"),
@@ -50,7 +49,6 @@ export default function createLearningLine(): ReactElement {
             validationSchema={validationSchema}
             onSubmit={(values, { setSubmitting }) => {
               setSubmitting(true);
-
               addLearningLine({
                 variables: {
                   input: {

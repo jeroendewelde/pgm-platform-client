@@ -35,50 +35,50 @@ const colors = {
 const tableColumns = {
   companies: [
     {
-      dataName: "id",
-      colName: "id",
+      field: "id",
+      headerName: "id",
     },
     {
-      dataName: "name",
-      colName: "name",
+      field: "name",
+      headerName: "name",
     },
     // {
     //   dataName: 'teaserImage',
-    //   colName: 'teaserImage',
+    //   headerName: 'teaserImage',
     // }
   ],
   courses: [
     {
       dataName: "id",
-      colName: "id",
+      headerName: "id",
     },
     {
       dataName: "name",
-      colName: "naam",
+      headerName: "naam",
     },
     {
       dataName: "description",
-      colName: "beschrijving",
+      headerName: "beschrijving",
     },
     {
       dataName: "term",
-      colName: "periode",
+      headerName: "periode",
     },
     {
       dataName: "academicYear",
-      colName: "academiejaar",
+      headerName: "academiejaar",
     },
     {
       dataName: "learningLineId",
-      colName: "leerlijn ID",
+      headerName: "leerlijn ID",
     },
     // {
     //   dataName: 'learningLine["name"]',
-    //   colName: 'leerlijn'
+    //   headerName: 'leerlijn'
     // },
     {
       dataName: "specialisationId",
-      colName: "specialisatie ID",
+      headerName: "specialisatie ID",
     },
   ],
   learningLines: [
@@ -97,74 +97,74 @@ const tableColumns = {
   ],
   persons: [
     {
-      dataName: "id",
-      colName: "id",
+      field: "id",
+      headerName: "id",
     },
     {
-      dataName: "firstName",
-      colName: "voornaam",
+      field: "firstName",
+      headerName: "voornaam",
     },
     {
-      dataName: "lastName",
-      colName: "familienaam",
+      field: "lastName",
+      headerName: "familienaam",
     },
     {
-      dataName: "type",
-      colName: "type",
+      field: "type",
+      headerName: "type",
     },
   ],
   students: [
     {
-      dataName: "id",
-      colName: "id",
+      field: "id",
+      headerName: "id",
     },
     {
-      dataName: "firstName",
-      colName: "voornaam",
+      field: "firstName",
+      headerName: "voornaam",
     },
     {
-      dataName: "lastName",
-      colName: "familienaam",
+      field: "lastName",
+      headerName: "familienaam",
     },
     {
-      dataName: "type",
-      colName: "type",
+      field: "type",
+      headerName: "type",
     },
     {
-      dataName: "generationId",
-      colName: "generation ID",
+      field: "generationId",
+      headerName: "generation ID",
     },
   ],
   teachers: [
     {
-      dataName: "id",
-      colName: "id",
+      field: "id",
+      headerName: "id",
     },
     {
-      dataName: "firstName",
-      colName: "voornaam",
+      field: "firstName",
+      headerName: "voornaam",
     },
     {
-      dataName: "lastName",
-      colName: "familienaam",
+      field: "lastName",
+      headerName: "familienaam",
     },
     {
-      dataName: "type",
-      colName: "type",
+      field: "type",
+      headerName: "type",
     },
   ],
   specialisations: [
     {
-      dataName: "id",
-      colName: "id",
+      field: "id",
+      headerName: "id",
     },
     {
-      dataName: "name",
-      colName: "naam",
+      field: "name",
+      headerName: "naam",
     },
     {
-      dataName: "academicYear",
-      colName: "academiejaren",
+      field: "academicYear",
+      headerName: "academiejaren",
     },
   ],
 };

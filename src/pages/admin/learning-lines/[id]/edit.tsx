@@ -11,12 +11,12 @@ import { TextField } from "formik-mui";
 
 // Queries
 import {
-  DELETE_SPECIALISATION,
-  GET_SPECIALISATION_BY_ID,
-  UPDATE_SPECIALISATION,
-} from "../../../../../graphql/specialisations";
+  DELETE_LEARNING_LINE,
+  GET_LEARNING_LINE_BY_ID,
+  UPDATE_LEARNING_LINE,
+} from "../../../../../graphql/learningLines";
 import { useMutation, useQuery } from "@apollo/client";
-import { Specialisation } from "../../../../../interfaces";
+import { LearningLine } from "../../../../../interfaces";
 
 // Custom Components
 import BasicContainer from "../../../../components/Admin/style/BasicContainer";
@@ -28,26 +28,26 @@ import { colors } from "../../../../utils/constants";
 
 const validationSchema = yup.object({
   name: yup.string().required("Naam is verplicht"),
-  academicYear: yup
+  color: yup
     .string()
     .matches(
-      /20[0-9]{2}-20[0-9]{2}/,
-      "De duurtijd moet in het formaat 2019-2021 zijn"
+      /(^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$)/,
+      "Kleur moet een hexadecimaal getal zijn, bv. #FFFFFF"
     )
-    .required("Academiejaren is verplicht"),
+    .required("Kleur is verplicht"),
 });
 
-export default function editSpecialisation(): ReactElement {
+export default function editLearningLine(): ReactElement {
   const router = useRouter();
   const { id } = router.query;
   const adminPath = router.pathname.split("/admin/")[1].split("/")[0];
-  const [specialisation, setSpecialisation] = useState<Specialisation>();
+  const [learningLine, setLearningLine] = useState<LearningLine>();
 
   const {
     data: dataGet,
     error: errorGet,
     loading: loadingGet,
-  } = useQuery(GET_SPECIALISATION_BY_ID, {
+  } = useQuery(GET_LEARNING_LINE_BY_ID, {
     variables: {
       id: Number(id),
     },
@@ -56,23 +56,22 @@ export default function editSpecialisation(): ReactElement {
 
   useEffect(() => {
     if (dataGet) {
-      setSpecialisation(dataGet.specialisation);
+      setLearningLine(dataGet.learningLine);
     }
   }, [dataGet]);
 
   const [
-    updateSpecialisation,
+    updateLearningLine,
     { data: dataUpdate, loading: loadingUpdate, error: errorUpdate },
-  ] = useMutation(UPDATE_SPECIALISATION, {
+  ] = useMutation(UPDATE_LEARNING_LINE, {
     notifyOnNetworkStatusChange: true,
   });
 
-  const [deleteSpecialisation, { data, loading, error }] = useMutation(
-    DELETE_SPECIALISATION
-  );
+  const [deleteLearningLine, { data, loading, error }] =
+    useMutation(DELETE_LEARNING_LINE);
 
   const handleDelete = () => {
-    deleteSpecialisation({
+    deleteLearningLine({
       variables: {
         id: Number(id),
       },
@@ -88,28 +87,26 @@ export default function editSpecialisation(): ReactElement {
             maxWidth: "lg",
           }}
         >
-          {!specialisation ? (
+          {!learningLine ? (
             <CustomLoading />
           ) : (
             <>
               <Formik
                 initialValues={{
-                  name: specialisation?.name ? specialisation?.name : "",
-                  academicYear: specialisation?.academicYear
-                    ? specialisation?.academicYear
-                    : "",
+                  name: learningLine?.name ? learningLine?.name : "",
+                  color: learningLine?.color ? learningLine?.color : "",
                 }}
                 validationSchema={validationSchema}
                 onSubmit={(values, { setSubmitting }) => {
                   setSubmitting(true);
 
-                  updateSpecialisation({
+                  updateLearningLine({
                     variables: {
                       input: {
                         name: values.name,
-                        academicYear: values.academicYear,
+                        color: values.color,
                       },
-                      id: specialisation?.id,
+                      id: learningLine?.id,
                     },
                   }).then(() => {
                     window.location.href = `/admin/${adminPath}`;
@@ -125,8 +122,8 @@ export default function editSpecialisation(): ReactElement {
                         name="name"
                         type="text"
                         label="Naam"
-                        value={values.name ? values.name : specialisation?.name}
-                        helperText="Naam van de afstudeerrichting"
+                        value={values.name ? values.name : learningLine?.name}
+                        helperText="Naam van de leerlijn"
                         multiline
                         maxRows={2}
                         sx={{
@@ -139,15 +136,13 @@ export default function editSpecialisation(): ReactElement {
                       <Field
                         required
                         component={TextField}
-                        name="academicYear"
+                        name="color"
                         type="text"
-                        label="Academiejaren"
-                        helperText="Academiejaren in formaat 2019-2021"
+                        label="Kleur"
                         value={
-                          values.name
-                            ? values.academicYear
-                            : specialisation?.academicYear
+                          values.color ? values.color : learningLine?.color
                         }
+                        helperText="Kleur van de leerlijn"
                         // fullWidth
                       />
                     </Box>
@@ -189,7 +184,6 @@ export default function editSpecialisation(): ReactElement {
                         </Button>
                       </Box>
                     </Box>
-
                     <pre>{JSON.stringify(values, null, 2)}</pre>
                   </Form>
                 )}

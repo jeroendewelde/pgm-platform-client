@@ -18,6 +18,16 @@ export const GET_ALL_LEARNING_LINES = gql`
   }
 `;
 
+export const GET_LEARNING_LINE_BY_ID = gql`
+  query getLearningLineById($id: Int!) {
+    learningLine(id: $id) {
+      id
+      name
+      color
+    }
+  }
+`;
+
 /**
  * Mutations
  */
@@ -32,11 +42,20 @@ export const CREATE_LEARNING_LINE = gql`
   }
 `;
 
+export const UPDATE_LEARNING_LINE = gql`
+  mutation updateLearningLine($input: UpdateLearningLineInput!, $id: Int!) {
+    updateLearningLine(updateLearningLineInput: $input, id: $id) {
+      id
+      name
+      color
+    }
+  }
+`;
+
 export const DELETE_LEARNING_LINE = gql`
   mutation deleteLearningLine($id: Int!) {
     removeLearningLine(id: $id) {
       name
-      color
     }
   }
 `;
