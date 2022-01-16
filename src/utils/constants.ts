@@ -1,4 +1,9 @@
-import { DELETE_LEARNING_LINE } from "../../graphql/learningLines";
+import { GET_ALL_COURSES } from "../../graphql/attachments";
+import { DELETE_COURSE } from "../../graphql/courses";
+import {
+  DELETE_LEARNING_LINE,
+  GET_ALL_LEARNING_LINES,
+} from "../../graphql/learningLines";
 import {
   DELETE_SPECIALISATION,
   GET_ALL_SPECIALISATIONS,
@@ -78,16 +83,16 @@ const tableColumns = {
   ],
   learningLines: [
     {
-      dataName: "id",
-      colName: "id",
+      field: "id",
+      headerName: "id",
     },
     {
-      dataName: "name",
-      colName: "naam",
+      field: "name",
+      headerName: "naam",
     },
     {
-      dataName: "color",
-      colName: "kleur",
+      field: "color",
+      headerName: "kleur",
     },
   ],
   persons: [
@@ -166,11 +171,14 @@ const tableColumns = {
 
 let deleteQueries: { [key: string]: any } = {
   specialisations: DELETE_SPECIALISATION,
+  courses: DELETE_COURSE,
 };
 
 deleteQueries["learning-lines"] = DELETE_LEARNING_LINE;
 
 let fetchQueries: { [key: string]: any } = {
   specialisations: GET_ALL_SPECIALISATIONS,
+  courses: GET_ALL_COURSES,
 };
+fetchQueries["learning-lines"] = GET_ALL_LEARNING_LINES;
 export { colors, deleteQueries, fetchQueries, tableColumns };

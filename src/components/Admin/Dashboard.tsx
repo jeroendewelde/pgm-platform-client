@@ -21,7 +21,6 @@ import { ChevronLeft, ChevronRight, Menu } from "@mui/icons-material";
 import { colors } from "../../utils/constants";
 import ArteveldeIcon from "./style/ArteveldeIcon";
 import MenuList from "./MenuList";
-import DataGridContent from "./DataGridContent";
 
 // Global Variables
 const drawerWidth = 240;
@@ -194,7 +193,6 @@ export default function Dashboard({ title, children }: Props): ReactElement {
           >
             {title}
           </Typography>
-          {/* <DataGridContent data={data} info={info} /> */}
           {children}
         </Box>
       </Box>

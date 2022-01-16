@@ -20,7 +20,7 @@ import client from "../../../../apollo-client";
 // Custom Components
 import BasicContainer from "../../../components/Admin/style/BasicContainer";
 import Dashboard from "../../../components/Admin/Dashboard";
-import { CREATE_COURSE } from "../../../../graphql/courses";
+import { CREATE_COURSE, GET_ALL_COURSES } from "../../../../graphql/courses";
 import { GET_ALL_SPECIALISATIONS } from "../../../../graphql/specialisations";
 import { LearningLine, Specialisation } from "../../../../interfaces";
 import CustomSingleSelect from "../../../components/Admin/Form/CustomSingleSelect";
@@ -89,11 +89,16 @@ export default function createCourse({
                     tags: values.tags,
                     learningLineId: values.learningLineId,
                     specialisationId: values.specialisationId,
-                    fieldExperiences: values.fieldExperiences,
+                    // fieldExperiences: values.fieldExperiences,
                     // attachments: values.attachments,
                     // teachers: values.teachers,
                   },
                 },
+                // refetchQueries: [
+                //   {
+                //     query: GET_ALL_COURSES,
+                //   },
+                // ],
               });
 
               if (responseQuery) {

@@ -29,9 +29,7 @@ const validationSchema = yup.object({
     .required("Academiejaren is verplicht"),
 });
 
-interface createLearningLineProps {}
-
-export default function createLearningLine({}: createLearningLineProps): ReactElement {
+export default function createLearningLine(): ReactElement {
   const [addSpecialisation, { data, loading, error }] = useMutation(
     CREATE_SPECIALISATION
   );

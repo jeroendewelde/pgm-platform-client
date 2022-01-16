@@ -27,10 +27,10 @@ export interface Course {
   academicYear: string;
   tags: string[];
   // Relations
-  learningLineId: number
-  specialisationId: number
-  learningLine: LearningLine
-  specialisation: Specialisation
+  learningLineId: number;
+  specialisationId: number;
+  learningLine: LearningLine;
+  specialisation: Specialisation;
 }
 
 export interface FieldExperience {
@@ -165,3 +165,6 @@ export enum AttachmentType {
 /**
  * GraphQL returns
  */
+export interface LearningLinesData {
+  learningLines: LearningLine[];
+}
