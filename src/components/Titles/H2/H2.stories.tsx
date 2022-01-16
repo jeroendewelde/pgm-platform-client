@@ -10,7 +10,7 @@ const meta: Meta = {
   argTypes: {
     children: {
       name: "Title",
-      defaultValue: "Course Title",
+      defaultValue: "Hoofdtekst 2",
       type: "string",
       description: "The text to display as the title",
       control: "text",

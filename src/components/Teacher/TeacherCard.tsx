@@ -10,10 +10,10 @@ import teacher from "../../assets/test/teacher.png";
 const SuperContainer = styled.div`
   max-width: 50rem;
   transition: ${(props) => props.theme.transition.normal};
-
+  /* 
   &:hover {
     transform: scale(1.05);
-  }
+  } */
 
   &:hover .hidden {
     transform: translateX(0);
