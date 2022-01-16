@@ -5,12 +5,20 @@ import styled from "styled-components";
 
 import teacher from "../../assets/test/teacher.png";
 
-const Container = styled.div`
-  width: 15rem;
+const Container = styled.li`
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  margin: 0 0.5rem;
+  width: 7rem;
+  margin-bottom: 3rem;
+
+  @media (min-width: ${(props) => props.theme.width.small}) {
+    margin: 0 1rem;
+    width: 10rem;
+    margin-bottom: 3rem;
+  }
 
   .name {
     font-family: ${(props) => props.theme.fontFamilies.primary};
@@ -23,13 +31,18 @@ const Container = styled.div`
 
 const ImageContainer = styled.div`
   position: relative;
-  width: 15rem;
-  height: 15rem;
+  width: 7rem;
+  height: 7rem;
   border: 2px solid ${(props) => props.theme.colors.purple};
   background-color: ${(props) =>
     transparentize(0.5, props.theme.colors.bg_gradient_color_2)};
   border-radius: 50%;
   overflow: hidden;
+
+  @media (min-width: ${(props) => props.theme.width.small}) {
+    width: 10rem;
+    height: 10rem;
+  }
 `;
 
 export interface StudentCardProps {

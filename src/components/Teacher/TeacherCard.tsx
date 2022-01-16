@@ -178,44 +178,42 @@ export interface TeacherCardProps {
 const TeacherCard = ({ name, socialMedia, bio, url }: TeacherCardProps) => {
   return (
     <Link href={url}>
-      <a className="Card">
-        <SuperContainer>
-          <Container>
-            <FlexContainer>
-              <TeacherInfo>
-                <span className="name">{name}</span>
-                <ul>
-                  {socialMedia.map((media) => (
-                    <li key={media.name}>
-                      <Link href={media.url}>
-                        <a>{media.name}</a>
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
+      <SuperContainer>
+        <Container>
+          <FlexContainer>
+            <TeacherInfo>
+              <span className="name">{name}</span>
+              <ul>
+                {socialMedia.map((media) => (
+                  <li key={media.name}>
+                    <Link href={media.url}>
+                      <a>{media.name}</a>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
 
-                <div className="hidden">
-                  <span>Ontdek meer over {name}</span>
-                  <span className="icon">
-                    <CgChevronRightO />
-                  </span>
-                </div>
-              </TeacherInfo>
-              <ImageContainer>
-                <Image
-                  src={teacher}
-                  layout="fill"
-                  alt="teacher"
-                  objectFit="contain"
-                />
-              </ImageContainer>
-            </FlexContainer>
-          </Container>
-          <Bio>
-            <p>{bio}</p>
-          </Bio>
-        </SuperContainer>
-      </a>
+              <div className="hidden">
+                <span>Ontdek meer over {name}</span>
+                <span className="icon">
+                  <CgChevronRightO />
+                </span>
+              </div>
+            </TeacherInfo>
+            <ImageContainer>
+              <Image
+                src={teacher}
+                layout="fill"
+                alt="teacher"
+                objectFit="contain"
+              />
+            </ImageContainer>
+          </FlexContainer>
+        </Container>
+        <Bio>
+          <p>{bio}</p>
+        </Bio>
+      </SuperContainer>
     </Link>
   );
 };
