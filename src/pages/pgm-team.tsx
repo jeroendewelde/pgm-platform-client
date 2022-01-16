@@ -2,31 +2,56 @@ import React from "react";
 import styled from "styled-components";
 
 import { Swiper, SwiperSlide } from "swiper/react";
-import SwiperCore, { Navigation, Autoplay } from "swiper";
+import SwiperCore, {
+  Navigation,
+  Autoplay,
+  EffectCoverflow,
+  Pagination,
+} from "swiper";
 import "swiper/swiper-bundle.min.css";
 import "swiper/swiper.min.css";
+
+SwiperCore.use([EffectCoverflow, Pagination, Navigation, Autoplay]);
 
 import { StudentCard } from "../components/Student";
 import { TeacherCard } from "../components/Teacher";
 import { GlitchTitle } from "../components/Titles/GlitchTitle";
+import { transparentize } from "polished";
 
 const SwiperContainer = styled.div`
   margin: 0 auto;
   margin-bottom: 5rem;
 
-  max-width: 50rem;
+  max-width: 100rem;
   width: 100%;
+
+  .swiper-slide {
+    filter: blur(4px);
+    background-color: ${(props) =>
+      transparentize(0.7, props.theme.colors.purple)};
+  }
+
+  .swiper-slide-active {
+    filter: blur(0);
+    background: transparent;
+  }
+
+  .swiper-slide,
+  .swiper-slide-active {
+    max-width: 50rem;
+  }
 
   .swiper-button-next,
   .swiper-button-prev {
     color: ${(props) => props.theme.colors.red};
-    bottom: 0;
-    left: calc(50% + 1rem);
+    background-color: ${(props) => transparentize(0.7, props.theme.colors.red)};
+    transform: translateY(50%);
+    bottom: 50%;
+    right: 1rem;
     top: auto;
-    transform: translateY(-50%);
     border: 2px solid ${(props) => props.theme.colors.red};
-    height: 2rem;
-    width: 2rem;
+    height: 4rem;
+    width: 4rem;
     padding: 0.5rem;
     border-radius: 50%;
     display: flex;
@@ -39,11 +64,12 @@ const SwiperContainer = styled.div`
       font-size: ${(props) => props.theme.fontSizes.normal};
       font-weight: ${(props) => props.theme.fontWeights.bold};
     }
+    z-index: 5;
   }
 
   .swiper-button-prev {
-    left: auto;
-    right: calc(50% + 1rem);
+    right: auto;
+    left: 1rem;
   }
 `;
 
@@ -55,13 +81,22 @@ const PgmTeam = () => {
         <Swiper
           autoplay={{
             delay: 10000,
-            disableOnInteraction: false,
+            disableOnInteraction: true,
+          }}
+          effect={"coverflow"}
+          grabCursor={true}
+          centeredSlides={true}
+          slidesPerView={"auto"}
+          coverflowEffect={{
+            rotate: 0,
+            stretch: 0,
+            depth: 100,
+            modifier: 2,
+            slideShadows: true,
           }}
           navigation={true}
-          spaceBetween={50}
-          slidesPerView={1}
-          onSlideChange={() => console.log("slide change")}
-          onSwiper={(swiper) => console.log(swiper)}
+          loop={true}
+          className="mySwiper"
         >
           <SwiperSlide>
             <TeacherCard

@@ -9,6 +9,7 @@ import teacher from "../../assets/test/teacher.png";
 
 const SuperContainer = styled.div`
   max-width: 50rem;
+  margin: 0 auto;
   transition: ${(props) => props.theme.transition.normal};
   /* 
   &:hover {
@@ -16,8 +17,10 @@ const SuperContainer = styled.div`
   } */
 
   &:hover .hidden {
-    transform: translateX(0);
-    opacity: 1;
+    @media (min-width: ${(props) => props.theme.width.esmall}) {
+      transform: translateX(0);
+      opacity: 1;
+    }
   }
 `;
 
@@ -30,6 +33,12 @@ const FlexContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  background-color: ${(props) =>
+    transparentize(0.4, props.theme.colors.purple)};
+  padding: 1rem;
+  padding-bottom: 0;
 
   @media (min-width: ${(props) => props.theme.width.esmall}) {
     flex-direction: row;
@@ -44,7 +53,7 @@ const TeacherInfo = styled.div`
     font-weight: ${(props) => props.theme.fontWeights.bold};
     display: block;
     font-size: ${(props) => props.theme.fontSizes.emedium};
-    color: ${(props) => props.theme.colors.turquoise};
+    color: ${(props) => props.theme.colors.white};
 
     @media (min-width: ${(props) => props.theme.width.esmall}) {
       font-size: ${(props) => props.theme.fontSizes.large};
@@ -58,10 +67,14 @@ const TeacherInfo = styled.div`
   }
 
   ul {
-    margin-top: 2rem;
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
+    display: none;
+
+    @media (min-width: ${(props) => props.theme.width.esmall}) {
+      margin-top: 2rem;
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+    }
 
     li {
       a {
@@ -90,12 +103,19 @@ const TeacherInfo = styled.div`
   }
 
   .hidden {
+    display: none;
     margin-top: 1.5rem;
+    position: absolute;
     opacity: 0;
     display: flex;
     align-items: center;
     transform: translateX(-100%);
     transition: ${(props) => props.theme.transition.normal};
+
+    @media (min-width: ${(props) => props.theme.width.esmall}) {
+      position: relative;
+      display: flex;
+    }
 
     span {
       font-size: ${(props) => props.theme.fontSizes.medium};
@@ -125,10 +145,15 @@ const ImageContainer = styled.div`
 
 const Bio = styled.div`
   padding: 1rem;
-  background-color: ${(props) => transparentize(0.7, props.theme.colors.white)};
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  background-color: ${(props) => transparentize(0.5, props.theme.colors.black)};
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   border-bottom: 3px solid ${(props) => props.theme.colors.turquoise};
+  display: none;
+
+  @media (min-width: ${(props) => props.theme.width.esmall}) {
+    display: block;
+  }
 
   p {
     color: ${(props) => props.theme.colors.white};
