@@ -9,7 +9,7 @@ const Container = styled.section`
   margin-top: calc(50vh + 2rem);
 
   @media (min-width: ${(props) => props.theme.width.small}) {
-    margin-top: calc(80vh + 4rem);
+    margin-top: 80vh;
   }
 `;
 
