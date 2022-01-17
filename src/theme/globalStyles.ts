@@ -29,9 +29,12 @@ const GlobalStyle = createGlobalStyle`
 
 
   h2 {
-    font-size: ${(props) => props.theme.fontSizes.emedium};
+    font-size: ${(props) => props.theme.fontSizes.medium};
     line-height: 1.2;
     //color: ${(props) => props.theme.colors.white};
+    @media (min-width: ${(props) => props.theme.width.esmall}) {
+      font-size: ${(props) => props.theme.fontSizes.emedium};
+    }
     @media (min-width: ${(props) => props.theme.width.medium}) {
       font-size: ${(props) => props.theme.fontSizes.large};
     }

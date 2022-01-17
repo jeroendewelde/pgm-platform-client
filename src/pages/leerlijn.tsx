@@ -82,6 +82,49 @@ const Container = styled.div`
     }
   }
 
+  .elective-course {
+    padding-left: 1rem;
+
+    @media (min-width: ${(props) => props.theme.width.small}) {
+      padding-left: 3rem;
+    }
+
+    &::before {
+      z-index: -1;
+      position: absolute;
+      top: 5rem;
+      bottom: 0;
+      left: 0px;
+      display: block;
+      width: 2px;
+      content: "";
+      background-color: ${(props) => props.theme.colors.turquoise};
+      box-shadow: 0 0 10px ${(props) => props.theme.colors.turquoise},
+        0 0 20px ${(props) => props.theme.colors.turquoise};
+      @media (min-width: ${(props) => props.theme.width.small}) {
+        left: 20px;
+      }
+      @media (min-width: ${(props) => props.theme.width.medium}) {
+        left: 40px;
+      }
+    }
+
+    .beginLine {
+      background-color: red;
+
+      svg {
+        border: 5px solid ${(props) => props.theme.colors.turquoise};
+      }
+
+      path {
+        fill: none;
+        stroke: black;
+        stroke-width: 5px;
+        vector-effect: non-scaling-stroke;
+      }
+    }
+  }
+
   .last {
     &::after {
       @media (min-width: ${(props) => props.theme.width.medium}) {
@@ -143,6 +186,27 @@ const LeerlijnPage = () => {
       <Container>
         <ul className="courseList">
           <ListItem />
+          <ListItem />
+          <ListItem />
+          <ListItem />
+        </ul>
+        <ul className="courseList elective-course">
+          <span className="beginLine">
+            <svg viewBox="0 39 100 28">
+              <path
+                d="
+    M 0, 40
+    L 20, 40
+    Q 25, 41
+      25, 47
+    L 25, 60
+    Q 25, 66
+      32, 66
+    L 100, 66
+  "
+              ></path>
+            </svg>
+          </span>
           <ListItem />
           <ListItem />
         </ul>

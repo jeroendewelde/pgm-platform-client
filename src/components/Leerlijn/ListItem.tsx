@@ -16,11 +16,13 @@ const CourseListItem = styled.div`
   @media (min-width: ${(props) => props.theme.width.esmall}) {
     margin-left: 1rem;
     padding-right: 1rem;
+    margin-bottom: 5rem;
   }
 
   @media (min-width: ${(props) => props.theme.width.medium}) {
     margin-left: 4rem;
     padding-right: 4rem;
+    margin-bottom: 8rem;
   }
 
   .bullet {
