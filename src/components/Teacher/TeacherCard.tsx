@@ -11,6 +11,7 @@ const SuperContainer = styled.div`
   max-width: 50rem;
   margin: 0 auto;
   transition: ${(props) => props.theme.transition.normal};
+  overflow: hidden;
   /* 
   &:hover {
     transform: scale(1.05);

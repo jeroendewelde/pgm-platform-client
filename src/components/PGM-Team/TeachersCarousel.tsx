@@ -22,11 +22,13 @@ const SwiperContainer = styled.div`
     filter: blur(4px);
     background-color: ${(props) =>
       transparentize(0.7, props.theme.colors.purple)};
+    pointer-events: none;
   }
 
   .swiper-slide-active {
     filter: blur(0);
     background: transparent;
+    pointer-events: all;
   }
 
   .swiper-slide,
@@ -36,7 +38,7 @@ const SwiperContainer = styled.div`
 
   .swiper-button-next,
   .swiper-button-prev {
-    color: ${(props) => props.theme.colors.red};
+    color: ${(props) => props.theme.colors.white};
     background-color: ${(props) => transparentize(0.7, props.theme.colors.red)};
     transform: translateY(50%);
     bottom: 50%;
