@@ -14,6 +14,7 @@ const Container = styled.div`
 `;
 
 const TitleStyle = styled.h2`
+  margin: 0;
   font-family: ${(props) => props.theme.fontFamilies.primary};
   font-weight: ${(props) => props.theme.fontWeights.bold};
 `;

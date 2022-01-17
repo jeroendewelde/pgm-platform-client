@@ -14,8 +14,10 @@ const Container = styled.div`
 `;
 
 const CourseTitleStyle = styled.h2<CourseTitleProps>`
+  margin: 0;
   padding-left: 0.5rem;
   margin-right: 1.5rem;
+  font-weight: ${(props) => props.theme.fontWeights.bold};
 
   background: ${({ learningLine }) => {
     if (learningLine === "blue") {

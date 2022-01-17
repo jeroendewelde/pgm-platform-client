@@ -14,6 +14,7 @@ const Container = styled.section`
 `;
 
 const FlexContainer = styled.div`
+  margin-bottom: 2rem;
   display: flex;
   flex-direction: column;
 
@@ -125,7 +126,9 @@ const ImageContainer = styled.div`
 const ContactInfo = () => {
   return (
     <Container>
-      <GlitchTitle>Contact</GlitchTitle>
+      <div className="h1_padding">
+        <GlitchTitle>Contact</GlitchTitle>
+      </div>
       <FlexContainer>
         <Content>
           <p>
@@ -155,7 +158,9 @@ const ContactInfo = () => {
         </AddressInfo>
       </FlexContainer>
       <div>
-        <H2>Campus Mariakerke</H2>
+        <div className="h2_padding">
+          <H2>Campus Mariakerke</H2>
+        </div>
         <CampusInfo>
           <ImageContainer>
             <Image

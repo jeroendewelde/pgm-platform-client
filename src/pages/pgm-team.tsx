@@ -5,25 +5,37 @@ import { StudentCarousel, TeachersCarousel } from "../components/PGM-Team";
 import { GlitchTitle } from "../components/Titles/GlitchTitle";
 import { H2 } from "../components/Titles/H2";
 
+const Container = styled.div``;
+
 const PgmTeam = () => {
   return (
-    <>
-      <GlitchTitle>Docenten</GlitchTitle>
+    <Container>
+      <div className="h1_padding">
+        <GlitchTitle>Docenten</GlitchTitle>
+      </div>
       <TeachersCarousel />
-      <GlitchTitle>Studenten</GlitchTitle>
+      <div className="h1_padding">
+        <GlitchTitle>Studenten</GlitchTitle>
+      </div>
       <>
-        <H2>2021 - 2022</H2>
+        <div className="h2_padding">
+          <H2>2021 - 2022</H2>
+        </div>
         <StudentCarousel />
       </>
       <>
-        <H2>2020 - 2021</H2>
+        <div className="h2_padding">
+          <H2>2020 - 2021</H2>
+        </div>
         <StudentCarousel />
       </>
       <>
-        <H2>2019 - 2020</H2>
+        <div className="h2_padding">
+          <H2>2019 - 2020</H2>
+        </div>
         <StudentCarousel />
       </>
-    </>
+    </Container>
   );
 };
 

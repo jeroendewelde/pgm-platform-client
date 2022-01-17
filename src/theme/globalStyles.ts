@@ -15,7 +15,7 @@ const GlobalStyle = createGlobalStyle`
     background: linear-gradient(34deg, rgba(3,7,18,1) 51%, rgba(19,16,41,1) 100%);
   }
   h1, .GlitchTitle {
-    color: ${(props) => props.theme.colors.white};
+    //color: ${(props) => props.theme.colors.white};
     text-transform: uppercase;
     font-family: 'Prompt', sans-serif;
     font-size: ${(props) => props.theme.fontSizes.emedium};
@@ -26,10 +26,12 @@ const GlobalStyle = createGlobalStyle`
     font-weight: ${(props) => props.theme.fontWeights.bold};
     margin-bottom: 2rem;
   }
+
+
   h2 {
     font-size: ${(props) => props.theme.fontSizes.emedium};
     line-height: 1.2;
-    color: ${(props) => props.theme.colors.white};
+    //color: ${(props) => props.theme.colors.white};
     @media (min-width: ${(props) => props.theme.width.medium}) {
       font-size: ${(props) => props.theme.fontSizes.large};
     }
@@ -60,6 +62,22 @@ const GlobalStyle = createGlobalStyle`
     font-family: 'Poppins';
     font-size: ${(props) => props.theme.fontSizes.small};
     padding-bottom: 1rem;
+  }
+
+  .h1_padding {
+    padding-bottom: 2rem;
+
+    @media (min-width: ${(props) => props.theme.width.small}) {
+      padding-bottom: 3rem;
+    }
+  }
+
+  .h2_padding {
+    padding-bottom: 1rem;
+
+    @media (min-width: ${(props) => props.theme.width.small}) {
+      padding-bottom: 2rem;
+    }
   }
 
   @media (prefers-reduced-motion: reduce) {

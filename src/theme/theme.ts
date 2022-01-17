@@ -13,6 +13,7 @@ const defaultTheme: DefaultTheme = {
     green: "#5AB946",
     blue: "#00A5D9",
     turquoise: "#30D9CE",
+    yellow: "#Faed27",
 
     bg_gradient_color_1: "#030712",
     bg_gradient_color_2: "#131029",

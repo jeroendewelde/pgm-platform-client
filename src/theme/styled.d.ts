@@ -13,6 +13,7 @@ declare module "styled-components" {
       green: string;
       blue: string;
       turquoise: string;
+      yellow: string;
 
       bg_gradient_color_1: string;
       bg_gradient_color_2: string;

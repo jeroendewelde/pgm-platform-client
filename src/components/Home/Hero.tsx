@@ -72,7 +72,9 @@ const Hero = () => {
   return (
     <Container>
       <Content>
-        <GlitchTitle>Graduaat programmeren </GlitchTitle>
+        <div className="h1_padding">
+          <GlitchTitle>Graduaat programmeren </GlitchTitle>
+        </div>
         <div>
           <p>
             Droom je ervan om zelf knappe websites en coole apps te ontwikkelen
