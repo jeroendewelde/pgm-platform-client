@@ -262,11 +262,14 @@ const LeerlijnPage = () => {
         <h2>Semester 1</h2>
       </div>
       <Container>
-        <ul className="courseList last">
+        <ul className="courseList ">
           <ListItem />
           <ListItem />
           <ListItem />
         </ul>
+        <div className="titles">
+          <h2>Semester 2</h2>
+        </div>
         <span className="beginLine">
           <svg viewBox="0 0 113 142">
             <path
@@ -276,7 +279,7 @@ const LeerlijnPage = () => {
             ></path>
           </svg>
         </span>
-        <ul className="courseList elective-course">
+        <ul className="courseList elective-course last">
           <ListItem />
           <ListItem />
           <ListItem />
