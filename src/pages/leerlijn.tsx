@@ -46,6 +46,51 @@ const Container = styled.div`
   margin-left: 8.333333%;
   position: relative;
 
+  .beginLine {
+    position: absolute;
+
+    svg {
+      left: -45px;
+      top: 5rem;
+      width: 1.9rem;
+      position: relative;
+      height: 10rem;
+      margin-left: 1rem;
+
+      @media (min-width: ${(props) => props.theme.width.small}) {
+        width: 3.1rem;
+      }
+
+      @media (min-width: ${(props) => props.theme.width.medium}) {
+        width: 4.5rem;
+        top: 4rem;
+      }
+
+      path {
+        fill: none;
+        stroke: ${(props) => props.theme.colors.turquoise};
+        stroke-width: 2px;
+        vector-effect: non-scaling-stroke;
+      }
+    }
+  }
+
+  .endline {
+    transform: scale(1, -1);
+
+    svg {
+      top: 4.2rem;
+
+      @media (min-width: ${(props) => props.theme.width.small}) {
+        top: 3.4rem;
+      }
+
+      @media (min-width: ${(props) => props.theme.width.medium}) {
+        top: 2.5rem;
+      }
+    }
+  }
+
   .courseList,
   .last {
     position: relative;
@@ -84,6 +129,19 @@ const Container = styled.div`
 
   .elective-course {
     padding-left: 1rem;
+    padding-top: 6.5rem;
+
+    .bullet {
+      left: 1.8rem;
+      border: none;
+
+      @media (min-width: ${(props) => props.theme.width.small}) {
+        left: 3.1rem;
+      }
+      @media (min-width: ${(props) => props.theme.width.medium}) {
+        left: 4.4rem;
+      }
+    }
 
     @media (min-width: ${(props) => props.theme.width.small}) {
       padding-left: 3rem;
@@ -92,7 +150,7 @@ const Container = styled.div`
     &::before {
       z-index: -1;
       position: absolute;
-      top: 5rem;
+      top: 8rem;
       bottom: 0;
       left: 0px;
       display: block;
@@ -106,21 +164,6 @@ const Container = styled.div`
       }
       @media (min-width: ${(props) => props.theme.width.medium}) {
         left: 40px;
-      }
-    }
-
-    .beginLine {
-      background-color: red;
-
-      svg {
-        border: 5px solid ${(props) => props.theme.colors.turquoise};
-      }
-
-      path {
-        fill: none;
-        stroke: black;
-        stroke-width: 5px;
-        vector-effect: non-scaling-stroke;
       }
     }
   }
@@ -190,26 +233,28 @@ const LeerlijnPage = () => {
           <ListItem />
           <ListItem />
         </ul>
+        <span className="beginLine">
+          <svg viewBox="0 0 113 142">
+            <path
+              d="m1-8c0 75 108 75 108 150"
+              stroke-width="2"
+              vectorEffect="none-scaling-stroke"
+            ></path>
+          </svg>
+        </span>
         <ul className="courseList elective-course">
-          <span className="beginLine">
-            <svg viewBox="0 39 100 28">
-              <path
-                d="
-    M 0, 40
-    L 20, 40
-    Q 25, 41
-      25, 47
-    L 25, 60
-    Q 25, 66
-      32, 66
-    L 100, 66
-  "
-              ></path>
-            </svg>
-          </span>
           <ListItem />
           <ListItem />
         </ul>
+        <span className="beginLine endline">
+          <svg viewBox="0 0 113 142">
+            <path
+              d="m1-8c0 75 108 75 108 150"
+              stroke-width="2"
+              vectorEffect="none-scaling-stroke"
+            ></path>
+          </svg>
+        </span>
       </Container>
 
       <div className="titles">
@@ -222,6 +267,30 @@ const LeerlijnPage = () => {
           <ListItem />
           <ListItem />
         </ul>
+        <span className="beginLine">
+          <svg viewBox="0 0 113 142">
+            <path
+              d="m1-8c0 75 108 75 108 150"
+              stroke-width="2"
+              vectorEffect="none-scaling-stroke"
+            ></path>
+          </svg>
+        </span>
+        <ul className="courseList elective-course">
+          <ListItem />
+          <ListItem />
+          <ListItem />
+          <ListItem />
+        </ul>
+        <span className="beginLine endline">
+          <svg viewBox="0 0 113 142">
+            <path
+              d="m1-8c0 75 108 75 108 150"
+              stroke-width="2"
+              vectorEffect="none-scaling-stroke"
+            ></path>
+          </svg>
+        </span>
         <div className="last-bullet">
           <span></span>
         </div>
