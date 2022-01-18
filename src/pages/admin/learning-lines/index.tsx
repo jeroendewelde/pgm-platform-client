@@ -25,21 +25,19 @@ export default function LearningLinesPage(): ReactElement {
   return (
     <BasicContainer title="Leerlijnen">
       <Dashboard title="Leerlijnen">
-        <>
-          {loading ? (
-            <CustomLoading />
-          ) : (
-            <>
-              <NavigationButton title="nieuwe leerlijn" />
-              <DataGridContent
-                data={data.learningLines}
-                info={tableColumns.learningLines}
-                deleteQuery={DELETE_LEARNING_LINE}
-                fetchAllQuery={GET_ALL_LEARNING_LINES}
-              />
-            </>
-          )}
-        </>
+        {loading ? (
+          <CustomLoading />
+        ) : (
+          <>
+            <NavigationButton title="nieuwe leerlijn" />
+            <DataGridContent
+              data={data.learningLines}
+              info={tableColumns.learningLines}
+              deleteQuery={DELETE_LEARNING_LINE}
+              fetchAllQuery={GET_ALL_LEARNING_LINES}
+            />
+          </>
+        )}
       </Dashboard>
     </BasicContainer>
   );

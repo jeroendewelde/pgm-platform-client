@@ -37,7 +37,6 @@ export const CREATE_SPECIALISATION = gql`
     createSpecialisation(createSpecialisationInput: $input) {
       id
       name
-      academicYear
     }
   }
 `;
@@ -46,8 +45,6 @@ export const UPDATE_SPECIALISATION = gql`
   mutation updateSpecialisation($input: UpdateSpecialisationInput!, $id: Int!) {
     updateSpecialisation(updateSpecialisationInput: $input, id: $id) {
       id
-      name
-      academicYear
     }
   }
 `;

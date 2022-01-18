@@ -23,26 +23,22 @@ export default function SpecialisationsPage(): ReactElement {
   });
 
   return (
-    <>
-      <BasicContainer title="Afstudeerrichtingen">
-        <Dashboard title="Afstudeerrichtingen">
+    <BasicContainer title="Afstudeerrichtingen">
+      <Dashboard title="Afstudeerrichtingen">
+        {loading ? (
+          <CustomLoading />
+        ) : (
           <>
-            {loading ? (
-              <CustomLoading />
-            ) : (
-              <>
-                <NavigationButton title="nieuwe afstuderrichting" />
-                <DataGridContent
-                  data={data.specialisations}
-                  info={tableColumns.specialisations}
-                  deleteQuery={DELETE_SPECIALISATION}
-                  fetchAllQuery={GET_ALL_SPECIALISATIONS}
-                />
-              </>
-            )}
+            <NavigationButton title="nieuwe afstuderrichting" />
+            <DataGridContent
+              data={data.specialisations}
+              info={tableColumns.specialisations}
+              deleteQuery={DELETE_SPECIALISATION}
+              fetchAllQuery={GET_ALL_SPECIALISATIONS}
+            />
           </>
-        </Dashboard>
-      </BasicContainer>
-    </>
+        )}
+      </Dashboard>
+    </BasicContainer>
   );
 }

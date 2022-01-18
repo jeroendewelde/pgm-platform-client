@@ -9,11 +9,12 @@ import { gql, useQuery, useLazyQuery } from "@apollo/client";
  */
 
 export const GET_ALL_SOCIAL_MEDIAS = gql`
-{
-  socialMedias {
-    id
-    platform
-    url
-    personId
+  {
+    socialMedias {
+      id
+      platform
+      url
+      personId
+    }
   }
-}`;
+`;

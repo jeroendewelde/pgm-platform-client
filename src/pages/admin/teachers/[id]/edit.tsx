@@ -1,82 +1,121 @@
-import React, { ReactElement, useState } from "react";
+import React, { ReactElement, useEffect, useState } from "react";
+import { useRouter } from "next/router";
 import Router from "next/router";
 
 // Formik & Yup
 import * as yup from "yup";
-import { Field, Form, Formik, FieldArray } from "formik";
+import { Field, Form, Formik } from "formik";
 
 // Material UI Components
+// import { Box, Button } from "@mui/material";
 import {
+  Box,
   Button,
   Fab,
   Typography,
   Switch,
   FormControlLabel,
 } from "@mui/material";
-import Box from "@mui/material/Box";
 import { TextField } from "formik-mui";
-import { Remove, Add } from "@material-ui/icons";
 
 // Queries
-import { useMutation, useQuery } from "@apollo/client";
-import { GET_ALL_SOCIAL_MEDIA_PLATFORMS } from "../../../../graphql/enums";
 import {
-  CREATE_FIELD_EXPERIENCE,
-  CREATE_PERSON,
-  CREATE_PERSON_INFORMATION,
-  CREATE_SOCIAL_MEDIA,
-} from "../../../../graphql/persons";
-import { FieldExperience, SocialMedia } from "../../../../interfaces";
+  DELETE_SPECIALISATION,
+  GET_SPECIALISATION_BY_ID,
+  UPDATE_SPECIALISATION,
+} from "../../../../../graphql/specialisations";
+import { useMutation, useQuery } from "@apollo/client";
+import {
+  FieldExperience,
+  Person,
+  Specialisation,
+} from "../../../../../interfaces";
 
 // Custom Components
-import BasicContainer from "../../../components/Admin/style/BasicContainer";
-import Dashboard from "../../../components/Admin/Dashboard";
-import CustomDatePicker from "../../../components/Admin/Form/CustomDatePicker";
-import CustomSingleSelectForEnum from "../../../components/Admin/Form/CustomSingleSelectForEnum";
-import CustomLoading from "../../../components/Admin/style/CustomLoading";
+import BasicContainer from "../../../../components/Admin/style/BasicContainer";
+import Dashboard from "../../../../components/Admin/Dashboard";
+import CustomLoading from "../../../../components/Admin/style/CustomLoading";
+import CustomDatePicker from "../../../../components/Admin/Form/CustomDatePicker";
+
+// Variabels
+import { colors } from "../../../../utils/constants";
+import {
+  DELETE_PERSON,
+  GET_FIELD_EXPERIENCES_BY_PERSON_ID,
+  GET_PERSON_BY_ID,
+  GET_PERSON_INFORMATION_BY_PERSON_ID,
+  UPDATE_PERSON,
+} from "../../../../../graphql/persons";
+import { Add, Remove } from "@mui/icons-material";
+import CustomSingleSelectForEnum from "../../../../components/Admin/Form/CustomSingleSelectForEnum";
 
 const validationSchema = yup.object({
   firstName: yup.string().required("Voornaam is verplicht"),
   lastName: yup.string().required("Familienaam is verplicht"),
 });
 
-export default function createLearningLine(): ReactElement {
-  const [
-    addTeacher,
-    { data: dataTeacher, loading: loadingTeacher, error: errorTeacher },
-  ] = useMutation(CREATE_PERSON);
-  const [
-    addTeacherInformation,
-    {
-      data: dataTeacherInformation,
-      loading: loadingTeacherInformation,
-      error: errorTeacherInformation,
-    },
-  ] = useMutation(CREATE_PERSON_INFORMATION);
-  const [
-    addFieldExperience,
-    {
-      data: dataFieldExperience,
-      loading: loadingFieldExperience,
-      error: errorFieldExperience,
-    },
-  ] = useMutation(CREATE_FIELD_EXPERIENCE);
-  const [
-    addSocialMedia,
-    {
-      data: dataSocialMedia,
-      loading: loadingSocialMedia,
-      error: errorSocialMedia,
-    },
-  ] = useMutation(CREATE_SOCIAL_MEDIA);
+export default function editTeacher(): ReactElement {
+  const router = useRouter();
+  const { id } = router.query;
+  const adminPath = router.pathname.split("/admin/")[1].split("/")[0];
+  const [teacher, setTeacher] = useState<Person>();
 
   const {
-    data: dataSocialMediaPlatforms,
-    error: errorSocialMediaPlatforms,
-    loading: loadingSocialMediaPlatforms,
-  } = useQuery(GET_ALL_SOCIAL_MEDIA_PLATFORMS, {
+    data: dataGet,
+    error: errorGet,
+    loading: loadingGet,
+  } = useQuery(GET_PERSON_BY_ID, {
+    variables: {
+      id: Number(id),
+    },
     ssr: true,
   });
+
+  const {
+    data: dataGetPersonInformation,
+    error: errorGetPersonInformation,
+    loading: loadingGetPersonInformation,
+  } = useQuery(GET_PERSON_INFORMATION_BY_PERSON_ID, {
+    variables: {
+      id: Number(id),
+    },
+    ssr: true,
+  });
+
+  const {
+    data: dataGetFieldExperiences,
+    error: errorGetFieldExperiences,
+    loading: loadingGetFieldExperiences,
+  } = useQuery(GET_FIELD_EXPERIENCES_BY_PERSON_ID, {
+    variables: {
+      id: Number(id),
+    },
+    ssr: true,
+  });
+
+  useEffect(() => {
+    if (dataGet) {
+      setTeacher(dataGet.person);
+    }
+  }, [dataGet]);
+
+  const [
+    updateTeacher,
+    { data: dataUpdate, loading: loadingUpdate, error: errorUpdate },
+  ] = useMutation(UPDATE_PERSON, {
+    notifyOnNetworkStatusChange: true,
+  });
+
+  const [deletePerson, { data, loading, error }] = useMutation(DELETE_PERSON);
+
+  const handleDelete = () => {
+    deletePerson({
+      variables: {
+        id: Number(id),
+      },
+      notifyOnNetworkStatusChange: true,
+    }).then(() => (window.location.href = `/admin/${adminPath}`));
+  };
 
   const [showExtraInfo, setShowExtraInfo] = useState(false);
 
@@ -89,17 +128,17 @@ export default function createLearningLine(): ReactElement {
   };
 
   return (
-    <BasicContainer title="Nieuwe Docent">
-      <Dashboard title="Nieuwe Docent">
-        {loadingSocialMediaPlatforms ? (
-          <CustomLoading />
-        ) : (
-          <>
-            <Box
-              sx={{
-                maxWidth: "lg",
-              }}
-            >
+    <BasicContainer title="Bewerk Docent">
+      <Dashboard title="Bewerk Docent">
+        <Box
+          sx={{
+            maxWidth: "lg",
+          }}
+        >
+          {!teacher ? (
+            <CustomLoading />
+          ) : (
+            <>
               <Formik
                 initialValues={{
                   firstName: "",
@@ -113,7 +152,7 @@ export default function createLearningLine(): ReactElement {
                 validationSchema={validationSchema}
                 onSubmit={(values, { setSubmitting }) => {
                   setSubmitting(true);
-                  addTeacher({
+                  updateTeacher({
                     variables: {
                       input: {
                         firstName: values.firstName,
@@ -126,55 +165,55 @@ export default function createLearningLine(): ReactElement {
                       },
                     },
                   })
-                    .then((res) => {
-                      // Add person information with person Id if it is toggled
-                      if (showExtraInfo) {
-                        addTeacherInformation({
-                          variables: {
-                            input: {
-                              personId: res.data.createPerson.id,
-                              quote: values.quote,
-                              bio: values.bio,
-                              dob: values.dob,
-                            },
-                          },
-                        }).then((res2) => {
-                          if (values.fieldExperiences.length > 0) {
-                            values.fieldExperiences.forEach(
-                              (fieldExperience: FieldExperience) => {
-                                addFieldExperience({
-                                  variables: {
-                                    input: {
-                                      personId:
-                                        res2.data.createPersonInformation.id,
-                                      company: fieldExperience.company,
-                                      function: fieldExperience.function,
-                                    },
-                                  },
-                                });
-                              }
-                            );
-                          }
+                    // .then((res) => {
+                    //   // Add person information with person Id if it is toggled
+                    //   if (showExtraInfo) {
+                    //     addTeacherInformation({
+                    //       variables: {
+                    //         input: {
+                    //           personId: res.data.createPerson.id,
+                    //           quote: values.quote,
+                    //           bio: values.bio,
+                    //           dob: values.dob,
+                    //         },
+                    //       },
+                    //     }).then((res2) => {
+                    //       if (values.fieldExperiences.length > 0) {
+                    //         values.fieldExperiences.forEach(
+                    //           (fieldExperience: FieldExperience) => {
+                    //             addFieldExperience({
+                    //               variables: {
+                    //                 input: {
+                    //                   personId:
+                    //                     res2.data.createPersonInformation.id,
+                    //                   company: fieldExperience.company,
+                    //                   function: fieldExperience.function,
+                    //                 },
+                    //               },
+                    //             });
+                    //           }
+                    //         );
+                    //       }
 
-                          if (values.socialMedias.length > 0) {
-                            values.socialMedias.forEach(
-                              (socialMedia: SocialMedia) => {
-                                addSocialMedia({
-                                  variables: {
-                                    input: {
-                                      personId:
-                                        res2.data.createPersonInformation.id,
-                                      platform: socialMedia.platform,
-                                      url: socialMedia.url,
-                                    },
-                                  },
-                                });
-                              }
-                            );
-                          }
-                        });
-                      }
-                    })
+                    //       if (values.socialMedias.length > 0) {
+                    //         values.socialMedias.forEach(
+                    //           (socialMedia: SocialMedia) => {
+                    //             addSocialMedia({
+                    //               variables: {
+                    //                 input: {
+                    //                   personId:
+                    //                     res2.data.createPersonInformation.id,
+                    //                   platform: socialMedia.platform,
+                    //                   url: socialMedia.url,
+                    //                 },
+                    //               },
+                    //             });
+                    //           }
+                    //         );
+                    //       }
+                    //     });
+                    //   }
+                    // })
                     .then(() => {
                       window.location.href =
                         Router.pathname.split("/create")[0];
@@ -434,18 +473,59 @@ export default function createLearningLine(): ReactElement {
                         </Box>
                       </>
                     )}
-
                     <Box margin={1}>
-                      <Button
-                        sx={{ margin: 1 }}
-                        variant="contained"
-                        color="primary"
-                        disabled={isSubmitting}
-                        onClick={submitForm}
-                        type="submit"
-                      >
-                        Maak aan
-                      </Button>
+                      <Field
+                        required
+                        component={TextField}
+                        name="academicYear"
+                        type="text"
+                        label="Academiejaren"
+                        helperText="Academiejaren in formaat 2019-2021"
+                        value={
+                          values.name
+                            ? values.academicYear
+                            : specialisation?.academicYear
+                        }
+                        // fullWidth
+                      />
+                    </Box>
+                    <Box
+                      sx={{
+                        display: "flex",
+                      }}
+                    >
+                      <Box margin={1}>
+                        <Button
+                          sx={{ margin: 1 }}
+                          variant="contained"
+                          color="primary"
+                          disabled={isSubmitting}
+                          onClick={submitForm}
+                          // type="submit"
+                        >
+                          Pas aan
+                        </Button>
+                      </Box>
+                      <Box margin={1}>
+                        <Button
+                          sx={{
+                            margin: 1,
+                            // backgroundColor: colors.delete,
+                            color: colors.delete,
+                            borderColor: colors.delete,
+                            "&:hover": {
+                              backgroundColor: colors.delete,
+                              color: colors.white,
+                              borderColor: colors.delete,
+                            },
+                          }}
+                          variant="outlined"
+                          disabled={isSubmitting}
+                          onClick={(e) => handleDelete()}
+                        >
+                          Verwijder
+                        </Button>
+                      </Box>
                     </Box>
                     <pre
                       style={{
@@ -457,10 +537,9 @@ export default function createLearningLine(): ReactElement {
                   </Form>
                 )}
               </Formik>
-            </Box>
-          </>
-          //   )}
-        )}
+            </>
+          )}
+        </Box>
       </Dashboard>
     </BasicContainer>
   );

@@ -1,26 +1,18 @@
 import React, { ReactElement } from "react";
 
 // Query
-import { GET_ALL_COURSES } from "../../../../graphql/courses";
+import { useQuery } from "@apollo/client";
+import { DELETE_COURSE, GET_ALL_COURSES } from "../../../../graphql/courses";
 
 // Custom Components
-import client from "../../../../apollo-client";
 import BasicContainer from "../../../components/Admin/style/BasicContainer";
 import Dashboard from "../../../components/Admin/Dashboard";
 import DataGridContent from "../../../components/Admin/DataGridContent";
+import NavigationButton from "../../../components/Admin/NavigationButton";
+import CustomLoading from "../../../components/Admin/style/CustomLoading";
 
 // Variabels
 import { tableColumns } from "../../../utils/constants";
-import { Course } from "../../../../interfaces";
-
-import NavigationButton from "../../../components/Admin/NavigationButton";
-import Router from "next/router";
-import { useQuery } from "@apollo/client";
-import CustomLoading from "../../../components/Admin/style/CustomLoading";
-
-// interface CoursesPageProps {
-//   courses: Course[];
-// }
 
 export default function CoursesPage(): ReactElement {
   const { data, error, loading } = useQuery(GET_ALL_COURSES, {
@@ -39,6 +31,8 @@ export default function CoursesPage(): ReactElement {
               <DataGridContent
                 data={data.courses}
                 info={tableColumns.courses}
+                deleteQuery={DELETE_COURSE}
+                fetchAllQuery={GET_ALL_COURSES}
               />
             </>
           )}
@@ -47,19 +41,3 @@ export default function CoursesPage(): ReactElement {
     </BasicContainer>
   );
 }
-
-// export async function getStaticProps() {
-//     const { data, error } = await client.query({
-//         query: GET_ALL_COURSES
-//     });
-
-//     if (error) {
-//         console.log(error);
-//     }
-
-//     return {
-//         props: {
-//             courses: data.courses,
-//         },
-//     };
-// }

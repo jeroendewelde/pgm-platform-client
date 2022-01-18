@@ -28,6 +28,26 @@ export const GET_ALL_COURSES = gql`
   }
 `;
 
+export const GET_COURSE_BY_ID = gql`
+  query getCourseById($id: Int!) {
+    course(id: $id) {
+      id
+      name
+      description
+      term
+      academicYear
+      tags
+      learningLineId
+      specialisationId
+      learningLine {
+        id
+        name
+        color
+      }
+    }
+  }
+`;
+
 /**
  * Mutations
  */
@@ -37,6 +57,14 @@ export const CREATE_COURSE = gql`
     createCourse(createCourseInput: $input) {
       id
       name
+    }
+  }
+`;
+
+export const UPDATE_COURSE = gql`
+  mutation updateCourse($input: UpdateCourseInput!, $id: Int!) {
+    updateCourse(updateCourseInput: $input, id: $id) {
+      id
     }
   }
 `;

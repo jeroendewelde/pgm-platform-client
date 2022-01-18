@@ -43,41 +43,41 @@ const tableColumns = {
       headerName: "name",
     },
     // {
-    //   dataName: 'teaserImage',
+    //   field: 'teaserImage',
     //   headerName: 'teaserImage',
     // }
   ],
   courses: [
     {
-      dataName: "id",
+      field: "id",
       headerName: "id",
     },
     {
-      dataName: "name",
+      field: "name",
       headerName: "naam",
     },
     {
-      dataName: "description",
+      field: "description",
       headerName: "beschrijving",
     },
     {
-      dataName: "term",
+      field: "term",
       headerName: "periode",
     },
     {
-      dataName: "academicYear",
+      field: "academicYear",
       headerName: "academiejaar",
     },
     {
-      dataName: "learningLineId",
+      field: "learningLineId",
       headerName: "leerlijn ID",
     },
     // {
-    //   dataName: 'learningLine["name"]',
+    //   field: 'learningLine["name"]',
     //   headerName: 'leerlijn'
     // },
     {
-      dataName: "specialisationId",
+      field: "specialisationId",
       headerName: "specialisatie ID",
     },
   ],
@@ -148,10 +148,10 @@ const tableColumns = {
       field: "lastName",
       headerName: "familienaam",
     },
-    {
-      field: "type",
-      headerName: "type",
-    },
+    // {
+    //   field: "type",
+    //   headerName: "type",
+    // },
   ],
   specialisations: [
     {

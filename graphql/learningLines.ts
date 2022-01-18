@@ -37,7 +37,6 @@ export const CREATE_LEARNING_LINE = gql`
     createLearningLine(createLearningLineInput: $input) {
       id
       name
-      color
     }
   }
 `;
@@ -46,8 +45,6 @@ export const UPDATE_LEARNING_LINE = gql`
   mutation updateLearningLine($input: UpdateLearningLineInput!, $id: Int!) {
     updateLearningLine(updateLearningLineInput: $input, id: $id) {
       id
-      name
-      color
     }
   }
 `;
