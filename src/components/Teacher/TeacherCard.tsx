@@ -58,12 +58,12 @@ const TeacherInfo = styled.div`
     color: ${(props) => props.theme.colors.white};
 
     @media (min-width: ${(props) => props.theme.width.esmall}) {
-      font-size: ${(props) => props.theme.fontSizes.large};
+      font-size: ${(props) => props.theme.fontSizes.emedium};
       line-height: 1.2;
     }
 
     @media (min-width: ${(props) => props.theme.width.small}) {
-      font-size: ${(props) => props.theme.fontSizes.elarge};
+      font-size: ${(props) => props.theme.fontSizes.large};
       line-height: 1.2;
     }
   }
@@ -168,20 +168,27 @@ const Bio = styled.div`
 `;
 
 export interface TeacherCardProps {
-  name: string;
+  firstName: string;
+  lastName: string;
   bio: string;
-  url: string;
+  id: number;
   socialMedia: SocialMedia[];
 }
 
-const TeacherCard = ({ name, socialMedia, bio, url }: TeacherCardProps) => {
+const TeacherCard = ({
+  firstName,
+  lastName,
+  socialMedia,
+  bio,
+  id,
+}: TeacherCardProps) => {
   return (
-    <Link href={url}>
+    <Link href={`pgm-team/${id}`}>
       <SuperContainer>
         <Container>
           <FlexContainer>
             <TeacherInfo>
-              <span className="name">{name}</span>
+              <span className="name">{firstName + " " + lastName}</span>
               <ul>
                 {socialMedia.map((media) => (
                   <li
@@ -196,7 +203,7 @@ const TeacherCard = ({ name, socialMedia, bio, url }: TeacherCardProps) => {
               </ul>
 
               <div className="hidden">
-                <span>Ontdek meer over {name}</span>
+                <span>Ontdek meer over {firstName}</span>
                 <span className="icon">
                   <CgChevronRightO />
                 </span>

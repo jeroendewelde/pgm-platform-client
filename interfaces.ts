@@ -189,3 +189,16 @@ export interface AllTeachersClient {
     socialMedias: SocialMedia[];
   };
 }
+
+export interface GetOneTeacherClient {
+  quote: string;
+  id: number;
+  firstName: string;
+  lastName: string;
+
+  personInformation: {
+    bio: string;
+    socialMedias: SocialMedia[];
+    quote: string;
+  };
+}

@@ -77,10 +77,10 @@ const TeachersCarousel = ({ teachers }: TeachersCarouselProps) => {
   return (
     <SwiperContainer>
       <Swiper
-        autoplay={{
-          delay: 10000,
-          disableOnInteraction: true,
-        }}
+        // autoplay={{
+        //   delay: 10000,
+        //   disableOnInteraction: true,
+        // }}
         effect={"coverflow"}
         grabCursor={true}
         centeredSlides={true}
@@ -99,9 +99,10 @@ const TeachersCarousel = ({ teachers }: TeachersCarouselProps) => {
         {teachers.map((teacher) => (
           <SwiperSlide key={teacher.id}>
             <TeacherCard
-              url=""
+              id={teacher.id}
               bio={teacher.personInformation.bio}
-              name={`${teacher.firstName} ${teacher.lastName}`}
+              firstName={teacher.firstName}
+              lastName={teacher.lastName}
               socialMedia={teacher.personInformation.socialMedias}
             />
           </SwiperSlide>

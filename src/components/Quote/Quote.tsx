@@ -40,7 +40,7 @@ const Source = styled.p`
 `;
 
 export interface QuoteProps {
-  source: string;
+  source?: string;
   content: string;
 }
 
@@ -57,7 +57,7 @@ const Quote = ({ source, content }: QuoteProps) => {
             <FaQuoteRight />
           </span>
         </ContentContainer>
-        <Source>- {source}</Source>
+        {source && <Source>- {source}</Source>}
       </div>
     </Container>
   );

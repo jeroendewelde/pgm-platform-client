@@ -75,6 +75,26 @@ export const GET_ALL_TEACHERS_CLIENT = gql`
   }
 `;
 
+export const GET_TEACHER_BY_ID = gql`
+  query getTeacherById($id: Int!) {
+    person(id: $id) {
+      id
+      firstName
+      lastName
+
+      personInformation {
+        bio
+        socialMedias {
+          id
+          platform
+          url
+        }
+        quote
+      }
+    }
+  }
+`;
+
 /**
  * Mutations
  */
