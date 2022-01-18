@@ -42,7 +42,7 @@ const Container = styled.div`
     margin-left: 1rem;
 
     @media (min-width: ${(props) => props.theme.width.medium}) {
-      margin-top: 2rem;
+      margin-top: 3rem;
       flex-direction: column;
       align-items: flex-start;
       min-width: 40%;
@@ -69,6 +69,10 @@ const Container = styled.div`
       margin-bottom: 1rem;
       position: relative;
       margin-left: 1rem;
+
+      @media (min-width: ${(props) => props.theme.width.medium}) {
+        margin-bottom: 2rem;
+      }
 
       .company {
         margin-left: 1rem;

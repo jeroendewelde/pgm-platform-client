@@ -12,18 +12,18 @@ import orangeIcon from "../../assets/learning-line/orange.svg";
 import redIcon from "../../assets/learning-line/red.svg";
 import pinkIcon from "../../assets/learning-line/pink.svg";
 
-const Container = styled.div<CardProps>`
+const Container = styled.li<CardProps>`
   cursor: pointer;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   padding: 0.5rem;
   overflow: hidden;
-  background-color: rgba(255, 255, 255, 0.279);
-  -webkit-backdrop-filter: blur(8px);
-  backdrop-filter: blur(8px);
+  background-color: rgba(0, 0, 0, 0.279);
+  -webkit-backdrop-filter: blur(50px);
+  backdrop-filter: blur(50px);
   width: 100%;
-  height: 12rem;
+  height: 4rem;
   margin-bottom: 1rem;
 
   border-bottom: ${({ learningLine }) => {
@@ -40,24 +40,34 @@ const Container = styled.div<CardProps>`
     }
   }};
 
+  @media (min-width: ${(props) => props.theme.width.esmall}) {
+    height: 7rem;
+    margin-bottom: 2rem;
+  }
+
   @media (min-width: ${(props) => props.theme.width.small}) {
+    /* width: calc(50% - 1rem); */
+    height: 10rem;
+    margin-bottom: 2rem;
+  }
+
+  @media (min-width: ${(props) => props.theme.width.medium}) {
     width: calc(50% - 1rem);
-    height: 200px;
+    height: 12rem;
   }
 
   @media (min-width: ${(props) => props.theme.width.large}) {
-    width: calc(33% - 1rem);
-    height: 200px;
+    height: 12rem;
   }
 
   .Dot {
     position: absolute;
-    right: 1rem;
+    right: 1.3rem;
     bottom: 1rem;
     width: 1rem;
     height: 1rem;
     border-radius: ${(props) => props.theme.borderRadius.circle};
-    transition: ${(props) => props.theme.transition.normal};
+    transition: ${(props) => props.theme.transition.bounce};
     background-color: ${({ learningLine }) => {
       if (learningLine === "blue") {
         return (props) => props.theme.colors.blue;
@@ -73,32 +83,66 @@ const Container = styled.div<CardProps>`
     }};
   }
 
-  @media (min-width: ${(props) => props.theme.width.small}) {
+  &:hover .Dot {
+    transform: scale(46.5);
+  }
+  @media (min-width: ${(props) => props.theme.width.esmall}) {
     &:hover .Dot {
-      transform: scale(26.5);
+      transform: scale(56.5);
     }
 
     &:hover .CTA_text {
       color: ${(props) => props.theme.colors.white};
     }
   }
+
+  @media (min-width: ${(props) => props.theme.width.medium}) {
+    &:hover .Dot {
+      transform: scale(36.5);
+    }
+  }
+
+  @media (min-width: ${(props) => props.theme.width.large}) {
+    &:hover .Dot {
+      transform: scale(56.5);
+    }
+  }
 `;
 
 const Title = styled.div`
+  margin: 0;
   display: flex;
   align-items: center;
 
   h3 {
+    margin: 0;
     margin-left: 0.5rem;
     font-size: ${(props) => props.theme.fontSizes.normal};
-    font-family: ${(props) => props.theme.fontFamilies.secondary};
-    font-weight: ${(props) => props.theme.fontWeights.light};
+    font-family: ${(props) => props.theme.fontFamilies.primary};
+    font-weight: ${(props) => props.theme.fontWeights.bold};
     position: relative;
     z-index: 99;
     margin-right: 22%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* number of lines to show */
+    -webkit-box-orient: vertical;
 
     @media (min-width: ${(props) => props.theme.width.esmall}) {
       font-size: ${(props) => props.theme.fontSizes.medium};
+    }
+
+    @media (min-width: ${(props) => props.theme.width.esmall}) {
+      font-size: ${(props) => props.theme.fontSizes.semimedium};
+    }
+
+    @media (min-width: ${(props) => props.theme.width.medium}) {
+      font-size: ${(props) => props.theme.fontSizes.semimedium};
+    }
+
+    @media (min-width: ${(props) => props.theme.width.large}) {
+      font-size: ${(props) => props.theme.fontSizes.emedium};
     }
   }
 `;
@@ -109,25 +153,48 @@ const CTA = styled.div`
   top: 0;
   right: 0;
   height: 100%;
-  width: 20%;
-  display: flex;
+  width: 25%;
+
   justify-content: flex-end;
   padding: 1rem;
+  background-color: transparent;
+
+  @media (min-width: ${(props) => props.theme.width.esmall}) {
+    background-color: ${(props) => props.theme.colors.white};
+    display: flex;
+  }
+
+  @media (min-width: ${(props) => props.theme.width.medium}) {
+    width: 15%;
+    min-width: 4rem;
+  }
 
   .CTA_text {
+    font-size: ${(props) => props.theme.fontSizes.normal};
     font-family: ${(props) => props.theme.fontFamilies.secondary};
-    writing-mode: vertical-lr;
     color: ${(props) => props.theme.colors.black};
     position: relative;
     z-index: 99;
+    display: none;
+
+    @media (min-width: ${(props) => props.theme.width.esmall}) {
+      display: block;
+    }
+    @media (min-width: ${(props) => props.theme.width.medium}) {
+      writing-mode: vertical-rl;
+    }
   }
 `;
 
 const FlexContainer = styled.div`
-  width: 100%;
-  padding-right: 18%;
-  display: flex;
-  flex-wrap: wrap;
+  display: none;
+
+  @media (min-width: ${(props) => props.theme.width.small}) {
+    width: 100%;
+    padding-right: 18%;
+    flex-wrap: wrap;
+    display: flex;
+  }
 `;
 
 export interface CardProps {
@@ -138,15 +205,15 @@ export interface CardProps {
 
 const Icon = ({ learningLine = "blue" }: CardProps) => {
   if (learningLine === "blue") {
-    return <Image src={blueIcon} width={35} height={35} />;
+    return <Image className="image" src={blueIcon} width={35} height={35} />;
   } else if (learningLine === "green") {
-    return <Image src={greenIcon} width={35} height={35} />;
+    return <Image className="image" src={greenIcon} width={35} height={35} />;
   } else if (learningLine === "orange") {
-    return <Image src={orangeIcon} width={35} height={35} />;
+    return <Image className="image" src={orangeIcon} width={35} height={35} />;
   } else if (learningLine === "pink") {
-    return <Image src={pinkIcon} width={35} height={35} />;
+    return <Image className="image" src={pinkIcon} width={35} height={35} />;
   } else if (learningLine === "red") {
-    return <Image src={redIcon} width={35} height={35} />;
+    return <Image className="image" src={redIcon} width={35} height={35} />;
   } else {
     return null;
   }
@@ -181,6 +248,7 @@ const Card = ({ tags, learningLine, title }: CardProps) => {
       <Title>
         <Icon learningLine={learningLine} />
         <h3>{title}</h3>
+        <div className="Dotbg"></div>
       </Title>
       <CTA>
         <p className="CTA_text">Explore more</p>

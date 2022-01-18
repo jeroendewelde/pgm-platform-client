@@ -7,6 +7,13 @@ const Container = styled.div`
     margin-bottom: 3rem;
     margin-top: 1rem;
   }
+
+  @media (min-width: ${(props) => props.theme.width.medium}) {
+    p {
+      margin-bottom: 0;
+      margin-top: 3rem;
+    }
+  }
 `;
 
 interface BioProps {
@@ -16,7 +23,7 @@ interface BioProps {
 const Bio = ({ bio }: BioProps) => {
   return (
     <Container>
-      <H2>Bio</H2>
+      <H2>Biography</H2>
       <p>{bio}</p>
     </Container>
   );

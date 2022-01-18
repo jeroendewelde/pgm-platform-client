@@ -62,8 +62,6 @@ interface HomeProps {
   quotes: AllQuotes[];
 }
 
-const tags = ["react", "javascript", "typescript"];
-
 export default function Home({ quotes }: HomeProps) {
   SwiperCore.use([Navigation, Autoplay]);
 

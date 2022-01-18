@@ -57,6 +57,7 @@ declare module "styled-components" {
     transition: {
       normal: string;
       medium: string;
+      bounce: string;
     };
   }
 }
