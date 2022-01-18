@@ -70,7 +70,7 @@ const Container = styled.div`
         fill: none;
         stroke: ${(props) => props.theme.colors.turquoise};
         stroke-width: 2px;
-        vector-effect: non-scaling-stroke;
+        /* vector-effect: non-scaling-stroke; */
       }
     }
   }

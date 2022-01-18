@@ -95,15 +95,6 @@ export interface PersonInformation {
   person: Person;
 }
 
-export interface AllQuotes {
-  id: number;
-  firstName: string;
-  lastName: string;
-  personInformation: {
-    quote: string;
-  };
-}
-
 export interface Project {
   id: number;
   name: string;
@@ -174,3 +165,27 @@ export enum AttachmentType {
 /**
  * GraphQL returns
  */
+
+/**
+ * Client
+ */
+
+export interface AllQuotes {
+  id: number;
+  firstName: string;
+  lastName: string;
+  personInformation: {
+    quote: string;
+  };
+}
+
+export interface AllTeachersClient {
+  id: number;
+  firstName: string;
+  lastName: string;
+
+  personInformation: {
+    bio: string;
+    socialMedias: SocialMedia[];
+  };
+}

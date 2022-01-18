@@ -6,6 +6,7 @@ import styled from "styled-components";
 import { CgChevronRightO } from "react-icons/cg";
 
 import teacher from "../../assets/test/teacher.png";
+import { SocialMedia } from "../../../interfaces";
 
 const SuperContainer = styled.div`
   max-width: 50rem;
@@ -78,7 +79,7 @@ const TeacherInfo = styled.div`
     }
 
     li {
-      a {
+      span {
         margin-right: 1rem;
         padding: 0.3rem 0.5rem;
         font-family: ${(props) => props.theme.fontFamilies.secondary};
@@ -170,10 +171,7 @@ export interface TeacherCardProps {
   name: string;
   bio: string;
   url: string;
-  socialMedia: {
-    name: string;
-    url: string;
-  }[];
+  socialMedia: SocialMedia[];
 }
 
 const TeacherCard = ({ name, socialMedia, bio, url }: TeacherCardProps) => {
@@ -186,10 +184,13 @@ const TeacherCard = ({ name, socialMedia, bio, url }: TeacherCardProps) => {
               <span className="name">{name}</span>
               <ul>
                 {socialMedia.map((media) => (
-                  <li key={media.name}>
-                    <Link href={media.url}>
-                      <a>{media.name}</a>
-                    </Link>
+                  <li
+                    key={media.id}
+                    onClick={() => {
+                      window.open(media.url, "_blank");
+                    }}
+                  >
+                    <span>{media.platform}</span>
                   </li>
                 ))}
               </ul>

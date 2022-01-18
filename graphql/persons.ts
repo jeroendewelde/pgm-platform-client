@@ -56,6 +56,25 @@ export const GET_ALL_QUOTES = gql`
   }
 `;
 
+export const GET_ALL_TEACHERS_CLIENT = gql`
+  {
+    teachers {
+      id
+      firstName
+      lastName
+
+      personInformation {
+        bio
+        socialMedias {
+          id
+          platform
+          url
+        }
+      }
+    }
+  }
+`;
+
 /**
  * Mutations
  */

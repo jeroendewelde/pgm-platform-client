@@ -8,6 +8,7 @@ import "swiper/swiper-bundle.min.css";
 import "swiper/swiper.min.css";
 
 import { TeacherCard } from "../Teacher";
+import { AllTeachersClient } from "../../../interfaces";
 
 SwiperCore.use([EffectCoverflow, Navigation, Autoplay]);
 
@@ -68,7 +69,11 @@ const SwiperContainer = styled.div`
   }
 `;
 
-const TeachersCarousel = () => {
+interface TeachersCarouselProps {
+  teachers: AllTeachersClient[];
+}
+
+const TeachersCarousel = ({ teachers }: TeachersCarouselProps) => {
   return (
     <SwiperContainer>
       <Swiper
@@ -91,86 +96,16 @@ const TeachersCarousel = () => {
         loop={true}
         className="mySwiper"
       >
-        <SwiperSlide>
-          <TeacherCard
-            url=""
-            bio="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-            ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-            aliquip ex ea commodo consequat."
-            name="Valerie De Bruycker"
-            socialMedia={[
-              { name: "Facebook", url: "https://www.facebook.com/" },
-              { name: "Instagram", url: "https://www.instagram.com/" },
-              { name: "Github", url: "https://www.github.com/" },
-              { name: "LinkedIn", url: "https://www.linkedin.com/" },
-            ]}
-          />
-        </SwiperSlide>
-        <SwiperSlide>
-          <TeacherCard
-            url=""
-            bio="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-            ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-            aliquip ex ea commodo consequat."
-            name="Valerie De Bruycker"
-            socialMedia={[
-              { name: "Facebook", url: "https://www.facebook.com/" },
-              { name: "Instagram", url: "https://www.instagram.com/" },
-              { name: "Github", url: "https://www.github.com/" },
-              { name: "LinkedIn", url: "https://www.linkedin.com/" },
-            ]}
-          />
-        </SwiperSlide>
-        <SwiperSlide>
-          <TeacherCard
-            url=""
-            bio="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-            ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-            aliquip ex ea commodo consequat."
-            name="Valerie De Bruycker"
-            socialMedia={[
-              { name: "Facebook", url: "https://www.facebook.com/" },
-              { name: "Instagram", url: "https://www.instagram.com/" },
-              { name: "Github", url: "https://www.github.com/" },
-              { name: "LinkedIn", url: "https://www.linkedin.com/" },
-            ]}
-          />
-        </SwiperSlide>
-        <SwiperSlide>
-          <TeacherCard
-            url=""
-            bio="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-            ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-            aliquip ex ea commodo consequat."
-            name="Valerie De Bruycker"
-            socialMedia={[
-              { name: "Facebook", url: "https://www.facebook.com/" },
-              { name: "Instagram", url: "https://www.instagram.com/" },
-              { name: "Github", url: "https://www.github.com/" },
-              { name: "LinkedIn", url: "https://www.linkedin.com/" },
-            ]}
-          />
-        </SwiperSlide>
-        <SwiperSlide>
-          <TeacherCard
-            url=""
-            bio="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-            ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-            aliquip ex ea commodo consequat."
-            name="Valerie De Bruycker"
-            socialMedia={[
-              { name: "Facebook", url: "https://www.facebook.com/" },
-              { name: "Instagram", url: "https://www.instagram.com/" },
-              { name: "Github", url: "https://www.github.com/" },
-              { name: "LinkedIn", url: "https://www.linkedin.com/" },
-            ]}
-          />
-        </SwiperSlide>
+        {teachers.map((teacher) => (
+          <SwiperSlide key={teacher.id}>
+            <TeacherCard
+              url=""
+              bio={teacher.personInformation.bio}
+              name={`${teacher.firstName} ${teacher.lastName}`}
+              socialMedia={teacher.personInformation.socialMedias}
+            />
+          </SwiperSlide>
+        ))}
       </Swiper>
     </SwiperContainer>
   );
