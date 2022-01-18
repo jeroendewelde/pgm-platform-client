@@ -290,10 +290,12 @@ export default function createCourse(): ReactElement {
                           required
                           component={CustomMultiSelectWithChips}
                           label="Docenten"
+                          placeholder="Zoek een docent..."
                           name="teachers"
                           // data={dataLearningLines.teachers}
                           data={dataTeachers.teachers}
                           // helperText="Naam van de docenten"
+                          labelProps={["firstName", "lastName"]}
                         />
                       </Box>
                     </Box>

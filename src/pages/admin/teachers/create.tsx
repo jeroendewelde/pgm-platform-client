@@ -26,7 +26,7 @@ import {
   CREATE_PERSON_INFORMATION,
   CREATE_SOCIAL_MEDIA,
 } from "../../../../graphql/persons";
-import { FieldExperience, SocialMedia } from "../../../../interfaces";
+import { Course, FieldExperience, SocialMedia } from "../../../../interfaces";
 
 // Custom Components
 import BasicContainer from "../../../components/Admin/style/BasicContainer";
@@ -34,6 +34,8 @@ import Dashboard from "../../../components/Admin/Dashboard";
 import CustomDatePicker from "../../../components/Admin/Form/CustomDatePicker";
 import CustomSingleSelectForEnum from "../../../components/Admin/Form/CustomSingleSelectForEnum";
 import CustomLoading from "../../../components/Admin/style/CustomLoading";
+import { GET_ALL_COURSES } from "../../../../graphql/courses";
+import CustomMultiSelectWithChips from "../../../components/Admin/Form/CustomMultiSelectWithChips";
 
 const validationSchema = yup.object({
   firstName: yup.string().required("Voornaam is verplicht"),
@@ -78,20 +80,33 @@ export default function createLearningLine(): ReactElement {
     ssr: true,
   });
 
+  const {
+    data: dataCourses,
+    error: errorCourses,
+    loading: loadingCourses,
+  } = useQuery(GET_ALL_COURSES, {
+    ssr: true,
+  });
+
   const [showExtraInfo, setShowExtraInfo] = useState(false);
+  //   const [showCourses, setShowCourses] = useState(false);
 
   const labelSwitch = {
     inputProps: { "aria-label": "Extra informatie toevoegen" },
   };
 
-  const handleChangeSwitch = () => {
+  const handleChangeSwitchExtraInfo = () => {
     setShowExtraInfo(!showExtraInfo);
   };
+
+  //   const handleChangeSwitchCourseInfo = () => {
+  //     setShowCourses(!showCourses);
+  //   };
 
   return (
     <BasicContainer title="Nieuwe Docent">
       <Dashboard title="Nieuwe Docent">
-        {loadingSocialMediaPlatforms ? (
+        {loadingSocialMediaPlatforms || loadingCourses ? (
           <CustomLoading />
         ) : (
           <>
@@ -109,6 +124,7 @@ export default function createLearningLine(): ReactElement {
                   bio: "",
                   fieldExperiences: [],
                   socialMedias: [],
+                  courses: [],
                 }}
                 validationSchema={validationSchema}
                 onSubmit={(values, { setSubmitting }) => {
@@ -119,66 +135,22 @@ export default function createLearningLine(): ReactElement {
                         firstName: values.firstName,
                         lastName: values.lastName,
                         type: "TEACHER",
-                        // dob: values.dob,
-                        // quote: values.quote,
-                        // bio: values.bio,
-                        // fieldExperiences: values.fieldExperiences,
+                        courseIds: values.courses.map(
+                          (course: Course) => course.id
+                        ),
+                        personInformation: {
+                          dob: values.dob,
+                          quote: values.quote,
+                          bio: values.bio,
+                          fieldExperiences: values.fieldExperiences,
+                          socialMedias: values.socialMedias,
+                        },
                       },
                     },
-                  })
-                    .then((res) => {
-                      // Add person information with person Id if it is toggled
-                      if (showExtraInfo) {
-                        addTeacherInformation({
-                          variables: {
-                            input: {
-                              personId: res.data.createPerson.id,
-                              quote: values.quote,
-                              bio: values.bio,
-                              dob: values.dob,
-                            },
-                          },
-                        }).then((res2) => {
-                          if (values.fieldExperiences.length > 0) {
-                            values.fieldExperiences.forEach(
-                              (fieldExperience: FieldExperience) => {
-                                addFieldExperience({
-                                  variables: {
-                                    input: {
-                                      personId:
-                                        res2.data.createPersonInformation.id,
-                                      company: fieldExperience.company,
-                                      function: fieldExperience.function,
-                                    },
-                                  },
-                                });
-                              }
-                            );
-                          }
-
-                          if (values.socialMedias.length > 0) {
-                            values.socialMedias.forEach(
-                              (socialMedia: SocialMedia) => {
-                                addSocialMedia({
-                                  variables: {
-                                    input: {
-                                      personId:
-                                        res2.data.createPersonInformation.id,
-                                      platform: socialMedia.platform,
-                                      url: socialMedia.url,
-                                    },
-                                  },
-                                });
-                              }
-                            );
-                          }
-                        });
-                      }
-                    })
-                    .then(() => {
-                      window.location.href =
-                        Router.pathname.split("/create")[0];
-                    });
+                  });
+                  if (!errorTeacher && !loadingTeacher) {
+                    window.location.href = Router.pathname.split("/create")[0];
+                  }
                 }}
               >
                 {({ values, submitForm, isSubmitting }) => (
@@ -211,11 +183,46 @@ export default function createLearningLine(): ReactElement {
                         }}
                       />
                     </Box>
+
+                    <Box margin={1}>
+                      <Typography
+                        variant="h6"
+                        noWrap
+                        component="div"
+                        sx={{
+                          flexGrow: 1,
+                          mb: 2,
+                          // ml: 1,
+                          color: "black",
+                        }}
+                      >
+                        Docenten
+                      </Typography>
+                      <Typography variant="subtitle1" sx={{ color: "black" }}>
+                        De vakken die deze docent geeft, dit kan nog aangepast
+                        worden
+                      </Typography>
+
+                      <Box margin={1}>
+                        <Field
+                          required
+                          component={CustomMultiSelectWithChips}
+                          label="Vakken"
+                          name="courses"
+                          placeholder="Zoek een vak..."
+                          // data={dataLearningLines.teachers}
+                          data={dataCourses.courses}
+                          // helperText="Naam van de docenten"
+                          labelProps={["name", "academicYear"]}
+                        />
+                      </Box>
+                    </Box>
+
                     <FormControlLabel
                       control={
                         <Switch
                           {...labelSwitch}
-                          onChange={handleChangeSwitch}
+                          onChange={handleChangeSwitchExtraInfo}
                         />
                       }
                       label="Extra informatie toevoegen"
@@ -224,6 +231,7 @@ export default function createLearningLine(): ReactElement {
                         ml: 1,
                       }}
                     />
+
                     {showExtraInfo && (
                       <>
                         <Box margin={1}>

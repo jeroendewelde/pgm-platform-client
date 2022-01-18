@@ -4,7 +4,7 @@ import Router from "next/router";
 
 // Formik & Yup
 import * as yup from "yup";
-import { Field, Form, Formik } from "formik";
+import { Field, FieldArray, Form, Formik } from "formik";
 
 // Material UI Components
 // import { Box, Button } from "@mui/material";
@@ -26,8 +26,10 @@ import {
 } from "../../../../../graphql/specialisations";
 import { useMutation, useQuery } from "@apollo/client";
 import {
+  Course,
   FieldExperience,
   Person,
+  PersonInformation,
   Specialisation,
 } from "../../../../../interfaces";
 
@@ -48,6 +50,8 @@ import {
 } from "../../../../../graphql/persons";
 import { Add, Remove } from "@mui/icons-material";
 import CustomSingleSelectForEnum from "../../../../components/Admin/Form/CustomSingleSelectForEnum";
+import { GET_ALL_SOCIAL_MEDIA_PLATFORMS } from "../../../../../graphql/enums";
+import { GET_ALL_COURSES } from "../../../../../graphql/courses";
 
 const validationSchema = yup.object({
   firstName: yup.string().required("Voornaam is verplicht"),
@@ -59,6 +63,12 @@ export default function editTeacher(): ReactElement {
   const { id } = router.query;
   const adminPath = router.pathname.split("/admin/")[1].split("/")[0];
   const [teacher, setTeacher] = useState<Person>();
+  const [teacherInfo, setTeacherInfo] = useState<PersonInformation>();
+  const [showExtraInfo, setShowExtraInfo] = useState(false);
+
+  const handleChangeSwitchExtraInfo = () => {
+    setShowExtraInfo(!showExtraInfo);
+  };
 
   const {
     data: dataGet,
@@ -68,19 +78,36 @@ export default function editTeacher(): ReactElement {
     variables: {
       id: Number(id),
     },
+    errorPolicy: "all",
     ssr: true,
   });
 
   const {
-    data: dataGetPersonInformation,
-    error: errorGetPersonInformation,
-    loading: loadingGetPersonInformation,
-  } = useQuery(GET_PERSON_INFORMATION_BY_PERSON_ID, {
-    variables: {
-      id: Number(id),
-    },
+    data: dataSocialMediaPlatforms,
+    error: errorSocialMediaPlatforms,
+    loading: loadingSocialMediaPlatforms,
+  } = useQuery(GET_ALL_SOCIAL_MEDIA_PLATFORMS, {
     ssr: true,
   });
+
+  const {
+    data: dataCourses,
+    error: errorCourses,
+    loading: loadingCourses,
+  } = useQuery(GET_ALL_COURSES, {
+    ssr: true,
+  });
+
+  //   const {
+  //     data: dataGetPersonInformation,
+  //     error: errorGetPersonInformation,
+  //     loading: loadingGetPersonInformation,
+  //   } = useQuery(GET_PERSON_INFORMATION_BY_PERSON_ID, {
+  //     variables: {
+  //       id: Number(id),
+  //     },
+  //     ssr: true,
+  //   });
 
   const {
     data: dataGetFieldExperiences,
@@ -96,7 +123,18 @@ export default function editTeacher(): ReactElement {
   useEffect(() => {
     if (dataGet) {
       setTeacher(dataGet.person);
+      if (dataGet?.person.personInformation) {
+        console.log("extra info");
+        // setTeacherInfo(dataGetPersonInformation.personInformation);
+        // setShowExtraInfo(!showExtraInfo);
+        handleChangeSwitchExtraInfo();
+      } else {
+        console.log("geen extra info");
+      }
+
+      //   console.log(dataGet.person);
     }
+    //   }, [dataGet, dataGetPersonInformation]);
   }, [dataGet]);
 
   const [
@@ -117,14 +155,8 @@ export default function editTeacher(): ReactElement {
     }).then(() => (window.location.href = `/admin/${adminPath}`));
   };
 
-  const [showExtraInfo, setShowExtraInfo] = useState(false);
-
   const labelSwitch = {
     inputProps: { "aria-label": "Extra informatie toevoegen" },
-  };
-
-  const handleChangeSwitch = () => {
-    setShowExtraInfo(!showExtraInfo);
   };
 
   return (
@@ -135,19 +167,26 @@ export default function editTeacher(): ReactElement {
             maxWidth: "lg",
           }}
         >
-          {!teacher ? (
+          {/* {!teacher && !teacherInfo ? ( */}
+          {loadingGet || loadingCourses ? (
             <CustomLoading />
           ) : (
             <>
+              {console.log("data info....", teacherInfo)}
               <Formik
                 initialValues={{
-                  firstName: "",
-                  lastName: "",
-                  dob: "",
-                  quote: "",
-                  bio: "",
+                  firstName: dataGet.person.firstName || "",
+                  lastName: dataGet.person.lastName || "",
+                  dob: dataGet.person?.personInformation?.dob || "",
+                  quote: dataGet.person?.personInformation?.quote || "",
+                  bio: dataGet.person?.personInformation?.bio || "",
+
+                  // dob: "",
+                  // quote: "",
+                  // bio: "",
                   fieldExperiences: [],
                   socialMedias: [],
+                  courses: [],
                 }}
                 validationSchema={validationSchema}
                 onSubmit={(values, { setSubmitting }) => {
@@ -158,11 +197,15 @@ export default function editTeacher(): ReactElement {
                         firstName: values.firstName,
                         lastName: values.lastName,
                         type: "TEACHER",
-                        // dob: values.dob,
-                        // quote: values.quote,
-                        // bio: values.bio,
+                        courseIds: values.courses.map(
+                          (course: Course) => course.id
+                        ),
+                        dob: values.dob,
+                        quote: values.quote,
+                        bio: values.bio,
                         // fieldExperiences: values.fieldExperiences,
                       },
+                      id: dataGet.person.id,
                     },
                   })
                     // .then((res) => {
@@ -215,8 +258,7 @@ export default function editTeacher(): ReactElement {
                     //   }
                     // })
                     .then(() => {
-                      window.location.href =
-                        Router.pathname.split("/create")[0];
+                      window.location.href = `/admin/${adminPath}`;
                     });
                 }}
               >
@@ -250,11 +292,13 @@ export default function editTeacher(): ReactElement {
                         }}
                       />
                     </Box>
+
                     <FormControlLabel
                       control={
                         <Switch
                           {...labelSwitch}
-                          onChange={handleChangeSwitch}
+                          checked={showExtraInfo}
+                          onChange={handleChangeSwitchExtraInfo}
                         />
                       }
                       label="Extra informatie toevoegen"
@@ -481,11 +525,11 @@ export default function editTeacher(): ReactElement {
                         type="text"
                         label="Academiejaren"
                         helperText="Academiejaren in formaat 2019-2021"
-                        value={
-                          values.name
-                            ? values.academicYear
-                            : specialisation?.academicYear
-                        }
+                        // value={
+                        //   values.name
+                        //     ? values.academicYear
+                        //     : specialisation?.academicYear
+                        // }
                         // fullWidth
                       />
                     </Box>

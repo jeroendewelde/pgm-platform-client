@@ -390,10 +390,12 @@ export default function editCourse(): ReactElement {
                           component={CustomMultiSelectWithChips}
                           label="Docenten"
                           name="teachers"
+                          placeholder="Zoek een docent..."
                           // data={dataLearningLines.teachers}
                           data={dataTeachers.teachers}
                           //   extraData={dataGet.course.teachers}
                           // helperText="Naam van de docenten"
+                          labelProps={["firstName", "lastName"]}
                         />
                       </Box>
                     </Box>
