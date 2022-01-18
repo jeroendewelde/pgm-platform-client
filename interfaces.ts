@@ -31,6 +31,7 @@ export interface Course {
   specialisationId: number;
   learningLine: LearningLine;
   specialisation: Specialisation;
+  teachers: Person[];
 }
 
 export interface FieldExperience {

@@ -41,21 +41,45 @@ export default function CustomMultiSelectWithChips({
     field: { name },
     label,
     sx,
+    // extraData,
     // data,
   } = props;
 
   const checkBoxIconUnchecked = <CheckBoxOutlineBlank fontSize="small" />;
   const checkedIconChecked = <CheckBoxIcon fontSize="small" />;
+  console.log(props);
+  console.log(props.form.values[name]);
+  //   setFieldValue(name, props.form.values[name]);
+
+  // Match ids from course with teachers
+  // const teachersFromData = extraData.map(extra => data[extra.id])
+  //   const teachersFromData = extraData.map((extra: Person) =>
+  //     data.find((t) => t.id === extra.id)
+  //   );
+  //   setFieldValue(name, [...teachersFromData]);
+
+  //   console.log("------teachersFromData", teachersFromData);
+  //   setFieldValue(name, [...teachersFromData]);
 
   const onChange = React.useCallback(
-    (event, value) => {
+    (event, newValue) => {
       //   const { value } = event.target;
       //   setFieldValue(name, value ? value.toUpperCase() : "");
       //   setFieldValue(name, value ? value : []);
-      setFieldValue(name, value);
+      setFieldValue(name, newValue);
     },
     [setFieldValue, name]
   );
+
+  //   React.useEffect(() => {
+  //     setFieldValue(name, props.form.values[name]);
+  //   }, []);
+
+  //   React.useEffect(() => {
+  // 	const teachersFromData = extraData.map((extra: Person) =>
+  // 	data.find((t) => t.id === extra.id)
+
+  //   }, []);
 
   return (
     // <div>TT</div>
@@ -66,6 +90,10 @@ export default function CustomMultiSelectWithChips({
       multiple
       id="tags-standard"
       sx={sx}
+      value={props.form.values[name]}
+      //   value={props.values.teachers}
+      //   value={props.form.values[name]}
+      //   value={teachersFromData}
       //   options={dataTeachers.teachers}
       //   options={teachers}
       options={data}
@@ -75,6 +103,7 @@ export default function CustomMultiSelectWithChips({
       }
       renderOption={(props, option, { selected }) => (
         <li {...props}>
+          {console.log("props.....", props)}
           <Checkbox
             icon={checkBoxIconUnchecked}
             checkedIcon={checkedIconChecked}

@@ -256,7 +256,7 @@ export default function createCourse(): ReactElement {
                           // minWidth: '40%',
                           // margin: 1
                         }}
-                        helperText="Naam van de Afstudeerrrichting"
+                        helperText="Naam van de Afstudeerrichting"
 
                         // name="academicYear"
                         // type="text"

@@ -17,7 +17,7 @@ import {
   UPDATE_SPECIALISATION,
 } from "../../../../../graphql/specialisations";
 import { useMutation, useQuery } from "@apollo/client";
-import { Course, Specialisation } from "../../../../../interfaces";
+import { Course, Person, Specialisation } from "../../../../../interfaces";
 
 // Custom Components
 import BasicContainer from "../../../../components/Admin/style/BasicContainer";
@@ -35,6 +35,8 @@ import { GET_ALL_LEARNING_LINES } from "../../../../../graphql/learningLines";
 import CustomSingleSelect from "../../../../components/Admin/Form/CustomSingleSelect";
 
 import { Remove, Add } from "@material-ui/icons";
+import { GET_ALL_TEACHERS } from "../../../../../graphql/persons";
+import CustomMultiSelectWithChips from "../../../../components/Admin/Form/CustomMultiSelectWithChips";
 
 const validationSchema = yup.object({
   name: yup.string().required("Naam is verplicht"),
@@ -58,6 +60,7 @@ export default function editCourse(): ReactElement {
   const { id } = router.query;
   const adminPath = router.pathname.split("/admin/")[1].split("/")[0];
   const [course, setCourse] = useState<Course>();
+  const [teachers, setTeachers] = useState<Person[]>([]);
 
   const {
     data: dataGet,
@@ -86,11 +89,73 @@ export default function editCourse(): ReactElement {
     ssr: true,
   });
 
+  const {
+    data: dataTeachers,
+    error: errorTeachers,
+    loading: loadingTeachers,
+  } = useQuery(GET_ALL_TEACHERS, {
+    ssr: true,
+  });
+
   useEffect(() => {
-    if (dataGet) {
+    if (dataGet && dataTeachers) {
       setCourse(dataGet.course);
+      console.log("teachersFromCourse....", dataGet.course.teachers);
+
+      const teachersFromData = dataGet.course.teachers.map(
+        (teacherFromDb: Person) =>
+          // console.log("extra.....", extra);
+          // data.includes(extra.id);
+          // return data.map((t) => t.id === extra.id ? t : null).filter(t => t !== null);
+          // return data.map((t) => (t.id === extra.id ? t : null));
+          dataTeachers.teachers.find((t: Person) => t.id === teacherFromDb.id)
+      );
+
+      setTeachers(teachersFromData);
+
+      //   console.log(dataTeachers);
+      //   const newTeachers = dataTeachers.course.teachers.filter(
+      //     (teacher: Person) => {
+      //       console.log("teacher form all....", teacher);
+      //       dataGet.course.teachers.includes(teacher);
+      //     }
+      //   );
+      //   console.log("....newTeachers", newTeachers);
+      if (dataTeachers) {
+        // console.log(dataTeachers);
+        // const newTeachers = dataTeachers.teachers.filter((teacher: Person) =>
+        //   dataGet.course.teachers.includes(teacher)
+        // );
+        // console.log("....newTeachers", newTeachers);
+      }
     }
-  }, [dataGet]);
+  }, [dataGet, dataTeachers]);
+
+  //   useEffect(() => {
+  //     if (dataTeachers && dataGet) {
+  //       const movies = [28, 14, 100, 53, 37];
+
+  //       const genres = [
+  //         { id: 28, name: "Action" },
+  //         { id: 10770, name: "TV Movie" },
+  //         { id: 53, name: "Thriller" },
+  //         { id: 10752, name: "War" },
+  //         { id: 37, name: "Western" },
+  //       ];
+
+  //       let selectedTeachers = dataGet.course.teachers.reduce(
+  //         (arr, itm) =>
+  //           dataGet.course.teachers.includes(itm.id) ? arr.concat(itm.name) : arr,
+  //         []
+  //       );
+
+  //       console.log(selectedTeachers);
+
+  //       //setCourse(dataGet.course);
+  //       //console.log("course....", dataGet.course);
+  //       //   const selectedTeachers = dataGet.course.teachers.reduce((arr, item) => )
+  //     }
+  //   }, [dataTeachers]);
 
   const [
     updateCourse,
@@ -131,6 +196,10 @@ export default function editCourse(): ReactElement {
                   tags: course?.tags || [],
                   learningLineId: course?.learningLineId || "",
                   specialisationId: course?.specialisationId || "",
+                  teachers: course?.teachers ? teachers : [],
+                  // teachers:
+
+                  //   teachers: dataTeachers.teachers.filder || [],
                 }}
                 validationSchema={validationSchema}
                 onSubmit={(values, { setSubmitting }) => {
@@ -146,6 +215,9 @@ export default function editCourse(): ReactElement {
                         tags: values.tags,
                         learningLineId: values.learningLineId,
                         specialisationId: values.specialisationId,
+                        teacherIds: values.teachers.map(
+                          (teacher: Person) => teacher.id
+                        ),
                       },
                       id: course?.id,
                     },
@@ -245,8 +317,8 @@ export default function editCourse(): ReactElement {
                         required
                         component={CustomSingleSelect}
                         label="Leerlijn"
-                        // value={values.learningLineId || course.learningLineId}
-                        value={2}
+                        value={values.learningLineId}
+                        // value={2}
                         name="learningLineId"
                         data={dataLearningLines.learningLines}
                         sx={{
@@ -273,9 +345,7 @@ export default function editCourse(): ReactElement {
                         required
                         component={CustomSingleSelect}
                         label="Afstudeerrichting"
-                        value={
-                          values.specialisationId || course.specialisationId
-                        }
+                        value={values.specialisationId}
                         name="specialisationId"
                         data={dataSpecialisations.specialisations}
                         extraData={"academicYear"}
@@ -284,7 +354,7 @@ export default function editCourse(): ReactElement {
                           // minWidth: '40%',
                           // margin: 1
                         }}
-                        helperText="Naam van de Afstudeerrrichting"
+                        helperText="Naam van de Afstudeerrichting"
 
                         // name="academicYear"
                         // type="text"
@@ -294,6 +364,39 @@ export default function editCourse(): ReactElement {
                       />
                     </Box>
                     {/* </Box> */}
+
+                    <Box margin={1}>
+                      <Typography
+                        variant="h6"
+                        noWrap
+                        component="div"
+                        sx={{
+                          flexGrow: 1,
+                          mb: 2,
+                          // ml: 1,
+                          color: "black",
+                        }}
+                      >
+                        Docenten
+                      </Typography>
+                      <Typography variant="subtitle1" sx={{ color: "black" }}>
+                        De docenten die dit vak in deze periode geven, dit kan
+                        nog aangepast worden
+                      </Typography>
+
+                      <Box margin={1}>
+                        <Field
+                          required
+                          component={CustomMultiSelectWithChips}
+                          label="Docenten"
+                          name="teachers"
+                          // data={dataLearningLines.teachers}
+                          data={dataTeachers.teachers}
+                          //   extraData={dataGet.course.teachers}
+                          // helperText="Naam van de docenten"
+                        />
+                      </Box>
+                    </Box>
 
                     <Box margin={1}>
                       <FieldArray
@@ -380,7 +483,7 @@ export default function editCourse(): ReactElement {
                           onClick={submitForm}
                           // type="submit"
                         >
-                          Maak aan
+                          Pas aan
                         </Button>
                       </Box>
                       <Box margin={1}>
@@ -404,7 +507,13 @@ export default function editCourse(): ReactElement {
                         </Button>
                       </Box>
                     </Box>
-                    <pre>{JSON.stringify(values, null, 2)}</pre>
+                    <pre
+                      style={{
+                        color: "black",
+                      }}
+                    >
+                      {JSON.stringify(values, null, 2)}
+                    </pre>
                   </Form>
                 )}
               </Formik>
