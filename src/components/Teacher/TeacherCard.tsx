@@ -13,10 +13,10 @@ const SuperContainer = styled.div`
   margin: 0 auto;
   transition: ${(props) => props.theme.transition.normal};
   overflow: hidden;
-  /* 
+
   &:hover {
     transform: scale(1.05);
-  } */
+  }
 
   &:hover .hidden {
     @media (min-width: ${(props) => props.theme.width.esmall}) {
@@ -105,18 +105,24 @@ const TeacherInfo = styled.div`
   }
 
   .hidden {
-    display: none;
     margin-top: 1.5rem;
     position: absolute;
-    opacity: 0;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    padding: 0 1rem;
+    z-index: 2;
     display: flex;
     align-items: center;
-    transform: translateX(-100%);
     transition: ${(props) => props.theme.transition.normal};
 
     @media (min-width: ${(props) => props.theme.width.esmall}) {
+      transform: translateX(-100%);
       position: relative;
       display: flex;
+      bottom: auto;
+      left: auto;
     }
 
     span {
