@@ -8,9 +8,21 @@ import {
 } from "../../../graphql/persons";
 import { GetOneTeacherClient } from "../../../interfaces";
 import { HeroDetail } from "../../components/PGM-Team";
-import { Bio, FieldExperience } from "../../components/Teacher";
+import { Bio, FieldExperiences } from "../../components/Teacher";
 
-const FlexContainer = styled.div``;
+const Container = styled.div`
+  padding-bottom: 5rem;
+`;
+
+const FlexContainer = styled.div`
+  @media (min-width: ${(props) => props.theme.width.medium}) {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-top: 5rem;
+  }
+`;
 
 interface DetailTeacherProps {
   teacher: GetOneTeacherClient;
@@ -18,14 +30,16 @@ interface DetailTeacherProps {
 
 const TeacherDetail = ({ teacher }: DetailTeacherProps) => {
   return (
-    <>
+    <Container>
       <HeroDetail teacher={teacher} />
 
       <FlexContainer>
         <Bio bio={teacher.personInformation.bio} />
-        <FieldExperience />
+        <FieldExperiences
+          fieldExperiences={teacher.personInformation.fieldExperiences}
+        />
       </FlexContainer>
-    </>
+    </Container>
   );
 };
 

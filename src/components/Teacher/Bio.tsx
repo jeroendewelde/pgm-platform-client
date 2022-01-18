@@ -1,5 +1,13 @@
 import React from "react";
+import styled from "styled-components";
 import { H2 } from "../Titles/H2";
+
+const Container = styled.div`
+  p {
+    margin-bottom: 3rem;
+    margin-top: 1rem;
+  }
+`;
 
 interface BioProps {
   bio: string;
@@ -7,9 +15,10 @@ interface BioProps {
 
 const Bio = ({ bio }: BioProps) => {
   return (
-    <div>
+    <Container>
       <H2>Bio</H2>
-    </div>
+      <p>{bio}</p>
+    </Container>
   );
 };
 

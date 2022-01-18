@@ -89,6 +89,11 @@ export const GET_TEACHER_BY_ID = gql`
           platform
           url
         }
+        fieldExperiences {
+          id
+          company
+          function
+        }
         quote
       }
     }

@@ -145,7 +145,10 @@ const HeroDetail = ({ teacher }: HeroDetailProps) => {
           <div className="content">
             <ul className="socials">
               {teacher.personInformation.socialMedias.map((socialMedia) => (
-                <SocialMediaListItem socialMedia={socialMedia} />
+                <SocialMediaListItem
+                  key={socialMedia.id}
+                  socialMedia={socialMedia}
+                />
               ))}
             </ul>
             <div className="quote">

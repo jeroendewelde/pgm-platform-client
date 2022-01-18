@@ -199,6 +199,7 @@ export interface GetOneTeacherClient {
   personInformation: {
     bio: string;
     socialMedias: SocialMedia[];
+    fieldExperiences: FieldExperience[];
     quote: string;
   };
 }
