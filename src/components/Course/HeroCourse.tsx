@@ -8,20 +8,26 @@ import test from "../../assets/test/test.jpg";
 import { Course } from "../../../interfaces";
 import { GlitchTitle } from "../Titles/GlitchTitle";
 import Link from "next/link";
+import Tag from "./Tag";
+import { CourseTitle } from "../Titles/CourseTitle";
 
-const Container = styled.div`
+const Container = styled.section`
   .flex-title {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    align-items: center;
+    margin-top: 1rem;
 
-    /* @media (min-width: ${(props) => props.theme.width.esmall}) {
-      align-items: center;
-      justify-content: space-between;
-      flex-direction: row;
-    } */
+    justify-content: space-between;
+    flex-wrap: wrap;
 
     .breadcrum {
-      margin-top: 1rem;
+      margin-right: 1rem;
+      margin-bottom: 1rem;
+
+      @media (min-width: ${(props) => props.theme.width.medium}) {
+        margin-bottom: 2rem;
+      }
       a {
         display: flex;
         align-items: center;
@@ -62,7 +68,6 @@ const Container = styled.div`
   }
 
   .flex {
-    margin-top: 1rem;
     display: flex;
     flex-direction: column;
 
@@ -96,14 +101,13 @@ const Container = styled.div`
       }
       @media (min-width: ${(props) => props.theme.width.large}) {
         min-width: 30rem;
-
         height: 25rem;
-
         margin-right: 6rem;
       }
     }
 
     .description {
+      max-width: 50rem;
     }
   }
 `;
@@ -115,8 +119,10 @@ interface HeroCourseProps {
 const HeroCourse = ({ course }: HeroCourseProps) => {
   return (
     <Container>
+      <CourseTitle learningLine={course.learningLine.color}>
+        {course.name}
+      </CourseTitle>
       <div className="flex-title">
-        <GlitchTitle>{course.name}</GlitchTitle>
         <div className="breadcrum">
           <Link href="/vakken">
             <a>
@@ -126,6 +132,11 @@ const HeroCourse = ({ course }: HeroCourseProps) => {
               <span className="cta">Ga terug naar vakken</span>
             </a>
           </Link>
+        </div>
+        <div className="tags">
+          {course.tags.map((tag) => (
+            <Tag key={tag}>{tag}</Tag>
+          ))}
         </div>
       </div>
       <div className="flex">

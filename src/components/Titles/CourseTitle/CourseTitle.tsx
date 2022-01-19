@@ -61,7 +61,7 @@ const CourseTitleStyle = styled.h2<CourseTitleProps>`
 
 export interface CourseTitleProps {
   children?: React.ReactNode;
-  learningLine: "blue" | "green" | "orange" | "pink" | "red";
+  learningLine: string;
 }
 
 const Icon = ({ learningLine = "blue" }: CourseTitleProps) => {
