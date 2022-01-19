@@ -17,11 +17,7 @@ const Container = styled.div`
   width: 100%;
   min-width: 17rem;
   border-bottom: ${(props) => props.theme.colors.turquoise} 2px solid;
-
-  @media (min-width: ${(props) => props.theme.width.medium}) {
-    max-width: 30rem;
-    min-width: 30rem;
-  }
+  max-width: 18.5rem;
 `;
 
 const OpenSelect = styled.div<Props>`
@@ -30,6 +26,7 @@ const OpenSelect = styled.div<Props>`
   justify-content: space-between;
   cursor: pointer;
   margin-bottom: 0.5rem;
+  width: 100%;
 
   .label {
     font-weight: ${(props) => props.theme.fontWeights.bold};
@@ -50,15 +47,20 @@ const FormContainer = styled.div<Props>`
   overflow: hidden;
   position: absolute;
   z-index: 2;
-  max-height: ${({ open }) => (open ? "100%" : "0")};
+
+  min-height: ${({ open }) => (open ? "16rem" : "0")};
+  height: ${({ open }) => (open ? "16rem" : "0")};
   transition: ${(props) => props.theme.transition.bounce};
+  margin-top: 2.5rem;
 
   .form {
+    margin-top: -2.5rem;
     transition: ${(props) => props.theme.transition.bounce};
     transform: ${({ open }) =>
       open ? "translateY(2.5rem)" : "translateY(-100%)"};
-    max-width: 17rem;
+    width: calc(100% - 1.5rem);
     min-width: 17rem;
+    max-width: 20rem;
     border-radius: ${(props) => props.theme.borderRadius.small};
     overflow: hidden;
   }
@@ -123,7 +125,7 @@ const Filter = ({ learningLines, onChange }: SelectItemProps) => {
                 open={open}
                 value={"Alle"}
                 as={Select}
-                setOpen={setOpen}
+                onClick={handleToggle}
               />
               {learningLines?.map((learningLine) => (
                 <Field
@@ -132,7 +134,7 @@ const Filter = ({ learningLines, onChange }: SelectItemProps) => {
                   open={open}
                   value={learningLine.name}
                   as={Select}
-                  setOpen={setOpen}
+                  onClick={handleToggle}
                   color={learningLine.color}
                 />
               ))}

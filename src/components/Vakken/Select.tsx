@@ -1,10 +1,11 @@
-import { important, transparentize } from "polished";
+import { important, lighten, transparentize } from "polished";
 import styled from "styled-components";
 
 const SelectStyle = styled.input<SelectProps>`
   text-align: left;
   transition: ${(props) => props.theme.transition.normal};
-  background-color: ${(props) => transparentize(0.7, props.theme.colors.black)};
+  background-color: ${(props) =>
+    lighten(0.1, props.theme.colors.bg_gradient_color_2)};
   width: 100%;
   -webkit-backdrop-filter: blur(30px);
   backdrop-filter: blur(30px);
@@ -67,7 +68,7 @@ interface SelectProps {
   open: boolean;
   value: string;
   name: string;
-  setOpen: (open: boolean) => void;
+  onClick: () => void;
   color?: string;
 }
 
@@ -76,13 +77,12 @@ export const Select = ({
   open,
   value,
   name,
-  setOpen,
+  onClick,
   color,
 }: SelectProps) => {
   return (
     <SelectStyle
-      onClick={() => setOpen(!open)}
-      setOpen={setOpen}
+      onClick={onClick}
       type={type}
       open={open}
       value={value}

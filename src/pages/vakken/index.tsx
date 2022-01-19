@@ -16,26 +16,35 @@ import { GlitchTitle } from "../../components/Titles/GlitchTitle";
 import { Filter } from "../../components/Vakken";
 
 const FilterContainer = styled.div`
+  margin-top: 3rem;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
 
+  @media (min-width: ${(props) => props.theme.width.medium}) {
+    flex-direction: row;
+  }
+
   .text {
     font-weight: ${(props) => props.theme.fontWeights.bold};
     font-size: ${(props) => props.theme.fontSizes.small};
-    margin-right: 1rem;
     margin-bottom: 0.5rem;
     color: ${(props) => props.theme.colors.purple};
+
+    @media (min-width: ${(props) => props.theme.width.medium}) {
+      margin-right: 2rem;
+      font-size: ${(props) => props.theme.fontSizes.normal};
+    }
   }
 `;
 
 const CoursesContainer = styled.div`
-  margin-top: 5rem;
+  margin-top: 2rem;
   position: relative;
 
-  /* .bg {
+  .bg {
     position: absolute;
-    top: 60%;
+    top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     border-radius: ${(props) => props.theme.borderRadius.large};
@@ -44,26 +53,46 @@ const CoursesContainer = styled.div`
 
     z-index: -1;
     width: 80%;
-    height: 70%;
-    background: -webkit-linear-gradient(
+    height: 80%;
+    /* background: -webkit-linear-gradient(
       -70deg,
       ${(props) => props.theme.colors.purple} 20%,
       ${(props) => props.theme.colors.turquoise} 100%
+    ); */
+    background-size: 300% 300%;
+    background-image: linear-gradient(
+      -45deg,
+      ${(props) => props.theme.colors.turquoise} 0%,
+      ${(props) => props.theme.colors.blue} 25%,
+      ${(props) => props.theme.colors.purple} 51%,
+      ${(props) => props.theme.colors.pink} 100%
     );
 
-    filter: blur(60px);
-    opacity: 1;
+    filter: blur(150px);
+    opacity: 0.5;
 
-    @media (min-width: ${(props) => props.theme.width.esmall}) {
-      opacity: 0.8;
+    /* @media (min-width: ${(props) => props.theme.width.esmall}) {
       filter: blur(90px);
       height: 80%;
     }
     @media (min-width: ${(props) => props.theme.width.medium}) {
-      opacity: 0.7;
       filter: blur(90px);
+    } */
+
+    animation: background-lava 10s infinite ease;
+
+    @keyframes background-lava {
+      0% {
+        background-position: 0% 50%;
+      }
+      50% {
+        background-position: 100% 50%;
+      }
+      100% {
+        background-position: 0% 50%;
+      }
     }
-  } */
+  }
 
   ul {
     margin-top: 1rem;
@@ -144,13 +173,13 @@ const CoursesPage = ({ courses, learningLines }: CoursesPageProps) => {
 
   return (
     <>
+      <GlitchTitle>{selected || "Alle"}</GlitchTitle>
       <FilterContainer>
         <span className="text">Filteren op </span>
         <Filter learningLines={learningLines} onChange={handleLeerlijnChange} />
       </FilterContainer>
       <CoursesContainer>
         <span className="bg"></span>
-        <GlitchTitle>{selected || "Alle"}</GlitchTitle>
 
         <ul>
           {!selected &&
