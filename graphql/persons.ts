@@ -27,6 +27,7 @@ export const GET_PERSON_BY_ID = gql`
       firstName
       lastName
       type
+      academicYear
       personInformation {
         id
         quote
