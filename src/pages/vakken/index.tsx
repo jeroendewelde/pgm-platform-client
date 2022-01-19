@@ -12,8 +12,8 @@ import {
   LearningLine,
 } from "../../../interfaces";
 import { Card } from "../../components/Course";
+import Filter from "../../components/Course/Filter";
 import { GlitchTitle } from "../../components/Titles/GlitchTitle";
-import { Filter } from "../../components/Vakken";
 
 const FilterContainer = styled.div`
   margin-top: 3rem;
@@ -44,8 +44,8 @@ const CoursesContainer = styled.div`
 
   .bg {
     position: absolute;
-    top: 50%;
-    left: 50%;
+    top: 40%;
+    left: 40%;
     transform: translate(-50%, -50%);
     border-radius: ${(props) => props.theme.borderRadius.large};
 
@@ -185,6 +185,7 @@ const CoursesPage = ({ courses, learningLines }: CoursesPageProps) => {
           {!selected &&
             courses.map((course) => (
               <Card
+                id={course.id}
                 key={course.id}
                 learningLine={course.learningLine.color}
                 title={course.name}
@@ -197,6 +198,7 @@ const CoursesPage = ({ courses, learningLines }: CoursesPageProps) => {
           <ul>
             {coursesByLearningLineId.map((course: Course) => (
               <Card
+                id={course.id}
                 key={course.id}
                 learningLine={course.learningLine.color}
                 title={course.name}

@@ -48,6 +48,26 @@ export const GET_COURSESBY_LEARNINGLINE_ID = gql`
   }
 `;
 
+export const GET_COURSE_BY_ID = gql`
+  query courseById($id: Int!) {
+    course(id: $id) {
+      id
+      name
+      description
+      term
+      academicYear
+      tags
+      learningLineId
+      specialisationId
+      learningLine {
+        id
+        name
+        color
+      }
+    }
+  }
+`;
+
 /**
  * Mutations
  */

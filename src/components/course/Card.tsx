@@ -12,7 +12,11 @@ import orangeIcon from "../../assets/learning-line/orange.svg";
 import redIcon from "../../assets/learning-line/red.svg";
 import pinkIcon from "../../assets/learning-line/pink.svg";
 
-const Container = styled.li<CardProps>`
+interface Props {
+  learningLine: string;
+}
+
+const Container = styled.li<Props>`
   cursor: pointer;
   display: flex;
   flex-direction: column;
@@ -198,12 +202,13 @@ const FlexContainer = styled.div`
 `;
 
 export interface CardProps {
-  tags?: string[];
-  title?: string;
+  tags: string[];
+  title: string;
   learningLine: string;
+  id: number;
 }
 
-const Icon = ({ learningLine = "blue" }: CardProps) => {
+const Icon = ({ learningLine = "blue" }: Props) => {
   if (learningLine === "blue") {
     return <Image className="image" src={blueIcon} width={35} height={35} />;
   } else if (learningLine === "green") {
@@ -219,7 +224,7 @@ const Icon = ({ learningLine = "blue" }: CardProps) => {
   }
 };
 
-const Card = ({ tags, learningLine, title }: CardProps) => {
+const Card = ({ tags, learningLine, title, id }: CardProps) => {
   const { setCursorHover } = useContext(CursorContext);
 
   const handleMouseEnter = () => {
@@ -239,25 +244,27 @@ const Card = ({ tags, learningLine, title }: CardProps) => {
   };
 
   return (
-    <Container
-      className="Card"
-      learningLine={learningLine}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-    >
-      <Title>
-        <Icon learningLine={learningLine} />
-        <h3>{title}</h3>
-        <div className="Dotbg"></div>
-      </Title>
-      <CTA>
-        <p className="CTA_text">Explore more</p>
-        <div className="Dot"></div>
-      </CTA>
-      <FlexContainer>
-        {tags && tags.map((tag) => <Tag key={tag}>{tag}</Tag>)}
-      </FlexContainer>
-    </Container>
+    <Link href={`vakken/${id}`}>
+      <Container
+        className="Card"
+        learningLine={learningLine}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+      >
+        <Title>
+          <Icon learningLine={learningLine} />
+          <h3>{title}</h3>
+          <div className="Dotbg"></div>
+        </Title>
+        <CTA>
+          <p className="CTA_text">Explore more</p>
+          <div className="Dot"></div>
+        </CTA>
+        <FlexContainer>
+          {tags && tags.map((tag) => <Tag key={tag}>{tag}</Tag>)}
+        </FlexContainer>
+      </Container>
+    </Link>
   );
 };
 
