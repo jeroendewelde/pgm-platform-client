@@ -126,14 +126,14 @@ const tableColumns = {
       field: "lastName",
       headerName: "familienaam",
     },
-    {
-      field: "type",
-      headerName: "type",
-    },
-    {
-      field: "generationId",
-      headerName: "generation ID",
-    },
+    // {
+    //   field: "type",
+    //   headerName: "type",
+    // },
+    // {
+    //   field: "generationId",
+    //   headerName: "generation ID",
+    // },
   ],
   teachers: [
     {
