@@ -133,16 +133,16 @@ const MenuList = styled(motion.ul)`
 `;
 
 export interface NavigationProps {
-  setMenuState: Dispatch<SetStateAction<boolean>>;
-  menuState: boolean;
+  setNavigationState: Dispatch<SetStateAction<boolean>>;
+  navigationState: boolean;
   x: number;
   y: number;
   setCursorHover: Dispatch<SetStateAction<boolean>>;
 }
 
 const Navigation = ({
-  menuState,
-  setMenuState,
+  navigationState,
+  setNavigationState,
   x,
   y,
   setCursorHover,
@@ -150,7 +150,7 @@ const Navigation = ({
   return (
     <>
       <AnimatePresence>
-        {menuState && (
+        {navigationState && (
           <>
             <Container
               initial={{ visibility: "hidden" }}
@@ -190,7 +190,7 @@ const Navigation = ({
                       }}
                     >
                       <span>
-                        <CgClose onClick={() => setMenuState(false)} />
+                        <CgClose onClick={() => setNavigationState(false)} />
                       </span>
                     </motion.div>
                   </div>

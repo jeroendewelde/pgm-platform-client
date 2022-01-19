@@ -45,31 +45,31 @@ export interface HeaderProps {
 }
 
 const Header = ({ setCursorHover }: HeaderProps) => {
-  const [menuState, setMenuState] = useState(false);
+  const [navigationState, setNavigationState] = useState(false);
 
   const router = useRouter();
 
   const { x, y } = useMousePosition();
 
   useEffect(() => {
-    setMenuState(false);
+    setNavigationState(false);
   }, [router.pathname]);
 
   useEffect(() => {
-    if (menuState) {
+    if (navigationState) {
       document.body.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "auto";
     }
-  }, [menuState]);
+  }, [navigationState]);
 
   return (
     <>
       <Navigation
         x={x}
         y={y}
-        menuState={menuState}
-        setMenuState={setMenuState}
+        navigationState={navigationState}
+        setNavigationState={setNavigationState}
         setCursorHover={setCursorHover}
       />
       <Container>
@@ -82,9 +82,9 @@ const Header = ({ setCursorHover }: HeaderProps) => {
             </Link>
 
             <MenuButton
-              setMenuState={setMenuState}
+              setNavigationState={setNavigationState}
               setCursorHover={setCursorHover}
-              menuState={menuState}
+              navigationState={navigationState}
             />
           </FlexContainer>
         </Wrapper>
