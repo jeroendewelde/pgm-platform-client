@@ -32,6 +32,19 @@ export const GET_PERSON_BY_ID = gql`
         quote
         bio
         dob
+        fieldExperiences {
+          id
+          company
+          function
+        }
+        socialMedias {
+          id
+          platform
+          url
+        }
+      }
+      courses {
+        id
       }
     }
   }

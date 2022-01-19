@@ -35,7 +35,7 @@ export interface Course {
 }
 
 export interface FieldExperience {
-  id: number;
+  id: string;
   duration: string;
   company: string;
   function: string;
@@ -109,7 +109,7 @@ export interface Project {
 }
 
 export interface SocialMedia {
-  id: number;
+  id: string;
   platform: string;
   url: string;
   // Relations

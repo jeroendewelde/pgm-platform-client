@@ -40,6 +40,9 @@ import CustomMultiSelectWithChips from "../../../components/Admin/Form/CustomMul
 const validationSchema = yup.object({
   firstName: yup.string().required("Voornaam is verplicht"),
   lastName: yup.string().required("Familienaam is verplicht"),
+  quote: yup.string(),
+  bio: yup.string(),
+  //   dob: yup.date().required("Geboortedatum is verplicht"),
 });
 
 export default function createLearningLine(): ReactElement {
@@ -47,30 +50,6 @@ export default function createLearningLine(): ReactElement {
     addTeacher,
     { data: dataTeacher, loading: loadingTeacher, error: errorTeacher },
   ] = useMutation(CREATE_PERSON);
-  const [
-    addTeacherInformation,
-    {
-      data: dataTeacherInformation,
-      loading: loadingTeacherInformation,
-      error: errorTeacherInformation,
-    },
-  ] = useMutation(CREATE_PERSON_INFORMATION);
-  const [
-    addFieldExperience,
-    {
-      data: dataFieldExperience,
-      loading: loadingFieldExperience,
-      error: errorFieldExperience,
-    },
-  ] = useMutation(CREATE_FIELD_EXPERIENCE);
-  const [
-    addSocialMedia,
-    {
-      data: dataSocialMedia,
-      loading: loadingSocialMedia,
-      error: errorSocialMedia,
-    },
-  ] = useMutation(CREATE_SOCIAL_MEDIA);
 
   const {
     data: dataSocialMediaPlatforms,
@@ -119,7 +98,7 @@ export default function createLearningLine(): ReactElement {
                 initialValues={{
                   firstName: "",
                   lastName: "",
-                  dob: "",
+                  dob: null,
                   quote: "",
                   bio: "",
                   fieldExperiences: [],
@@ -333,7 +312,10 @@ export default function createLearningLine(): ReactElement {
                                           variant="outlined"
                                           disabled={isSubmitting}
                                           onClick={() =>
-                                            arrayHelpers.insert(index, "")
+                                            arrayHelpers.insert(index, {
+                                              company: "",
+                                              function: "",
+                                            })
                                           }
                                         >
                                           <Add />
@@ -346,7 +328,12 @@ export default function createLearningLine(): ReactElement {
                                     sx={{ margin: 1 }}
                                     variant="outlined"
                                     disabled={isSubmitting}
-                                    onClick={() => arrayHelpers.push("")}
+                                    onClick={() =>
+                                      arrayHelpers.push({
+                                        company: "",
+                                        function: "",
+                                      })
+                                    }
                                   >
                                     Werk-ervaring toevoegen
                                   </Button>
@@ -358,7 +345,7 @@ export default function createLearningLine(): ReactElement {
                         <Box margin={1}>
                           <FieldArray
                             name="socialMedias"
-                            render={(arrayHelpers2) => (
+                            render={(arrayHelpers) => (
                               <div>
                                 <Typography
                                   variant="h6"
@@ -407,21 +394,29 @@ export default function createLearningLine(): ReactElement {
                                           variant="outlined"
                                           disabled={isSubmitting}
                                           onClick={() =>
-                                            arrayHelpers2.remove(index)
+                                            arrayHelpers.remove(index)
                                           }
                                         >
-                                          <Remove />
+                                          <Remove /> {index}
                                         </Button>
 
                                         <Button
                                           sx={{ margin: 1 }}
                                           variant="outlined"
                                           disabled={isSubmitting}
-                                          onClick={() =>
-                                            arrayHelpers2.insert(index, "")
+                                          onClick={
+                                            () =>
+                                              arrayHelpers.push({
+                                                platform: "",
+                                                url: "",
+                                              })
+                                            // arrayHelpers.insert(index + 1, {
+                                            //   platform: "",
+                                            //   url: "",
+                                            // })
                                           }
                                         >
-                                          <Add />
+                                          <Add /> {index}
                                         </Button>
                                       </Box>
                                     </div>
@@ -431,7 +426,12 @@ export default function createLearningLine(): ReactElement {
                                     sx={{ margin: 1 }}
                                     variant="outlined"
                                     disabled={isSubmitting}
-                                    onClick={() => arrayHelpers2.push("")}
+                                    onClick={() =>
+                                      arrayHelpers.push({
+                                        platform: "",
+                                        url: "",
+                                      })
+                                    }
                                   >
                                     Social Media Toevoegen
                                   </Button>

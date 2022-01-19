@@ -30,6 +30,7 @@ import {
   FieldExperience,
   Person,
   PersonInformation,
+  SocialMedia,
   Specialisation,
 } from "../../../../../interfaces";
 
@@ -52,6 +53,7 @@ import { Add, Remove } from "@mui/icons-material";
 import CustomSingleSelectForEnum from "../../../../components/Admin/Form/CustomSingleSelectForEnum";
 import { GET_ALL_SOCIAL_MEDIA_PLATFORMS } from "../../../../../graphql/enums";
 import { GET_ALL_COURSES } from "../../../../../graphql/courses";
+import CustomMultiSelectWithChips from "../../../../components/Admin/Form/CustomMultiSelectWithChips";
 
 const validationSchema = yup.object({
   firstName: yup.string().required("Voornaam is verplicht"),
@@ -64,6 +66,7 @@ export default function editTeacher(): ReactElement {
   const adminPath = router.pathname.split("/admin/")[1].split("/")[0];
   const [teacher, setTeacher] = useState<Person>();
   const [teacherInfo, setTeacherInfo] = useState<PersonInformation>();
+  const [coursesNEW, setCourses] = useState<Course[]>([]);
   const [showExtraInfo, setShowExtraInfo] = useState(false);
 
   const handleChangeSwitchExtraInfo = () => {
@@ -109,33 +112,43 @@ export default function editTeacher(): ReactElement {
   //     ssr: true,
   //   });
 
-  const {
-    data: dataGetFieldExperiences,
-    error: errorGetFieldExperiences,
-    loading: loadingGetFieldExperiences,
-  } = useQuery(GET_FIELD_EXPERIENCES_BY_PERSON_ID, {
-    variables: {
-      id: Number(id),
-    },
-    ssr: true,
-  });
+  //   const {
+  //     data: dataGetFieldExperiences,
+  //     error: errorGetFieldExperiences,
+  //     loading: loadingGetFieldExperiences,
+  //   } = useQuery(GET_FIELD_EXPERIENCES_BY_PERSON_ID, {
+  //     variables: {
+  //       id: Number(id),
+  //     },
+  //     ssr: true,
+  //   });
 
   useEffect(() => {
-    if (dataGet) {
+    if (dataGet && dataCourses) {
       setTeacher(dataGet.person);
-      if (dataGet?.person.personInformation) {
+      if (dataGet.person.personInformation) {
         console.log("extra info");
         // setTeacherInfo(dataGetPersonInformation.personInformation);
         // setShowExtraInfo(!showExtraInfo);
         handleChangeSwitchExtraInfo();
-      } else {
-        console.log("geen extra info");
       }
+
+      const coursesFromData = dataGet.person.courses.map(
+        (courseFromDb: Course) =>
+          // console.log("extra.....", extra);
+          // data.includes(extra.id);
+          // return data.map((t) => t.id === extra.id ? t : null).filter(t => t !== null);
+          // return data.map((t) => (t.id === extra.id ? t : null));
+          dataCourses.courses.find((t: Course) => t.id === courseFromDb.id)
+      );
+      console.log(".....coursesFromData....", coursesFromData);
+
+      setCourses(coursesFromData);
 
       //   console.log(dataGet.person);
     }
     //   }, [dataGet, dataGetPersonInformation]);
-  }, [dataGet]);
+  }, [dataGet, dataCourses]);
 
   const [
     updateTeacher,
@@ -168,25 +181,59 @@ export default function editTeacher(): ReactElement {
           }}
         >
           {/* {!teacher && !teacherInfo ? ( */}
-          {loadingGet || loadingCourses ? (
+          {loadingGet ||
+          loadingCourses ||
+          loadingSocialMediaPlatforms ||
+          !coursesNEW ? (
             <CustomLoading />
           ) : (
             <>
-              {console.log("data info....", teacherInfo)}
+              {console.log("data info....", dataGet.person)}
+              {/* {console.log("courses....", coursesNEW)} */}
               <Formik
                 initialValues={{
                   firstName: dataGet.person.firstName || "",
                   lastName: dataGet.person.lastName || "",
-                  dob: dataGet.person?.personInformation?.dob || "",
+                  dob: dataGet.person?.personInformation?.dob || null,
                   quote: dataGet.person?.personInformation?.quote || "",
                   bio: dataGet.person?.personInformation?.bio || "",
 
                   // dob: "",
                   // quote: "",
                   // bio: "",
-                  fieldExperiences: [],
-                  socialMedias: [],
-                  courses: [],
+                  //   fieldExperiences:
+                  //     dataGet.person?.personInformation?.fieldExperiences || [],
+                  socialMedias:
+                    // dataGet.person?.personInformation?.socialMedias || [],
+                    dataGet.person?.personInformation?.socialMedias?.map(
+                      (sm: SocialMedia) => {
+                        return {
+                          platform: sm.platform,
+                          url: sm.url,
+                          //   id: sm.id || null,
+                        };
+                      }
+                    ) || [],
+                  fieldExperiences:
+                    // dataGet.person?.personInformation?.socialMedias || [],
+                    dataGet.person?.personInformation?.fieldExperiences?.map(
+                      (fe: FieldExperience) => {
+                        return {
+                          company: fe.company,
+                          function: fe.function,
+                          //   id: sm.id || null,
+                        };
+                      }
+                    ) || [],
+                  //   courses: dataGet.person?.courses || [],
+                  //   courses: dataGet.person?.courses ? courses : [],
+                  //   courses: dataGet.person?.courses ? coursesNEW : [],
+                  //   courses: dataGet.person?.courses,
+                  courses: dataGet.person.courses.map((courseFromDb: Course) =>
+                    dataCourses.courses.find(
+                      (t: Course) => t.id === courseFromDb.id
+                    )
+                  ),
                 }}
                 validationSchema={validationSchema}
                 onSubmit={(values, { setSubmitting }) => {
@@ -200,12 +247,17 @@ export default function editTeacher(): ReactElement {
                         courseIds: values.courses.map(
                           (course: Course) => course.id
                         ),
-                        dob: values.dob,
-                        quote: values.quote,
-                        bio: values.bio,
+                        personInformation: {
+                          dob: values.dob,
+                          quote: values.quote,
+                          bio: values.bio,
+                          //   personId: Number(id),
+                          fieldExperiences: values.fieldExperiences,
+                          socialMedias: values.socialMedias,
+                        },
                         // fieldExperiences: values.fieldExperiences,
                       },
-                      id: dataGet.person.id,
+                      id: Number(id),
                     },
                   })
                     // .then((res) => {
@@ -291,6 +343,40 @@ export default function editTeacher(): ReactElement {
                           // maxWidth: 'lg'
                         }}
                       />
+                    </Box>
+
+                    <Box margin={1}>
+                      <Typography
+                        variant="h6"
+                        noWrap
+                        component="div"
+                        sx={{
+                          flexGrow: 1,
+                          mb: 2,
+                          // ml: 1,
+                          color: "black",
+                        }}
+                      >
+                        Docenten
+                      </Typography>
+                      <Typography variant="subtitle1" sx={{ color: "black" }}>
+                        De vakken die deze docent geeft, dit kan nog aangepast
+                        worden
+                      </Typography>
+
+                      <Box margin={1}>
+                        <Field
+                          required
+                          component={CustomMultiSelectWithChips}
+                          label="Vakken"
+                          name="courses"
+                          placeholder="Zoek een vak..."
+                          // data={dataLearningLines.teachers}
+                          data={dataCourses.courses}
+                          // helperText="Naam van de docenten"
+                          labelProps={["name", "academicYear"]}
+                        />
+                      </Box>
                     </Box>
 
                     <FormControlLabel
@@ -433,7 +519,7 @@ export default function editTeacher(): ReactElement {
                         <Box margin={1}>
                           <FieldArray
                             name="socialMedias"
-                            render={(arrayHelpers2) => (
+                            render={(arrayHelpers) => (
                               <div>
                                 <Typography
                                   variant="h6"
@@ -466,6 +552,9 @@ export default function editTeacher(): ReactElement {
                                           component={CustomSingleSelectForEnum}
                                           label="Platform"
                                           // name="platform"
+                                          value={
+                                            values.socialMedias[index].platform
+                                          }
                                           name={`socialMedias.${index}.platform`}
                                           data={
                                             dataSocialMediaPlatforms.__type
@@ -482,7 +571,7 @@ export default function editTeacher(): ReactElement {
                                           variant="outlined"
                                           disabled={isSubmitting}
                                           onClick={() =>
-                                            arrayHelpers2.remove(index)
+                                            arrayHelpers.remove(index)
                                           }
                                         >
                                           <Remove />
@@ -493,7 +582,10 @@ export default function editTeacher(): ReactElement {
                                           variant="outlined"
                                           disabled={isSubmitting}
                                           onClick={() =>
-                                            arrayHelpers2.insert(index, "")
+                                            arrayHelpers.push({
+                                              platform: "",
+                                              url: "",
+                                            })
                                           }
                                         >
                                           <Add />
@@ -506,7 +598,12 @@ export default function editTeacher(): ReactElement {
                                     sx={{ margin: 1 }}
                                     variant="outlined"
                                     disabled={isSubmitting}
-                                    onClick={() => arrayHelpers2.push("")}
+                                    onClick={() =>
+                                      arrayHelpers.push({
+                                        platform: "",
+                                        url: "",
+                                      })
+                                    }
                                   >
                                     Social Media Toevoegen
                                   </Button>
@@ -517,22 +614,6 @@ export default function editTeacher(): ReactElement {
                         </Box>
                       </>
                     )}
-                    <Box margin={1}>
-                      <Field
-                        required
-                        component={TextField}
-                        name="academicYear"
-                        type="text"
-                        label="Academiejaren"
-                        helperText="Academiejaren in formaat 2019-2021"
-                        // value={
-                        //   values.name
-                        //     ? values.academicYear
-                        //     : specialisation?.academicYear
-                        // }
-                        // fullWidth
-                      />
-                    </Box>
                     <Box
                       sx={{
                         display: "flex",

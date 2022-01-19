@@ -27,6 +27,7 @@ export default function CustomMultiSelect(props: SelectProps): ReactElement {
     required,
     field: { name },
     extraData,
+    value,
   } = props;
   const [value, setValue] = useState("");
 
