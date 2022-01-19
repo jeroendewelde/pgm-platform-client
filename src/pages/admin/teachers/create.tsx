@@ -45,7 +45,7 @@ const validationSchema = yup.object({
   //   dob: yup.date().required("Geboortedatum is verplicht"),
 });
 
-export default function createLearningLine(): ReactElement {
+export default function createTeacher(): ReactElement {
   const [
     addTeacher,
     { data: dataTeacher, loading: loadingTeacher, error: errorTeacher },

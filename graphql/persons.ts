@@ -90,7 +90,7 @@ export const GET_ALL_STUDENTS = gql`
       firstName
       lastName
       type
-      generationId
+      academicYear
     }
   }
 `;

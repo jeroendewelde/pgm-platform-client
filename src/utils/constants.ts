@@ -126,6 +126,10 @@ const tableColumns = {
       field: "lastName",
       headerName: "familienaam",
     },
+    {
+      field: "academicYear",
+      headerName: "academiejaar",
+    },
     // {
     //   field: "type",
     //   headerName: "type",

@@ -81,6 +81,7 @@ export interface Person {
   lastName: string;
   // enum student, person?
   type: string;
+  academicYear: string;
   // Relations
   // generationId: number;
   // generation: Generation;
