@@ -1,8 +1,14 @@
 import { GetStaticPaths } from "next";
 import React from "react";
+import styled from "styled-components";
 import client from "../../../apollo-client";
 import { GET_ALL_COURSES, GET_COURSE_BY_ID } from "../../../graphql/courses";
 import { Course } from "../../../interfaces";
+import { HeroCourse } from "../../components/Course";
+
+const Container = styled.div`
+  padding-bottom: 5rem;
+`;
 
 interface CoursesPageProps {
   course: Course;
@@ -10,7 +16,11 @@ interface CoursesPageProps {
 
 const CourseDetail = ({ course }: CoursesPageProps) => {
   console.log(course);
-  return <div></div>;
+  return (
+    <Container>
+      <HeroCourse course={course} />
+    </Container>
+  );
 };
 
 export default CourseDetail;

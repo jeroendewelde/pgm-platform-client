@@ -74,7 +74,7 @@ const ImageContainer = styled.div`
   margin-top: 2rem;
 
   overflow: hidden;
-  border-radius: ${(props) => props.theme.borderRadius.normal};
+  border-radius: ${(props) => props.theme.borderRadius.small};
 
   @media (min-width: ${(props) => props.theme.width.small}) {
     height: 20rem;

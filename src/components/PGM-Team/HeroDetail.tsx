@@ -1,6 +1,5 @@
 import React from "react";
 import styled from "styled-components";
-import Link from "next/link";
 import { GetOneTeacherClient } from "../../../interfaces";
 import { SocialMediaListItem, TeacherImage } from "../Teacher";
 import { GlitchTitle } from "../Titles/GlitchTitle";
