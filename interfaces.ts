@@ -203,3 +203,17 @@ export interface GetOneTeacherClient {
     quote: string;
   };
 }
+
+export interface CourseByLearningLineId {
+  id: number;
+  name: string;
+  description: string;
+  term: number;
+  academicYear: string;
+  tags: string[];
+  // Relations
+  learningLineId: number;
+  specialisationId: number;
+  learningLine: LearningLine;
+  specialisation: Specialisation;
+}

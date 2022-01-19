@@ -1,17 +1,27 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Field, Formik } from "formik";
 import { MdExpandMore } from "react-icons/md";
 
 import styled from "styled-components";
 import { transparentize } from "polished";
 import { Select } from "./Select";
+import { LearningLine } from "../../../interfaces";
 
 interface Props {
   open: boolean;
 }
 
 const Container = styled.div`
-  max-width: 20rem;
+  overflow: hidden;
+  display: flex;
+  width: 100%;
+  min-width: 17rem;
+  border-bottom: ${(props) => props.theme.colors.turquoise} 2px solid;
+
+  @media (min-width: ${(props) => props.theme.width.medium}) {
+    max-width: 30rem;
+    min-width: 30rem;
+  }
 `;
 
 const OpenSelect = styled.div<Props>`
@@ -45,20 +55,32 @@ const FormContainer = styled.div<Props>`
 
   .form {
     transition: ${(props) => props.theme.transition.bounce};
-    transform: ${({ open }) => (open ? "translateY(0)" : "translateY(-100%)")};
-    max-width: 20rem;
+    transform: ${({ open }) =>
+      open ? "translateY(2.5rem)" : "translateY(-100%)"};
+    max-width: 17rem;
+    min-width: 17rem;
     border-radius: ${(props) => props.theme.borderRadius.small};
     overflow: hidden;
   }
 `;
 
-const Filter = () => {
+interface SelectItemProps {
+  learningLines: LearningLine[];
+  onChange: (value: string) => void;
+}
+
+const Filter = ({ learningLines, onChange }: SelectItemProps) => {
   const [open, setOpen] = useState(false);
+  const [selected, setSelected] = useState("");
 
   const handleToggle = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     e.preventDefault();
     setOpen(!open);
   };
+
+  useEffect(() => {
+    onChange(selected);
+  }, [selected, onChange]);
 
   return (
     <Container>
@@ -75,8 +97,7 @@ const Filter = () => {
             leerlijn: "",
           }}
           onSubmit={(value) => {
-            console.log("submit");
-            console.log(value);
+            setSelected(value.leerlijn);
           }}
         >
           {({
@@ -100,47 +121,25 @@ const Filter = () => {
                 type="button"
                 name="leerlijn"
                 open={open}
-                value={"Business & Communication"}
+                value={"Alle"}
                 as={Select}
                 setOpen={setOpen}
               />
-              <Field
-                type="button"
-                name="leerlijn"
-                open={open}
-                value={"Applied Information Technology"}
-                as={Select}
-                setOpen={setOpen}
-              />
-              <Field
-                type="button"
-                name="leerlijn"
-                open={open}
-                value={"Creative Design & Development"}
-                as={Select}
-                setOpen={setOpen}
-              />
-              <Field
-                type="button"
-                name="leerlijn"
-                open={open}
-                value={"Computer Programming"}
-                as={Select}
-                setOpen={setOpen}
-              />
-              <Field
-                type="button"
-                name="leerlijn"
-                open={open}
-                value={"Workplace Learning"}
-                as={Select}
-                setOpen={setOpen}
-              />
+              {learningLines?.map((learningLine) => (
+                <Field
+                  type="button"
+                  name="leerlijn"
+                  open={open}
+                  value={learningLine.name}
+                  as={Select}
+                  setOpen={setOpen}
+                  color={learningLine.color}
+                />
+              ))}
             </form>
           )}
         </Formik>
       </FormContainer>
-      <div>zfzefhzefilzehfoizefozehjfoijzefzejfzeiofoieifhj</div>
     </Container>
   );
 };
