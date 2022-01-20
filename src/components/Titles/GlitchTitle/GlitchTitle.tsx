@@ -3,6 +3,7 @@ import React from "react";
 import styled from "styled-components";
 
 const GlitchTitleStyle = styled.h1`
+  margin: 0;
   text-shadow: 0.05em 0 0
       ${(props) => transparentize(0.3, props.theme.colors.pink)},
     -0.025em -0.05em 0

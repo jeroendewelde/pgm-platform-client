@@ -4,8 +4,6 @@ import Image from "next/image";
 
 import { GlitchTitle } from "../Titles/GlitchTitle";
 import heroImage from "../../assets/hero-image.png";
-import glowspot from "../../assets/glow-spots-and-grid/glowspot-purple.png";
-import grid from "../../assets/glow-spots-and-grid/grid-purple.svg";
 
 const Container = styled.div`
   display: flex;
@@ -49,11 +47,12 @@ const GlowSpot = styled.div`
   top: 0%;
   right: 0%;
   z-index: -1;
-  background-image: url({glowspot});
+  display: none;
 
   @media (min-width: ${(props) => props.theme.width.medium}) {
-    top: -50%;
-    right: -50%;
+    display: block;
+    top: -100%;
+    right: -80%;
   }
 `;
 
@@ -73,7 +72,9 @@ const Hero = () => {
   return (
     <Container>
       <Content>
-        <GlitchTitle>Graduaat programmeren </GlitchTitle>
+        <div className="h1_padding">
+          <GlitchTitle>Graduaat programmeren </GlitchTitle>
+        </div>
         <div>
           <p>
             Droom je ervan om zelf knappe websites en coole apps te ontwikkelen
@@ -90,10 +91,20 @@ const Hero = () => {
         </div>
       </ImageContainer>
       <GlowSpot>
-        <Image src={glowspot} alt="glowspot" />
+        <Image
+          src="/glow-spots-and-grid/glowspot-purple.png"
+          alt="glowspot"
+          width={1500}
+          height={1500}
+        />
       </GlowSpot>
       <Grid>
-        <Image src={grid} alt="grid" />
+        <Image
+          src="/glow-spots-and-grid/grid-purple.svg"
+          alt="grid"
+          width={150}
+          height={150}
+        />
       </Grid>
     </Container>
   );

@@ -36,19 +36,19 @@ const Container = styled.button`
 `;
 
 interface menuButtonProps {
-  setMenuState: Dispatch<SetStateAction<boolean>>;
+  setNavigationState: Dispatch<SetStateAction<boolean>>;
   setCursorHover: Dispatch<SetStateAction<boolean>>;
-  menuState: boolean;
+  navigationState: boolean;
 }
 
 const MenuButton = ({
-  setMenuState,
+  setNavigationState,
   setCursorHover,
-  menuState,
+  navigationState,
 }: menuButtonProps) => {
   return (
     <Container
-      onClick={() => setMenuState(!menuState)}
+      onClick={() => setNavigationState(!navigationState)}
       onMouseEnter={() => setCursorHover(true)}
       onMouseLeave={() => setCursorHover(false)}
     >

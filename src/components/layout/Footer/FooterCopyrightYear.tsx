@@ -8,7 +8,9 @@ const Container = styled.div`
   flex-wrap: wrap;
 `;
 
-const Copyright = styled.p`
+const Copyright = styled.span`
+  font-size: ${(props) => props.theme.fontSizes.normal};
+  display: block;
   margin: 0.5rem auto;
   text-align: center;
 `;

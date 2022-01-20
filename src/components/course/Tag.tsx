@@ -1,19 +1,21 @@
 import React from "react";
 import styled from "styled-components";
 
-const Container = styled.div`
+const Container = styled.li`
   display: inline-block;
-  padding: 0.2rem 0.5rem;
+  padding: 0.15rem 0.3rem;
   border-radius: ${(props) => props.theme.borderRadius.small};
-  border: 1px solid ${(props) => props.theme.colors.white};
+  border: 1px dashed ${(props) => props.theme.colors.white};
   margin-right: 1rem;
   position: relative;
-  z-index: 99;
+  z-index: 5;
   margin-bottom: 0.5rem;
 
-  p {
+  span {
+    text-transform: capitalize;
     font-family: ${(props) => props.theme.fontFamilies.secondary};
     font-weight: ${(props) => props.theme.fontWeights.light};
+    font-size: ${(props) => props.theme.fontSizes.normal};
     margin: 0;
   }
 `;
@@ -25,7 +27,7 @@ interface TagProps {
 const Tag = ({ children }: TagProps) => {
   return (
     <Container>
-      <p>{children}</p>
+      <span>{children}</span>
     </Container>
   );
 };

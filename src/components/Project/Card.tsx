@@ -6,95 +6,157 @@ import { transparentize } from "polished";
 import Tag from "./Tag";
 import test from "../../assets/test/test.jpg";
 import profile from "../../assets/test/profile.jpg";
+import { Project } from "../../../interfaces";
 
-const Container = styled.div`
+const Container = styled.li`
+  margin-bottom: 2rem;
   cursor: pointer;
-  width: 18rem;
-  overflow: hidden;
-  border-radius: ${(props) => props.theme.borderRadius.normal};
-  background-color: ${(props) =>
-    transparentize(0.5, props.theme.colors.turquoise)};
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border: 1px dashed ${(props) => props.theme.colors.turquoise};
-  transition: ${(props) => props.theme.transition.normal};
+  min-width: 15rem;
+  width: 100%;
+  border-radius: ${(props) => props.theme.borderRadius.small};
+  height: 16rem;
+  transition: ${(props) => props.theme.transition.bounce};
+
+  @media (min-width: ${(props) => props.theme.width.esmall}) {
+    width: calc(50% - 1rem);
+    height: 18rem;
+  }
+
+  @media (min-width: ${(props) => props.theme.width.medium}) {
+    height: 25rem;
+  }
 
   &:hover {
-    border: 1px dashed ${(props) => props.theme.colors.white};
-    background-color: ${(props) =>
-      transparentize(0.2, props.theme.colors.turquoise)};
-    box-shadow: ${(props) =>
-      `0 0 20px ${transparentize(
-        0.5,
-        props.theme.colors.turquoise
-      )}, 0 0 40px ${transparentize(
-        0.6,
-        props.theme.colors.turquoise
-      )}, 0 0 80px ${transparentize(0.8, props.theme.colors.turquoise)}`};
-    transform: translateY(-2px);
+    transition: ${(props) => props.theme.transition.bounce};
+    height: 22rem;
+
+    @media (min-width: ${(props) => props.theme.width.esmall}) {
+      height: 24rem;
+    }
+    @media (min-width: ${(props) => props.theme.width.medium}) {
+      height: 30rem;
+    }
+
+    .card-content {
+      transition: ${(props) => props.theme.transition.bounce};
+      transform: translateY(0%);
+    }
+  }
+
+  .card-content {
+    transform: translateY(-100%);
+    margin: auto 0;
+    transition: ${(props) => props.theme.transition.normal};
+    padding: 0.5rem;
+    position: relative;
+    border: 1px dashed ${(props) => props.theme.colors.turquoise};
+
+    .students {
+      transition: ${(props) => props.theme.transition.normal};
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-start;
+      align-items: center;
+      font-size: ${(props) => props.theme.fontSizes.small};
+      font-family: ${(props) => props.theme.fontFamilies.secondary};
+      font-weight: ${(props) => props.theme.fontWeights.light};
+      span {
+        margin-right: 0.5rem;
+      }
+
+      li {
+        margin: 0;
+        margin-right: 0.5rem;
+
+        &:last-child ::after {
+          content: "";
+        }
+
+        &::after {
+          content: " &";
+        }
+      }
+    }
+
+    .teaser-text {
+      font-size: ${(props) => props.theme.fontSizes.normal};
+      margin: 0;
+      margin-top: 1rem;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 2; /* number of lines to show */
+      -webkit-box-orient: vertical;
+    }
   }
 `;
 
 const CardImage = styled.div`
   padding: 0.5rem;
   position: relative;
-  height: 10.125rem;
+  height: 16rem;
   width: 100%;
-`;
+  z-index: 2;
 
-const CardContent = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: flex-start;
-  padding: 1rem;
-  min-height: 8rem;
-`;
-
-const ImageContainer = styled.div`
-  position: relative;
-  width: 2.5rem;
-  height: 2.5rem;
-  margin-right: 1rem;
-
-  img {
-    border-radius: ${(props) => props.theme.borderRadius.circle};
+  @media (min-width: ${(props) => props.theme.width.esmall}) {
+    height: 18rem;
   }
-`;
 
-const Student = styled.div`
-  display: flex;
-  align-items: center;
+  @media (min-width: ${(props) => props.theme.width.small}) {
+    height: 18rem;
+  }
 
-  span {
-    display: block;
-    font-size: ${(props) => props.theme.fontSizes.normal};
+  @media (min-width: ${(props) => props.theme.width.medium}) {
+    height: 25rem;
+  }
+
+  h3 {
+    margin: 0;
+    padding: 0.5rem;
     font-weight: ${(props) => props.theme.fontWeights.bold};
+    font-size: ${(props) => props.theme.fontSizes.medium};
+    letter-spacing: 1px;
+    z-index: 3;
+    position: absolute;
+    bottom: 0rem;
+    left: 0;
+    width: 100%;
+    background-color: ${(props) =>
+      transparentize(0.4, props.theme.colors.purple)};
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
   }
 `;
 
-export interface CardProps {}
+export interface CardProps {
+  key: number;
+  project: Project;
+}
 
-const Card = () => {
+const Card = ({ key, project }: CardProps) => {
+  console.log(project);
   return (
-    <Container>
+    <Container key={key}>
       <CardImage>
-        <Image src={test} layout="fill" alt="project-1" />
-        <Tag title="Programmeren 1" learningLine={"blue"} />
-        <Tag title="Programmeren 1" learningLine={"blue"} />
+        <Image src={test} layout="fill" alt="project-1" objectFit="cover" />
+        <ul>
+          {project.tags.map((tag, index) => (
+            <Tag key={index} title={tag} />
+          ))}
+        </ul>
+
+        <h3>{project.name}</h3>
       </CardImage>
-      <CardContent>
-        <h3>Opdracht naam</h3>
-        <Student>
-          <ImageContainer>
-            <Image src={profile} layout="fill" alt="project-1" />
-          </ImageContainer>
-          <div>
-            <span>Jamie-Lee Hart</span>
-            <small>2nd generation | 2020 - 2021</small>
-          </div>
-        </Student>
-      </CardContent>
+      <div className="card-content">
+        <ul className="students">
+          <span>Made by </span>
+          {project.students.map((student, index) => (
+            <li key={index}>{student.firstName}</li>
+          ))}
+        </ul>
+
+        <p className="teaser-text">{project.teaserText}</p>
+      </div>
     </Container>
   );
 };

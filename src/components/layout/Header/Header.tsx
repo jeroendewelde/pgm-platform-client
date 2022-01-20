@@ -5,7 +5,6 @@ import React, { useState, useEffect, Dispatch, SetStateAction } from "react";
 import styled from "styled-components";
 import { useRouter } from "next/router";
 
-import logo from "../../../assets/logo/logo.png";
 import { Navigation } from "../Navigation";
 import MenuButton from "./MenuButton";
 import { useMousePosition } from "../../../hooks/useMousePosition";
@@ -46,31 +45,31 @@ export interface HeaderProps {
 }
 
 const Header = ({ setCursorHover }: HeaderProps) => {
-  const [menuState, setMenuState] = useState(false);
+  const [navigationState, setNavigationState] = useState(false);
 
   const router = useRouter();
 
   const { x, y } = useMousePosition();
 
   useEffect(() => {
-    setMenuState(false);
+    setNavigationState(false);
   }, [router.pathname]);
 
   useEffect(() => {
-    if (menuState) {
+    if (navigationState) {
       document.body.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "auto";
     }
-  }, [menuState]);
+  }, [navigationState]);
 
   return (
     <>
       <Navigation
         x={x}
         y={y}
-        menuState={menuState}
-        setMenuState={setMenuState}
+        navigationState={navigationState}
+        setNavigationState={setNavigationState}
         setCursorHover={setCursorHover}
       />
       <Container>
@@ -78,14 +77,14 @@ const Header = ({ setCursorHover }: HeaderProps) => {
           <FlexContainer>
             <Link href="/">
               <Logo>
-                <Image src={logo} layout="fill" />
+                <Image src="/logo/logo.png" layout="fill" />
               </Logo>
             </Link>
 
             <MenuButton
-              setMenuState={setMenuState}
+              setNavigationState={setNavigationState}
               setCursorHover={setCursorHover}
-              menuState={menuState}
+              navigationState={navigationState}
             />
           </FlexContainer>
         </Wrapper>
