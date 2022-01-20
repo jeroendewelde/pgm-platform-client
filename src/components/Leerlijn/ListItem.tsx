@@ -6,6 +6,8 @@ import { CourseTitle } from "../Titles/CourseTitle";
 import { Button } from "../Button";
 
 import test from "../../assets/test/test.jpg";
+import { Course } from "../../../interfaces";
+import Tag from "../Course/Tag";
 
 const CourseListItem = styled.div`
   width: 100%;
@@ -71,6 +73,7 @@ const ImageContainer = styled.div`
   position: relative;
   height: 15rem;
   width: 100%;
+
   margin-top: 2rem;
 
   overflow: hidden;
@@ -79,11 +82,13 @@ const ImageContainer = styled.div`
   @media (min-width: ${(props) => props.theme.width.small}) {
     height: 20rem;
     min-width: 20rem;
+    width: 20rem;
     margin-right: 2.5rem;
   }
   @media (min-width: ${(props) => props.theme.width.large}) {
     height: 30rem;
     min-width: 30rem;
+    width: 30rem;
     margin-right: 3.5rem;
   }
 `;
@@ -118,52 +123,40 @@ const Description = styled.div`
     flex-wrap: wrap;
 
     li {
-      margin-right: 1rem;
-      padding: 0.3rem 0.5rem;
-      font-family: ${(props) => props.theme.fontFamilies.secondary};
-      font-size: ${(props) => props.theme.fontSizes.small};
-      color: ${(props) => props.theme.colors.white};
-      border: 1px solid ${(props) => props.theme.colors.white};
-      border-radius: ${(props) => props.theme.borderRadius.small};
+      span {
+        font-family: ${(props) => props.theme.fontFamilies.secondary};
+        font-size: ${(props) => props.theme.fontSizes.small};
+      }
     }
   }
 `;
 
-const ListItem = () => {
+interface Props {
+  course: Course;
+}
+
+const ListItem = ({ course }: Props) => {
   return (
     <CourseListItem>
       <div className="bullet">
         <span></span>
       </div>
 
-      <CourseTitle learningLine="orange">Webdesign</CourseTitle>
+      <CourseTitle learningLine={course.learningLine.color}>
+        {course.name}
+      </CourseTitle>
       <FlexContainer>
         <ImageContainer>
           <Image src={test} layout="fill" objectFit="cover" />
         </ImageContainer>
         <Description>
           <ul>
-            <li>
-              <span>Linux</span>
-            </li>
-            <li>
-              <span>Linux</span>
-            </li>
-            <li>
-              <span>Linux</span>
-            </li>
+            {course.tags?.map((tag) => (
+              <Tag key={tag}>{tag}</Tag>
+            ))}
           </ul>
-          <p>
-            In this course you’ll learn to… Placeat earum quia tenetur nisi
-            dolorem. Occaecati quae dolore asperiores et voluptatem magni ut.
-            Quis deserunt molestiae libero. Enim repellat veritatis nostrum
-            veritatis eos. Consequatur quibusdam maiores voluptas qui debitis
-            corporis enim. In this course you’ll learn to… Placeat earum quia
-            tenetur nisi dolorem. Occaecati quae dolore asperiores et voluptatem
-            magni ut. Quis deserunt molestiae libero. Enim repellat veritatis
-            nostrum veritatis eos. Consequatur quibusdam maiores voluptas qui
-            debitis corporis enim.
-          </p>
+
+          <p>{course.description}</p>
 
           <Button>Meer over Webdesign</Button>
         </Description>

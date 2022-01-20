@@ -1,5 +1,5 @@
 import Image from "next/image";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
 import { GlitchTitle } from "../components/Titles/GlitchTitle";
@@ -7,6 +7,9 @@ import { H2 } from "../components/Titles/H2";
 
 import { ListItem } from "../components/Leerlijn";
 import { transparentize } from "polished";
+import client from "../../apollo-client";
+import { GET_ALL_COURSES } from "../../graphql/courses";
+import { Course } from "../../interfaces";
 
 const SuperContainer = styled.div`
   max-width: 80rem;
@@ -51,7 +54,7 @@ const Container = styled.div`
 
     svg {
       left: -45px;
-      top: 5rem;
+      top: -5rem;
       width: 1.9rem;
       position: relative;
       height: 10rem;
@@ -63,7 +66,7 @@ const Container = styled.div`
 
       @media (min-width: ${(props) => props.theme.width.medium}) {
         width: 4.5rem;
-        top: 4rem;
+        top: -6rem;
       }
 
       path {
@@ -128,6 +131,7 @@ const Container = styled.div`
   }
 
   .elective-course {
+    margin-top: -4rem;
     padding-left: 1rem;
     padding-top: 6.5rem;
 
@@ -209,7 +213,82 @@ const Container = styled.div`
   }
 `;
 
-const LeerlijnPage = () => {
+interface LeerlijnProps {
+  courses: Course[];
+}
+
+const LeerlijnPage = ({ courses }: LeerlijnProps) => {
+  let term_1_with_spec: Course[] = [];
+  let term_1_without_spec: Course[] = [];
+  let term_2_with_spec: Course[] = [];
+  let term_2_without_spec: Course[] = [];
+  let term_3_with_spec: Course[] = [];
+  let term_3_without_spec: Course[] = [];
+  let term_4_with_spec: Course[] = [];
+  let term_4_without_spec: Course[] = [];
+  let term_5_with_spec: Course[] = [];
+  let term_5_without_spec: Course[] = [];
+  let term_6_with_spec: Course[] = [];
+  let term_6_without_spec: Course[] = [];
+  let term_7_with_spec: Course[] = [];
+  let term_7_without_spec: Course[] = [];
+  let term_8_with_spec: Course[] = [];
+  let term_8_without_spec: Course[] = [];
+
+  const map = courses.map((course) => {
+    if (course.specialisationId) {
+      term_1_with_spec = [...term_1_with_spec, course];
+      term_1_with_spec = term_1_with_spec.filter((course) => course.term === 1);
+      term_2_with_spec = term_2_with_spec.filter((course) => course.term === 2);
+      term_2_with_spec = [...term_2_with_spec, course];
+      term_3_with_spec = [...term_3_with_spec, course];
+      term_3_with_spec = term_3_with_spec.filter((course) => course.term === 3);
+      term_4_with_spec = [...term_4_with_spec, course];
+      term_4_with_spec = term_4_with_spec.filter((course) => course.term === 4);
+      term_5_with_spec = [...term_5_with_spec, course];
+      term_5_with_spec = term_5_with_spec.filter((course) => course.term === 5);
+      term_6_with_spec = [...term_6_with_spec, course];
+      term_6_with_spec = term_6_with_spec.filter((course) => course.term === 6);
+      term_7_with_spec = [...term_7_with_spec, course];
+      term_7_with_spec = term_7_with_spec.filter((course) => course.term === 7);
+      term_8_with_spec = [...term_8_with_spec, course];
+      term_8_with_spec = term_8_with_spec.filter((course) => course.term === 8);
+    } else if (!course.specialisationId) {
+      term_1_without_spec = [...term_1_without_spec, course];
+      term_1_without_spec = term_1_without_spec.filter(
+        (course) => course.term === 1
+      );
+      term_2_without_spec = term_2_without_spec.filter(
+        (course) => course.term === 2
+      );
+      term_2_without_spec = [...term_2_without_spec, course];
+      term_3_without_spec = [...term_3_without_spec, course];
+      term_3_without_spec = term_3_without_spec.filter(
+        (course) => course.term === 3
+      );
+      term_4_without_spec = [...term_4_without_spec, course];
+      term_4_without_spec = term_4_without_spec.filter(
+        (course) => course.term === 4
+      );
+      term_5_without_spec = [...term_5_without_spec, course];
+      term_5_without_spec = term_5_without_spec.filter(
+        (course) => course.term === 5
+      );
+      term_6_without_spec = [...term_6_without_spec, course];
+      term_6_without_spec = term_6_without_spec.filter(
+        (course) => course.term === 6
+      );
+      term_7_without_spec = [...term_7_without_spec, course];
+      term_7_without_spec = term_7_without_spec.filter(
+        (course) => course.term === 7
+      );
+      term_8_without_spec = [...term_8_without_spec, course];
+      term_8_without_spec = term_8_without_spec.filter(
+        (course) => course.term === 8
+      );
+    }
+  });
+
   return (
     <SuperContainer>
       <div className="titles">
@@ -218,82 +297,294 @@ const LeerlijnPage = () => {
       </div>
       <Container>
         <ul className="courseList">
-          <ListItem />
-          <ListItem />
-          <ListItem />
+          {term_1_without_spec &&
+            term_1_without_spec.map((course: Course) => (
+              <ListItem course={course} />
+            ))}
         </ul>
+        {term_1_with_spec && (
+          <>
+            <span className="beginLine">
+              <svg viewBox="0 0 113 142">
+                <path
+                  d="m1-8c0 75 108 75 108 150"
+                  stroke-width="2"
+                  vectorEffect="none-scaling-stroke"
+                ></path>
+              </svg>
+            </span>
+            <ul className="courseList elective-course">
+              {term_1_with_spec.map((course: Course) => (
+                <ListItem course={course} />
+              ))}
+            </ul>
+            <span className="beginLine endline">
+              <svg viewBox="0 0 113 142">
+                <path
+                  d="m1-8c0 75 108 75 108 150"
+                  stroke-width="2"
+                  vectorEffect="none-scaling-stroke"
+                ></path>
+              </svg>
+            </span>
+          </>
+        )}
+        <ul className="courseList">
+          {term_2_without_spec &&
+            term_2_without_spec.map((course: Course) => (
+              <ListItem course={course} />
+            ))}
+        </ul>
+        {term_2_with_spec && (
+          <>
+            <span className="beginLine">
+              <svg viewBox="0 0 113 142">
+                <path
+                  d="m1-8c0 75 108 75 108 150"
+                  stroke-width="2"
+                  vectorEffect="none-scaling-stroke"
+                ></path>
+              </svg>
+            </span>
+            <ul className="courseList elective-course">
+              {term_2_with_spec.map((course: Course) => (
+                <ListItem course={course} />
+              ))}
+            </ul>
+            <span className="beginLine endline">
+              <svg viewBox="0 0 113 142">
+                <path
+                  d="m1-8c0 75 108 75 108 150"
+                  stroke-width="2"
+                  vectorEffect="none-scaling-stroke"
+                ></path>
+              </svg>
+            </span>
+          </>
+        )}
       </Container>
+
       <div className="titles">
         <h2>Semester 2</h2>
       </div>
       <Container>
         <ul className="courseList">
-          <ListItem />
-          <ListItem />
-          <ListItem />
-          <ListItem />
+          {term_3_without_spec &&
+            term_3_without_spec.map((course: Course) => (
+              <ListItem course={course} />
+            ))}
         </ul>
-        <span className="beginLine">
-          <svg viewBox="0 0 113 142">
-            <path
-              d="m1-8c0 75 108 75 108 150"
-              stroke-width="2"
-              vectorEffect="none-scaling-stroke"
-            ></path>
-          </svg>
-        </span>
-        <ul className="courseList elective-course">
-          <ListItem />
-          <ListItem />
+        {term_3_with_spec && (
+          <>
+            <span className="beginLine">
+              <svg viewBox="0 0 113 142">
+                <path
+                  d="m1-8c0 75 108 75 108 150"
+                  stroke-width="2"
+                  vectorEffect="none-scaling-stroke"
+                ></path>
+              </svg>
+            </span>
+            <ul className="courseList elective-course">
+              {term_3_with_spec.map((course: Course) => (
+                <ListItem course={course} />
+              ))}
+            </ul>
+            <span className="beginLine endline">
+              <svg viewBox="0 0 113 142">
+                <path
+                  d="m1-8c0 75 108 75 108 150"
+                  stroke-width="2"
+                  vectorEffect="none-scaling-stroke"
+                ></path>
+              </svg>
+            </span>
+          </>
+        )}
+        <ul className="courseList">
+          {term_4_without_spec &&
+            term_4_without_spec.map((course: Course) => (
+              <ListItem course={course} />
+            ))}
         </ul>
-        <span className="beginLine endline">
-          <svg viewBox="0 0 113 142">
-            <path
-              d="m1-8c0 75 108 75 108 150"
-              stroke-width="2"
-              vectorEffect="none-scaling-stroke"
-            ></path>
-          </svg>
-        </span>
+        {term_4_with_spec && (
+          <>
+            <span className="beginLine">
+              <svg viewBox="0 0 113 142">
+                <path
+                  d="m1-8c0 75 108 75 108 150"
+                  stroke-width="2"
+                  vectorEffect="none-scaling-stroke"
+                ></path>
+              </svg>
+            </span>
+            <ul className="courseList elective-course">
+              {term_4_with_spec.map((course: Course) => (
+                <ListItem course={course} />
+              ))}
+            </ul>
+            <span className="beginLine endline">
+              <svg viewBox="0 0 113 142">
+                <path
+                  d="m1-8c0 75 108 75 108 150"
+                  stroke-width="2"
+                  vectorEffect="none-scaling-stroke"
+                ></path>
+              </svg>
+            </span>
+          </>
+        )}
       </Container>
 
       <div className="titles">
         <GlitchTitle>Tweede jaar</GlitchTitle>
         <h2>Semester 1</h2>
       </div>
+
+      <Container>
+        <ul className="courseList">
+          {term_5_without_spec &&
+            term_5_without_spec.map((course: Course) => (
+              <ListItem course={course} />
+            ))}
+        </ul>
+        {term_5_with_spec && (
+          <>
+            <span className="beginLine">
+              <svg viewBox="0 0 113 142">
+                <path
+                  d="m1-8c0 75 108 75 108 150"
+                  stroke-width="2"
+                  vectorEffect="none-scaling-stroke"
+                ></path>
+              </svg>
+            </span>
+            <ul className="courseList elective-course">
+              {term_5_with_spec.map((course: Course) => (
+                <ListItem course={course} />
+              ))}
+            </ul>
+            <span className="beginLine endline">
+              <svg viewBox="0 0 113 142">
+                <path
+                  d="m1-8c0 75 108 75 108 150"
+                  stroke-width="2"
+                  vectorEffect="none-scaling-stroke"
+                ></path>
+              </svg>
+            </span>
+          </>
+        )}
+        <ul className="courseList">
+          {term_6_without_spec &&
+            term_6_without_spec.map((course: Course) => (
+              <ListItem course={course} />
+            ))}
+        </ul>
+        {term_6_with_spec && (
+          <>
+            <span className="beginLine">
+              <svg viewBox="0 0 113 142">
+                <path
+                  d="m1-8c0 75 108 75 108 150"
+                  stroke-width="2"
+                  vectorEffect="none-scaling-stroke"
+                ></path>
+              </svg>
+            </span>
+            <ul className="courseList elective-course">
+              {term_6_with_spec.map((course: Course) => (
+                <ListItem course={course} />
+              ))}
+            </ul>
+            <span className="beginLine endline">
+              <svg viewBox="0 0 113 142">
+                <path
+                  d="m1-8c0 75 108 75 108 150"
+                  stroke-width="2"
+                  vectorEffect="none-scaling-stroke"
+                ></path>
+              </svg>
+            </span>
+          </>
+        )}
+      </Container>
+
+      <div className="titles">
+        <h2>Semester 2</h2>
+      </div>
+
       <Container>
         <ul className="courseList ">
-          <ListItem />
-          <ListItem />
-          <ListItem />
+          {term_7_without_spec &&
+            term_7_without_spec.map((course: Course) => (
+              <ListItem course={course} />
+            ))}
         </ul>
-        <div className="titles">
-          <h2>Semester 2</h2>
-        </div>
-        <span className="beginLine">
-          <svg viewBox="0 0 113 142">
-            <path
-              d="m1-8c0 75 108 75 108 150"
-              stroke-width="2"
-              vectorEffect="none-scaling-stroke"
-            ></path>
-          </svg>
-        </span>
-        <ul className="courseList elective-course last">
-          <ListItem />
-          <ListItem />
-          <ListItem />
-          <ListItem />
+        {term_7_with_spec && (
+          <>
+            <span className="beginLine">
+              <svg viewBox="0 0 113 142">
+                <path
+                  d="m1-8c0 75 108 75 108 150"
+                  stroke-width="2"
+                  vectorEffect="none-scaling-stroke"
+                ></path>
+              </svg>
+            </span>
+            <ul className="courseList elective-course">
+              {term_7_with_spec.map((course: Course) => (
+                <ListItem course={course} />
+              ))}
+            </ul>
+            <span className="beginLine endline">
+              <svg viewBox="0 0 113 142">
+                <path
+                  d="m1-8c0 75 108 75 108 150"
+                  stroke-width="2"
+                  vectorEffect="none-scaling-stroke"
+                ></path>
+              </svg>
+            </span>
+          </>
+        )}
+      </Container>
+
+      <Container>
+        <ul className="courseList ">
+          {term_8_without_spec &&
+            term_8_without_spec.map((course: Course) => (
+              <ListItem course={course} />
+            ))}
         </ul>
-        <span className="beginLine endline">
-          <svg viewBox="0 0 113 142">
-            <path
-              d="m1-8c0 75 108 75 108 150"
-              stroke-width="2"
-              vectorEffect="none-scaling-stroke"
-            ></path>
-          </svg>
-        </span>
+
+        {term_8_with_spec && (
+          <>
+            <span className="beginLine">
+              <svg viewBox="0 0 113 142">
+                <path
+                  d="m1-8c0 75 108 75 108 150"
+                  stroke-width="2"
+                  vectorEffect="none-scaling-stroke"
+                ></path>
+              </svg>
+            </span>
+            <ul className="courseList elective-course last">
+              {term_8_with_spec.map((course: Course) => (
+                <ListItem course={course} />
+              ))}
+            </ul>
+            <span className="beginLine endline">
+              <svg viewBox="0 0 113 142">
+                <path
+                  d="m1-8c0 75 108 75 108 150"
+                  stroke-width="2"
+                  vectorEffect="none-scaling-stroke"
+                ></path>
+              </svg>
+            </span>
+          </>
+        )}
         <div className="last-bullet">
           <span></span>
         </div>
@@ -303,3 +594,19 @@ const LeerlijnPage = () => {
 };
 
 export default LeerlijnPage;
+
+export const getStaticProps = async () => {
+  const { data, error, loading } = await client.query({
+    query: GET_ALL_COURSES,
+  });
+
+  if (error) {
+    console.log(error);
+  }
+
+  return {
+    props: {
+      courses: data.courses,
+    },
+  };
+};
