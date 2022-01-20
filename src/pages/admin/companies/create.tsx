@@ -77,6 +77,7 @@ export default function createCompany(): ReactElement {
                       input: {
                         name: values.name,
                         teaserImage: values.teaserImage,
+                        interns: values.interns,
                       },
                     },
                   });
@@ -171,30 +172,25 @@ export default function createCompany(): ReactElement {
                                       // fullWidth
                                     />
 
-                                    <Box
+                                    <Field
+                                      required
+                                      component={CustomSingleSelect}
+                                      label="Student"
+                                      name={`interns.${index}.studentId`}
+                                      data={dataStudents.students}
                                       sx={{
-                                        margin: 1,
-                                      }}
-                                    >
-                                      <Field
-                                        required
-                                        component={CustomSingleSelect}
-                                        label="Student"
-                                        name={`interns.${index}.studentId`}
-                                        data={dataStudents.students}
-                                        sx={{
-                                          flexGrow: 1,
+                                        flexGrow: 1,
 
-                                          border: "1px solid #e0e0e0",
-                                        }}
-                                        helperText="Naam van de Student"
-                                        labelProps={[
-                                          "firstName",
-                                          "lastName",
-                                          "academicYear",
-                                        ]}
-                                      />
-                                    </Box>
+                                        border: "1px solid #e0e0e0",
+                                      }}
+                                      helperText="Naam van de Student"
+                                      labelProps={[
+                                        "firstName",
+                                        "lastName",
+                                        "academicYear",
+                                      ]}
+                                    />
+
                                     <Button
                                       sx={{ margin: 1 }}
                                       variant="outlined"

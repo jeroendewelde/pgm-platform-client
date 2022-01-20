@@ -26,6 +26,10 @@ export const GET_COMPANY_BY_ID = gql`
       teaserImage
       interns {
         id
+        function
+        description
+        year
+        studentId
       }
     }
   }
