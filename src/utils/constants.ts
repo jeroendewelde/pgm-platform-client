@@ -183,6 +183,24 @@ const tableColumns = {
     //   headerName: "type",
     // },
   ],
+  testimonials: [
+    {
+      field: "id",
+      headerName: "id",
+    },
+    {
+      field: "quote",
+      headerName: "quote",
+    },
+    {
+      field: "name",
+      headerName: "auteur",
+    },
+    {
+      field: "company",
+      headerName: "bedrijf",
+    },
+  ],
   specialisations: [
     {
       field: "id",

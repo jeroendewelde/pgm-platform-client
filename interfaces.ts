@@ -125,6 +125,13 @@ export interface Specialisation {
   academicYear: string;
 }
 
+export interface Testimonial {
+  id: number;
+  quote: string;
+  name: string;
+  company: string;
+}
+
 export interface User {
   id: number;
   username: string;

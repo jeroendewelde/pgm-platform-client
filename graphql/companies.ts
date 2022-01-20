@@ -9,30 +9,32 @@ import { gql, useQuery, useLazyQuery } from "@apollo/client";
  */
 
 export const GET_ALL_COMPANIES = gql`
-{
-  companies {
-    id
-    name
-    teaserImage
+  {
+    companies {
+      id
+      name
+      teaserImage
+    }
   }
-}`;
+`;
 
 /**
  * Mutations
  */
 
- export const CREATE_COMPANY = gql`
- mutation createCompany($input: CreateCompanyInput!) {
-  createCompany(createCompanyInput: $input){
-     id
-     name
-   }
- }`;
- 
- export const DELETE_COMPANY = gql`
- mutation deleteCompany($id: Int!) {
-   removeCompany(id: $id){
-     id
-     name
-   }
- }`;
+export const CREATE_COMPANY = gql`
+  mutation createCompany($input: CreateCompanyInput!) {
+    createCompany(createCompanyInput: $input) {
+      id
+      name
+    }
+  }
+`;
+
+export const DELETE_COMPANY = gql`
+  mutation deleteCompany($id: Int!) {
+    removeCompany(id: $id) {
+      name
+    }
+  }
+`;
