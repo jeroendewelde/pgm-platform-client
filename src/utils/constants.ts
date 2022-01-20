@@ -42,10 +42,6 @@ const tableColumns = {
       field: "name",
       headerName: "name",
     },
-    // {
-    //   field: 'teaserImage',
-    //   headerName: 'teaserImage',
-    // }
   ],
   courses: [
     {

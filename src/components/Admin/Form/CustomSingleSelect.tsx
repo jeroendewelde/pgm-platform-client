@@ -28,6 +28,7 @@ export default function CustomSingleSelect(props: SelectProps): ReactElement {
     field: { name },
     extraData,
     value: valueFromData,
+    labelProps,
   } = props;
   const [value, setValue] = useState(valueFromData || "");
 
@@ -69,8 +70,16 @@ export default function CustomSingleSelect(props: SelectProps): ReactElement {
 
           {data.map((item: any) => (
             <MenuItem key={item.id} value={item.id}>
-              {item.name}
-              {extraData ? ` - ${item[extraData]}` : ""}
+              {labelProps
+                ? item[labelProps[0]] +
+                  " " +
+                  item[labelProps[1]] +
+                  " ( " +
+                  item[labelProps[2]] +
+                  " ) "
+                : item.name + " " + extraData
+                ? ` - ${item[extraData]}`
+                : ""}
             </MenuItem>
           ))}
 
