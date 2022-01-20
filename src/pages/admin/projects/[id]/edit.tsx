@@ -1,35 +1,56 @@
-import React, { ReactElement } from "react";
-import Router from "next/router";
+import React, { ReactElement, useEffect, useState } from "react";
+import { useRouter } from "next/router";
 
+// Formik & Yup
 import * as yup from "yup";
 import { Field, FieldArray, Form, Formik } from "formik";
-import Box from "@mui/material/Box";
 
-import { Button, Typography } from "@mui/material";
+// Material UI Components
+import { Box, Button, Typography } from "@mui/material";
 import { TextField } from "formik-mui";
 
 // Queries
 import {
-  CREATE_LEARNING_LINE,
-  GET_ALL_LEARNING_LINES,
-} from "../../../../graphql/learningLines";
-import client from "../../../../apollo-client";
+  DELETE_SPECIALISATION,
+  GET_ALL_SPECIALISATIONS,
+  GET_SPECIALISATION_BY_ID,
+  UPDATE_SPECIALISATION,
+} from "../../../../../graphql/specialisations";
+import { useMutation, useQuery } from "@apollo/client";
+import {
+  Course,
+  Person,
+  Project,
+  Specialisation,
+} from "../../../../../interfaces";
 
 // Custom Components
-import BasicContainer from "../../../components/Admin/style/BasicContainer";
-import Dashboard from "../../../components/Admin/Dashboard";
-import { CREATE_COURSE, GET_ALL_COURSES } from "../../../../graphql/courses";
-import { GET_ALL_SPECIALISATIONS } from "../../../../graphql/specialisations";
-import { LearningLine, Person, Specialisation } from "../../../../interfaces";
-import CustomSingleSelect from "../../../components/Admin/Form/CustomSingleSelect";
-import { AsyncLocalStorage } from "async_hooks";
-import { CREATE_PROJECT } from "../../../../graphql/projects";
-import { CheckBoxOutlineBlank, CheckBox } from "@mui/icons-material";
-import { useMutation, useQuery } from "@apollo/client";
-import { GET_ALL_STUDENTS } from "../../../../graphql/persons";
-import CustomLoading from "../../../components/Admin/style/CustomLoading";
+import BasicContainer from "../../../../components/Admin/style/BasicContainer";
+import Dashboard from "../../../../components/Admin/Dashboard";
+import CustomLoading from "../../../../components/Admin/style/CustomLoading";
+
+// Variabels
+import { colors } from "../../../../utils/constants";
+import {
+  DELETE_COURSE,
+  GET_COURSE_BY_ID,
+  UPDATE_COURSE,
+} from "../../../../../graphql/courses";
+import { GET_ALL_LEARNING_LINES } from "../../../../../graphql/learningLines";
+import CustomSingleSelect from "../../../../components/Admin/Form/CustomSingleSelect";
+
 import { Remove, Add } from "@material-ui/icons";
-import CustomMultiSelectWithChips from "../../../components/Admin/Form/CustomMultiSelectWithChips";
+import {
+  GET_ALL_STUDENTS,
+  GET_ALL_TEACHERS,
+} from "../../../../../graphql/persons";
+import CustomMultiSelectWithChips from "../../../../components/Admin/Form/CustomMultiSelectWithChips";
+import { GET_ALL_COURSES } from "../../../../../graphql/attachments";
+import {
+  DELETE_PROJECT,
+  GET_PROJECT_BY_ID,
+  UPDATE_PROJECT,
+} from "../../../../../graphql/projects";
 
 const validationSchema = yup.object({
   name: yup.string().required("Projectnaam is verplicht"),
@@ -46,13 +67,23 @@ const validationSchema = yup.object({
   courseId: yup.number().required("Vak is verplicht"),
 });
 
-export default function createProject(): ReactElement {
-  const [
-    addProject,
-    { data: dataProject, loading: loadingProject, error: errorProject },
-  ] = useMutation(CREATE_PROJECT);
-  const checkBoxIcon = <CheckBoxOutlineBlank fontSize="small" />;
-  const checkedIconChecked = <CheckBox fontSize="small" />;
+export default function editProject(): ReactElement {
+  const router = useRouter();
+  const { id } = router.query;
+  const adminPath = router.pathname.split("/admin/")[1].split("/")[0];
+  const [project, setProject] = useState<Project>();
+  const [students, setStudents] = useState<Person[]>([]);
+
+  const {
+    data: dataGet,
+    error: errorGet,
+    loading: loadingGet,
+  } = useQuery(GET_PROJECT_BY_ID, {
+    variables: {
+      id: Number(id),
+    },
+    ssr: true,
+  });
 
   const {
     data: dataCourses,
@@ -70,33 +101,65 @@ export default function createProject(): ReactElement {
     ssr: true,
   });
 
+  useEffect(() => {
+    if (dataGet && dataStudents) {
+      setProject(dataGet.project);
+
+      const studentsFromData = dataGet.project.students?.map(
+        (studentFromDb: Person) =>
+          dataStudents.students.find((s: Person) => s.id === studentFromDb.id)
+      );
+
+      setStudents(studentsFromData);
+    }
+  }, [dataGet, dataStudents]);
+
+  const [
+    updateProject,
+    { data: dataProject, loading: loadingProject, error: errorProject },
+  ] = useMutation(UPDATE_PROJECT, {
+    notifyOnNetworkStatusChange: true,
+  });
+
+  const [deleteProject, { data, loading, error }] = useMutation(DELETE_PROJECT);
+
+  const handleDelete = () => {
+    deleteProject({
+      variables: {
+        id: Number(id),
+      },
+      notifyOnNetworkStatusChange: true,
+    }).then(() => (window.location.href = `/admin/${adminPath}`));
+  };
+
   return (
-    <BasicContainer title="Nieuw Project">
-      <Dashboard title="Nieuw Project">
-        {loadingCourses || loadingStudents ? (
-          <CustomLoading />
-        ) : (
-          <>
-            <Box
-              sx={{
-                maxWidth: "md",
-                border: "1px solid #e0e0e0",
-              }}
-            >
+    <BasicContainer title="Bewerk Project">
+      <Dashboard title="Bewerk Project">
+        <Box
+          sx={{
+            maxWidth: "lg",
+          }}
+        >
+          {!project || !dataCourses || !dataStudents ? (
+            <CustomLoading />
+          ) : (
+            <>
               <Formik
                 initialValues={{
-                  name: "",
-                  teaserText: "",
-                  body: "",
-                  academicYear: "",
-                  tags: [],
-                  courseId: "",
-                  students: [],
+                  name: project?.name || "",
+                  teaserText: project?.teaserText || "",
+                  body: project?.body || "",
+                  academicYear: project?.academicYear || "",
+                  tags: project?.tags || [],
+                  courseId: project?.courseId || "",
+                  students: project?.students || [],
                 }}
                 validationSchema={validationSchema}
                 onSubmit={(values, { setSubmitting }) => {
                   setSubmitting(true);
-                  addProject({
+                  console.log("...values", values);
+
+                  updateProject({
                     variables: {
                       input: {
                         name: values.name,
@@ -105,15 +168,14 @@ export default function createProject(): ReactElement {
                         academicYear: values.academicYear,
                         tags: values.tags,
                         courseId: values.courseId,
-                        studentIds: values.students.map(
-                          (student: Person) => student.id
-                        ),
+                        studentIds: values.students?.map((s: Person) => s.id),
                       },
+                      id: project?.id,
                     },
                   });
 
-                  if (!errorProject && !loadingProject) {
-                    window.location.href = Router.pathname.split("/create")[0];
+                  if (!loadingProject && !errorProject) {
+                    window.location.href = `/admin/${adminPath}`;
                   }
                 }}
               >
@@ -205,6 +267,7 @@ export default function createProject(): ReactElement {
                         required
                         component={CustomSingleSelect}
                         label="Vak"
+                        value={values.courseId}
                         name="courseId"
                         data={dataCourses.courses}
                         sx={{
@@ -332,19 +395,44 @@ export default function createProject(): ReactElement {
                         )}
                       />
                     </Box>
-                    <Box margin={1}>
-                      <Button
-                        sx={{ margin: 1 }}
-                        variant="contained"
-                        color="primary"
-                        disabled={isSubmitting}
-                        onClick={submitForm}
-                        // type="submit"
-                      >
-                        Maak aan
-                      </Button>
+                    <Box
+                      sx={{
+                        display: "flex",
+                      }}
+                    >
+                      <Box margin={1}>
+                        <Button
+                          sx={{ margin: 1 }}
+                          variant="contained"
+                          color="primary"
+                          disabled={isSubmitting}
+                          onClick={submitForm}
+                          // type="submit"
+                        >
+                          Pas aan
+                        </Button>
+                      </Box>
+                      <Box margin={1}>
+                        <Button
+                          sx={{
+                            margin: 1,
+                            // backgroundColor: colors.delete,
+                            color: colors.delete,
+                            borderColor: colors.delete,
+                            "&:hover": {
+                              backgroundColor: colors.delete,
+                              color: colors.white,
+                              borderColor: colors.delete,
+                            },
+                          }}
+                          variant="outlined"
+                          disabled={isSubmitting}
+                          onClick={(e) => handleDelete()}
+                        >
+                          Verwijder
+                        </Button>
+                      </Box>
                     </Box>
-
                     <pre
                       style={{
                         color: "black",
@@ -355,9 +443,9 @@ export default function createProject(): ReactElement {
                   </Form>
                 )}
               </Formik>
-            </Box>
-          </>
-        )}
+            </>
+          )}
+        </Box>
       </Dashboard>
     </BasicContainer>
   );

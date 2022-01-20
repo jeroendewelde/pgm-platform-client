@@ -45,11 +45,11 @@ export interface FieldExperience {
   person: Person;
 }
 
-export interface Generation {
-  id: number;
-  name: string;
-  years: string;
-}
+// export interface Generation {
+//   id: number;
+//   name: string;
+//   years: string;
+// }
 
 export interface Intern {
   id: number;
@@ -107,6 +107,7 @@ export interface Project {
   // Relations
   courseId: number;
   course: Course;
+  students: Person[];
 }
 
 export interface SocialMedia {

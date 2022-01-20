@@ -63,7 +63,19 @@ export default function CustomMultiSelectWithChips({
             checked={selected}
           />
           {/* {option.firstName + " " + option.lastName} */}
-          {option[labelProps[0]] + " - " + option[labelProps[1]]}
+          {labelProps.length == 2
+            ? option[labelProps[0]] + " - " + option[labelProps[1]]
+            : ""}
+
+          {labelProps.length == 3
+            ? option[labelProps[0]] +
+              " " +
+              option[labelProps[1]] +
+              " ( " +
+              option[labelProps[2]] +
+              " ) "
+            : ""}
+          {/* //   {option[labelProps[0]] + " - " + option[labelProps[1]]} */}
           {/* {option.firstName + " " + option.lastName} */}
         </li>
       )}

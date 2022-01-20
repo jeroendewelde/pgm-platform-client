@@ -113,6 +113,32 @@ const tableColumns = {
       headerName: "type",
     },
   ],
+  projects: [
+    {
+      field: "id",
+      headerName: "id",
+    },
+    {
+      field: "name",
+      headerName: "naam",
+    },
+    {
+      field: "teaserText",
+      headerName: "teaser",
+    },
+    {
+      field: "body",
+      headerName: "body",
+    },
+    {
+      field: "academicYear",
+      headerName: "academiejaar",
+    },
+    {
+      field: "courseId",
+      headerName: "vak id",
+    },
+  ],
   students: [
     {
       field: "id",
