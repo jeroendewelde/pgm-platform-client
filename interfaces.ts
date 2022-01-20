@@ -217,3 +217,19 @@ export interface CourseByLearningLineId {
   learningLine: LearningLine;
   specialisation: Specialisation;
 }
+
+export interface CourseClient {
+  id: number;
+  name: string;
+  description: string;
+  term: number;
+  academicYear: string;
+  tags: string[];
+  projects: Project[];
+  teachers: AllTeachersClient[];
+  // Relations
+  learningLineId: number;
+  specialisationId: number;
+  learningLine: LearningLine;
+  specialisation: Specialisation;
+}

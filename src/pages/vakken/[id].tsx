@@ -3,15 +3,15 @@ import React from "react";
 import styled from "styled-components";
 import client from "../../../apollo-client";
 import { GET_ALL_COURSES, GET_COURSE_BY_ID } from "../../../graphql/courses";
-import { Course } from "../../../interfaces";
-import { HeroCourse } from "../../components/Course";
+import { CourseClient } from "../../../interfaces";
+import { DocentenCourse, HeroCourse } from "../../components/Course";
 
 const Container = styled.div`
   padding-bottom: 5rem;
 `;
 
 interface CoursesPageProps {
-  course: Course;
+  course: CourseClient;
 }
 
 const CourseDetail = ({ course }: CoursesPageProps) => {
@@ -19,6 +19,7 @@ const CourseDetail = ({ course }: CoursesPageProps) => {
   return (
     <Container>
       <HeroCourse course={course} />
+      <DocentenCourse course={course} />
     </Container>
   );
 };

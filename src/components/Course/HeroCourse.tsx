@@ -1,7 +1,6 @@
 import Image from "next/image";
 import React from "react";
 import styled from "styled-components";
-import { MdOutlineKeyboardBackspace } from "react-icons/md";
 
 import test from "../../assets/test/test.jpg";
 
@@ -10,6 +9,7 @@ import { GlitchTitle } from "../Titles/GlitchTitle";
 import Link from "next/link";
 import Tag from "./Tag";
 import { CourseTitle } from "../Titles/CourseTitle";
+import CTALink from "./CTALink";
 
 const Container = styled.section`
   .flex-title {
@@ -20,51 +20,6 @@ const Container = styled.section`
 
     justify-content: space-between;
     flex-wrap: wrap;
-
-    .breadcrum {
-      margin-right: 1rem;
-      margin-bottom: 1rem;
-
-      @media (min-width: ${(props) => props.theme.width.medium}) {
-        margin-bottom: 2rem;
-      }
-      a {
-        display: flex;
-        align-items: center;
-
-        &:hover {
-          .cta {
-            color: ${(props) => props.theme.colors.turquoise};
-          }
-
-          .icon {
-            transform: translateX(-0.5rem);
-          }
-        }
-
-        .icon {
-          transition: ${(props) => props.theme.transition.bounce};
-          font-size: ${(props) => props.theme.fontSizes.medium};
-          margin-right: 0.5rem;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-
-          @media (min-width: ${(props) => props.theme.width.esmall}) {
-            font-size: ${(props) => props.theme.fontSizes.semimedium};
-          }
-        }
-
-        .cta {
-          transition: ${(props) => props.theme.transition.normal};
-          font-size: ${(props) => props.theme.fontSizes.small};
-
-          @media (min-width: ${(props) => props.theme.width.esmall}) {
-            font-size: ${(props) => props.theme.fontSizes.normal};
-          }
-        }
-      }
-    }
   }
 
   .flex {
@@ -123,21 +78,14 @@ const HeroCourse = ({ course }: HeroCourseProps) => {
         {course.name}
       </CourseTitle>
       <div className="flex-title">
-        <div className="breadcrum">
-          <Link href="/vakken">
-            <a>
-              <span className="icon">
-                <MdOutlineKeyboardBackspace />
-              </span>
-              <span className="cta">Ga terug naar vakken</span>
-            </a>
-          </Link>
-        </div>
-        <div className="tags">
-          {course.tags.map((tag) => (
-            <Tag key={tag}>{tag}</Tag>
-          ))}
-        </div>
+        <CTALink href="/vakken">Ga terug naar vakken</CTALink>
+        {course.tags && course.tags.length > 0 && (
+          <div className="tags">
+            {course.tags.map((tag) => (
+              <Tag key={tag}>{tag}</Tag>
+            ))}
+          </div>
+        )}
       </div>
       <div className="flex">
         <div className="image-container">
