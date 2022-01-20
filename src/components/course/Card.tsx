@@ -88,7 +88,7 @@ const Container = styled.li<Props>`
   }
 
   &:hover .Dot {
-    transform: scale(46.5);
+    transform: scale(18.5);
   }
   @media (min-width: ${(props) => props.theme.width.esmall}) {
     &:hover .Dot {

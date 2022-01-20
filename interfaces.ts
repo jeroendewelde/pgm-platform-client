@@ -101,10 +101,12 @@ export interface Project {
   teaserText: string;
   body: string;
   academicYear: string;
-  tags: String[];
+  tags: string[];
   // Relations
   courseId: number;
   course: Course;
+
+  students: Person[];
 }
 
 export interface SocialMedia {

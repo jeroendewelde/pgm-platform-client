@@ -49,7 +49,7 @@ const Container = styled.section`
 
       @media (min-width: ${(props) => props.theme.width.medium}) {
         min-width: 25rem;
-
+        max-width: 35rem;
         height: 25rem;
         margin-bottom: 0;
         margin-right: 2rem;

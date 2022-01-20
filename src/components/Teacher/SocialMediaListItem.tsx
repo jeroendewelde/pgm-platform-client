@@ -35,7 +35,7 @@ interface Props {
 
 const SocialMediaListItem = ({ socialMedia }: Props) => {
   return (
-    <ListItem>
+    <ListItem key={socialMedia.id}>
       <Link href={socialMedia.url}>
         <a>{socialMedia.platform}</a>
       </Link>

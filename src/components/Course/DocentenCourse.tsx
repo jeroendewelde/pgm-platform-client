@@ -149,62 +149,69 @@ const DocentenCourse = ({ course }: DocentenCourseProps) => {
   };
 
   return (
-    <Container>
-      <Title />
+    <>
+      {course.teachers.length > 0 && (
+        <Container>
+          <Title />
 
-      {course?.teachers.map((teacher) => (
-        <>
-          <div className="mobile">
-            <H2>{teacher.firstName + " " + teacher.lastName}</H2>
-            <div className="mobileImage">
-              <TeacherImage />
-            </div>
-            <div className="flex-end">
-              <CTALink href={`/pgm-team/${teacher.id}`}>
-                Ontdek meer over {teacher.firstName}
-              </CTALink>
-            </div>
-            <ul className="socials">
-              {teacher?.personInformation.socialMedias.map((socialMedia) => (
-                <SocialMediaListItem socialMedia={socialMedia} />
-              ))}
-            </ul>
-            <div className="quote">
-              <Quote content={teacher.personInformation.bio} />
-            </div>
-          </div>
-
-          <div className="desktop">
-            <div className="flex-title">
-              <H2>{teacher.firstName + " " + teacher.lastName}</H2>
-              <CTALink href={`/pgm-team/${teacher.id}`}>
-                Ontdek meer over {teacher.firstName}
-              </CTALink>
-            </div>
-
-            <div className="flex">
-              <div className="desktopImage">
-                <TeacherImage />
-              </div>
-
-              <div className="content">
-                <ul className="socials">
-                  {teacher.personInformation.socialMedias.map((socialMedia) => (
-                    <SocialMediaListItem
-                      key={socialMedia.id}
-                      socialMedia={socialMedia}
-                    />
-                  ))}
-                </ul>
-                <div className="quote">
-                  <Quote content={teacher.personInformation.bio} />
+          <ul>
+            {course.teachers.map((teacher) => (
+              <li key={teacher.id}>
+                <div className="mobile">
+                  <H2>{teacher.firstName + " " + teacher.lastName}</H2>
+                  <div className="mobileImage">
+                    <TeacherImage />
+                  </div>
+                  <div className="flex-end">
+                    <CTALink href={`/pgm-team/${teacher.id}`}>
+                      Ontdek meer over {teacher.firstName}
+                    </CTALink>
+                  </div>
+                  <ul className="socials">
+                    {teacher?.personInformation.socialMedias.map(
+                      (socialMedia) => (
+                        <SocialMediaListItem socialMedia={socialMedia} />
+                      )
+                    )}
+                  </ul>
+                  <div className="quote">
+                    <Quote content={teacher.personInformation.bio} />
+                  </div>
                 </div>
-              </div>
-            </div>
-          </div>
-        </>
-      ))}
-    </Container>
+
+                <div className="desktop">
+                  <div className="flex-title">
+                    <H2>{teacher.firstName + " " + teacher.lastName}</H2>
+                    <CTALink href={`/pgm-team/${teacher.id}`}>
+                      Ontdek meer over {teacher.firstName}
+                    </CTALink>
+                  </div>
+
+                  <div className="flex">
+                    <div className="desktopImage">
+                      <TeacherImage />
+                    </div>
+
+                    <div className="content">
+                      <ul className="socials">
+                        {teacher.personInformation.socialMedias.map(
+                          (socialMedia) => (
+                            <SocialMediaListItem socialMedia={socialMedia} />
+                          )
+                        )}
+                      </ul>
+                      <div className="quote">
+                        <Quote content={teacher.personInformation.bio} />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </Container>
+      )}
+    </>
   );
 };
 

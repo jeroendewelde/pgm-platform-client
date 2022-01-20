@@ -68,6 +68,7 @@ export const GET_COURSE_BY_ID = gql`
         id
         name
         teaserText
+        tags
         students {
           id
           firstName

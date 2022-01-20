@@ -4,7 +4,11 @@ import styled from "styled-components";
 import client from "../../../apollo-client";
 import { GET_ALL_COURSES, GET_COURSE_BY_ID } from "../../../graphql/courses";
 import { CourseClient } from "../../../interfaces";
-import { DocentenCourse, HeroCourse } from "../../components/Course";
+import {
+  CourseProjects,
+  DocentenCourse,
+  HeroCourse,
+} from "../../components/Course";
 
 const Container = styled.div`
   padding-bottom: 5rem;
@@ -20,6 +24,7 @@ const CourseDetail = ({ course }: CoursesPageProps) => {
     <Container>
       <HeroCourse course={course} />
       <DocentenCourse course={course} />
+      <CourseProjects course={course} />
     </Container>
   );
 };
