@@ -17,6 +17,7 @@ import { tableColumns } from "../../../utils/constants";
 export default function TeachersPage(): ReactElement {
   const { data, error, loading } = useQuery(GET_ALL_TEACHERS, {
     ssr: true,
+    errorPolicy: "all",
   });
 
   return (

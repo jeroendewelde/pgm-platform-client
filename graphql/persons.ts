@@ -34,6 +34,7 @@ export const GET_PERSON_BY_ID = gql`
 export const GET_ALL_TEACHERS = gql`
   {
     teachers {
+      id
       firstName
       lastName
       type
