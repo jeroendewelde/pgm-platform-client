@@ -103,7 +103,7 @@ export interface Project {
   teaserText: string;
   body: string;
   academicYear: string;
-  tags: String[];
+  tags: string[];
   // Relations
   courseId: number;
   course: Course;
@@ -177,4 +177,71 @@ export enum AttachmentType {
  */
 export interface LearningLinesData {
   learningLines: LearningLine[];
+
+/**
+ * Client
+ */
+
+export interface AllQuotes {
+  id: number;
+  firstName: string;
+  lastName: string;
+  personInformation: {
+    quote: string;
+  };
+}
+
+export interface AllTeachersClient {
+  id: number;
+  firstName: string;
+  lastName: string;
+
+  personInformation: {
+    bio: string;
+    socialMedias: SocialMedia[];
+  };
+}
+
+export interface GetOneTeacherClient {
+  quote: string;
+  id: number;
+  firstName: string;
+  lastName: string;
+
+  personInformation: {
+    bio: string;
+    socialMedias: SocialMedia[];
+    fieldExperiences: FieldExperience[];
+    quote: string;
+  };
+}
+
+export interface CourseByLearningLineId {
+  id: number;
+  name: string;
+  description: string;
+  term: number;
+  academicYear: string;
+  tags: string[];
+  // Relations
+  learningLineId: number;
+  specialisationId: number;
+  learningLine: LearningLine;
+  specialisation: Specialisation;
+}
+
+export interface CourseClient {
+  id: number;
+  name: string;
+  description: string;
+  term: number;
+  academicYear: string;
+  tags: string[];
+  projects: Project[];
+  teachers: AllTeachersClient[];
+  // Relations
+  learningLineId: number;
+  specialisationId: number;
+  learningLine: LearningLine;
+  specialisation: Specialisation;
 }

@@ -13,6 +13,7 @@ const defaultTheme: DefaultTheme = {
     green: "#5AB946",
     blue: "#00A5D9",
     turquoise: "#30D9CE",
+    yellow: "#Faed27",
 
     bg_gradient_color_1: "#030712",
     bg_gradient_color_2: "#131029",
@@ -56,6 +57,7 @@ const defaultTheme: DefaultTheme = {
   transition: {
     normal: "all 0.2s ease-in-out",
     medium: "all 0.5s ease-in-out",
+    bounce: "all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)",
   },
 };
 

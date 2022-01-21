@@ -4,9 +4,8 @@ import React, { Dispatch, SetStateAction } from "react";
 import styled from "styled-components";
 import { CgClose } from "react-icons/cg";
 import { motion, AnimatePresence } from "framer-motion";
-
-import logo from "../../../assets/logo/logo.png";
 import { transparentize } from "polished";
+
 import Panels from "./Panels";
 import NavigationListItem from "./NavigationListItem";
 import NavigationListItemData from "../../../data/NavigationListItems.json";
@@ -134,16 +133,16 @@ const MenuList = styled(motion.ul)`
 `;
 
 export interface NavigationProps {
-  setMenuState: Dispatch<SetStateAction<boolean>>;
-  menuState: boolean;
+  setNavigationState: Dispatch<SetStateAction<boolean>>;
+  navigationState: boolean;
   x: number;
   y: number;
   setCursorHover: Dispatch<SetStateAction<boolean>>;
 }
 
 const Navigation = ({
-  menuState,
-  setMenuState,
+  navigationState,
+  setNavigationState,
   x,
   y,
   setCursorHover,
@@ -151,7 +150,7 @@ const Navigation = ({
   return (
     <>
       <AnimatePresence>
-        {menuState && (
+        {navigationState && (
           <>
             <Container
               initial={{ visibility: "hidden" }}
@@ -177,7 +176,7 @@ const Navigation = ({
                     >
                       <Link href="/">
                         <Logo>
-                          <Image src={logo} layout="fill" />
+                          <Image src="/logo/logo.png" layout="fill" />
                         </Logo>
                       </Link>
                     </motion.div>
@@ -191,7 +190,7 @@ const Navigation = ({
                       }}
                     >
                       <span>
-                        <CgClose onClick={() => setMenuState(false)} />
+                        <CgClose onClick={() => setNavigationState(false)} />
                       </span>
                     </motion.div>
                   </div>

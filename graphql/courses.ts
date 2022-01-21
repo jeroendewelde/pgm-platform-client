@@ -28,6 +28,26 @@ export const GET_ALL_COURSES = gql`
   }
 `;
 
+export const GET_COURSESBY_LEARNINGLINE_ID = gql`
+  query coursesByLearningLineId($learningLineId: Int!) {
+    coursesByLearningLineId(learningLineId: $learningLineId) {
+      id
+      name
+      description
+      term
+      academicYear
+      tags
+      learningLineId
+      specialisationId
+      learningLine {
+        id
+        name
+        color
+      }
+    }
+  }
+`;
+
 export const GET_COURSE_BY_ID = gql`
   query getCourseById($id: Int!) {
     course(id: $id) {
@@ -44,8 +64,29 @@ export const GET_COURSE_BY_ID = gql`
         name
         color
       }
+      projects {
+        id
+        name
+        teaserText
+        tags
+        students {
+          id
+          firstName
+          lastName
+        }
+      }
       teachers {
         id
+        firstName
+        lastName
+
+        personInformation {
+          bio
+          socialMedias {
+            platform
+            url
+          }
+        }
       }
     }
   }

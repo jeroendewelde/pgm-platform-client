@@ -27,6 +27,16 @@ export const GET_PERSON_BY_ID = gql`
       firstName
       lastName
       type
+    }
+  }
+`;
+
+export const GET_ALL_TEACHERS = gql`
+  {
+    teachers {
+      firstName
+      lastName
+      type
       academicYear
       personInformation {
         id
@@ -63,6 +73,18 @@ export const GET_PERSON_INFORMATION_BY_PERSON_ID = gql`
   }
 `;
 
+export const GET_ALL_STUDENTS = gql`
+  {
+    students {
+      id
+      firstName
+      lastName
+      type
+      academicYear
+    }
+  }
+`;
+
 export const GET_FIELD_EXPERIENCES_BY_PERSON_ID = gql`
   query fieldExperiencesByPersonId($id: Int!) {
     fieldExperiencesByPersonId(id: $id) {
@@ -73,25 +95,59 @@ export const GET_FIELD_EXPERIENCES_BY_PERSON_ID = gql`
   }
 `;
 
-export const GET_ALL_TEACHERS = gql`
+export const GET_ALL_QUOTES = gql`
+  {
+    persons {
+      id
+      firstName
+      lastName
+      personInformation {
+        quote
+      }
+    }
+  }
+`;
+
+export const GET_ALL_TEACHERS_CLIENT = gql`
   {
     teachers {
       id
       firstName
       lastName
-      type
+
+      personInformation {
+        bio
+        socialMedias {
+          id
+          platform
+          url
+        }
+      }
     }
   }
 `;
 
-export const GET_ALL_STUDENTS = gql`
-  {
-    students {
+export const GET_TEACHER_BY_ID = gql`
+  query getTeacherById($id: Int!) {
+    person(id: $id) {
       id
       firstName
       lastName
-      type
-      academicYear
+
+      personInformation {
+        bio
+        socialMedias {
+          id
+          platform
+          url
+        }
+        fieldExperiences {
+          id
+          company
+          function
+        }
+        quote
+      }
     }
   }
 `;
@@ -148,6 +204,8 @@ export const UPDATE_PERSON_INFORMATION = gql`
   ) {
     updatePersonInformation(updatePersonInformationInput: $input, id: $id) {
       id
+      lastName
+      type
     }
   }
 `;

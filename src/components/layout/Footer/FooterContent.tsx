@@ -1,10 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
 import { transparentize } from "polished";
-import React from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
-
-import logo from "../../../assets/logo/logo.png";
+import { CursorContext } from "../../../context/CursorContext";
 
 const Container = styled.div`
   padding: 2rem 1rem;
@@ -18,9 +17,11 @@ const Container = styled.div`
 const Info = styled.div`
   margin-bottom: 1.5rem;
 
-  p {
+  span {
+    display: block;
     margin: 0.5rem auto;
     text-align: center;
+    font-size: ${(props) => props.theme.fontSizes.normal};
 
     @media (min-width: ${(props) => props.theme.width.medium}) {
       max-width: 60rem;
@@ -126,17 +127,27 @@ const LogoContainer = styled.div`
 `;
 
 const FooterContent = () => {
+  const { setCursorHover } = useContext(CursorContext);
+
+  const handleMouseEnter = () => {
+    setCursorHover(true);
+  };
+
+  const handleMouseLeave = () => {
+    setCursorHover(false);
+  };
+
   return (
     <Container>
       <Info>
-        <p>
+        <span>
           © www.pgm.gent is een website van de opleiding Graduaat Programmeren
           van{" "}
           <Link href="https://www.arteveldehogeschool.be/">
             Arteveldehogeschool
           </Link>
           .
-        </p>
+        </span>
       </Info>
       <FlexContainer>
         <ContactInfo>
@@ -149,7 +160,7 @@ const FooterContent = () => {
           <span>Website made by PGM.GENT</span>
         </ContactInfo>
         <SocialMedia>
-          <li>
+          <li onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
             <Link href="https://www.facebook.com/Programmeren.ahs">
               Facebook
             </Link>
@@ -174,7 +185,7 @@ const FooterContent = () => {
       <LogoContainer>
         <Link href="/">
           <div>
-            <Image src={logo} layout="fill" />
+            <Image src="/logo/logo.png" layout="fill" />
           </div>
         </Link>
       </LogoContainer>

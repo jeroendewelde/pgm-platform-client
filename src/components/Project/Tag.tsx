@@ -2,7 +2,11 @@ import { transparentize } from "polished";
 import React from "react";
 import styled from "styled-components";
 
-const Container = styled.div<TagProps>`
+interface StyleProps {
+  learningLine: string;
+}
+
+const Container = styled.div<StyleProps>`
   border: ${({ learningLine }) => {
     if (learningLine === "blue") {
       return (props) => `2px solid ${props.theme.colors.blue}`;
@@ -48,13 +52,14 @@ const Container = styled.div<TagProps>`
 `;
 
 interface TagProps {
-  title?: string;
-  learningLine: string;
+  key: number;
+  title: string;
+  learningLine?: string;
 }
 
-const Tag = ({ title, learningLine }: TagProps) => {
+const Tag = ({ key, title, learningLine = "pink" }: TagProps) => {
   return (
-    <Container learningLine={learningLine}>
+    <Container key={key} learningLine={learningLine}>
       <p>{title}</p>
     </Container>
   );
