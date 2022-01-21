@@ -1,48 +1,44 @@
-import React, { ReactElement } from 'react'
+import React, { ReactElement } from "react";
 
 // Query
-import { GET_ALL_COURSES } from '../../../../graphql/courses';
+import { useQuery } from "@apollo/client";
+import {
+  DELETE_COMPANY,
+  GET_ALL_COMPANIES,
+} from "../../../../graphql/companies";
 
 // Custom Components
-import client from '../../../../apollo-client';
-import BasicContainer from '../../../components/Admin/style/BasicContainer';
-import Dashboard from '../../../components/Admin/Dashboard'
-import DataGridContent from '../../../components/Admin/DataGridContent';
+import BasicContainer from "../../../components/Admin/style/BasicContainer";
+import Dashboard from "../../../components/Admin/Dashboard";
+import DataGridContent from "../../../components/Admin/DataGridContent";
+import CustomLoading from "../../../components/Admin/style/CustomLoading";
+import NavigationButton from "../../../components/Admin/NavigationButton";
 
 // Variabels
-import { tableColumns } from '../../../utils/constants';
-import { Company, Course } from '../../../../interfaces';
-import { GET_ALL_COMPANIES } from '../../../../graphql/companies';
+import { tableColumns } from "../../../utils/constants";
 
-interface CompaniesPageProps {
-	companies: Company[]
-}
+export default function CompaniesPage(): ReactElement {
+  const { data, error, loading } = useQuery(GET_ALL_COMPANIES, {
+    ssr: true,
+  });
 
-export default function CompaniesPage({companies}: CompaniesPageProps): ReactElement {
-	return (
-		<BasicContainer title="Bedrijven" >
-			<Dashboard title="Bedrijven">
-				<DataGridContent 
-					data={companies}
-					info={tableColumns.companies} 
-				/>
-			</Dashboard>
-		</BasicContainer>	
-	)
-}
-
-export async function getStaticProps() {
-    const { data, error } = await client.query({
-        query: GET_ALL_COMPANIES
-    });
-
-    if (error) {
-        console.log(error);
-    }
-
-    return {
-        props: {
-            companies: data.companies,
-        },
-    };
+  return (
+    <BasicContainer title="Leerbedrijven">
+      <Dashboard title="Leerbedrijven">
+        {loading ? (
+          <CustomLoading />
+        ) : (
+          <>
+            <NavigationButton title="nieuw leerbedrijf" />
+            <DataGridContent
+              data={data.companies}
+              info={tableColumns.companies}
+              deleteQuery={DELETE_COMPANY}
+              fetchAllQuery={GET_ALL_COMPANIES}
+            />
+          </>
+        )}
+      </Dashboard>
+    </BasicContainer>
+  );
 }

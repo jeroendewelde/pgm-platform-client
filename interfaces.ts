@@ -27,14 +27,15 @@ export interface Course {
   academicYear: string;
   tags: string[];
   // Relations
-  learningLineId: number
-  specialisationId: number
-  learningLine: LearningLine
-  specialisation: Specialisation
+  learningLineId: number;
+  specialisationId: number;
+  learningLine: LearningLine;
+  specialisation: Specialisation;
+  teachers: Person[];
 }
 
 export interface FieldExperience {
-  id: number;
+  id: string;
   duration: string;
   company: string;
   function: string;
@@ -44,11 +45,11 @@ export interface FieldExperience {
   person: Person;
 }
 
-export interface Generation {
-  id: number;
-  name: string;
-  years: string;
-}
+// export interface Generation {
+//   id: number;
+//   name: string;
+//   years: string;
+// }
 
 export interface Intern {
   id: number;
@@ -80,9 +81,10 @@ export interface Person {
   lastName: string;
   // enum student, person?
   type: string;
+  academicYear: string;
   // Relations
-  generationId: number;
-  generation: Generation;
+  // generationId: number;
+  // generation: Generation;
 }
 
 export interface PersonInformation {
@@ -105,10 +107,11 @@ export interface Project {
   // Relations
   courseId: number;
   course: Course;
+  students: Person[];
 }
 
 export interface SocialMedia {
-  id: number;
+  id: string;
   platform: string;
   url: string;
   // Relations
@@ -120,6 +123,13 @@ export interface Specialisation {
   id: number;
   name: string;
   academicYear: string;
+}
+
+export interface Testimonial {
+  id: number;
+  quote: string;
+  name: string;
+  company: string;
 }
 
 export interface User {
@@ -165,3 +175,6 @@ export enum AttachmentType {
 /**
  * GraphQL returns
  */
+export interface LearningLinesData {
+  learningLines: LearningLine[];
+}

@@ -1,37 +1,41 @@
+import Head from "next/head";
+import { useRouter } from "next/router";
+import type { AppProps } from "next/app";
+
+// Styling
 import { ThemeProvider } from "styled-components";
 import theme from "../theme/theme";
-
-import type { AppProps } from "next/app";
-import Head from "next/head";
-import { useRouter } from 'next/router';
-
-import '../styles/global.css';
-
-
-import { BaseLayout } from "../layouts";
 import GlobalStyle from "../theme/globalStyles";
+import "../styles/global.css";
+import { BaseLayout } from "../layouts";
+
+// Apollo
+import { ApolloProvider } from "@apollo/client";
+import client from "../../apollo-client";
 
 function MyApp({ Component, pageProps }: AppProps) {
-	const router = useRouter();
-	let isAdmin = false;
-	if(router.pathname.split('/admin').length >= 2) {
-		isAdmin = true;
-	} 
+  const router = useRouter();
+  let isAdmin = false;
+  if (router.pathname.split("/admin").length >= 2) {
+    isAdmin = true;
+  }
   return (
-    <ThemeProvider theme={theme}>
+    <ApolloProvider client={client}>
+      <ThemeProvider theme={theme}>
         <Head>
-            <link rel="shortcut icon" href="/logo_purple.ico" />
-		</Head>
-      <GlobalStyle />
+          <link rel="shortcut icon" href="/logo_purple.ico" />
+        </Head>
+        <GlobalStyle />
 
-	  { !isAdmin ? (
-	  	<BaseLayout>
-		  <Component {...pageProps} />
-		</BaseLayout> ) : (
-			<Component {...pageProps} />
-		) }
-
-    </ThemeProvider>
+        {!isAdmin ? (
+          <BaseLayout>
+            <Component {...pageProps} />
+          </BaseLayout>
+        ) : (
+          <Component {...pageProps} />
+        )}
+      </ThemeProvider>
+    </ApolloProvider>
   );
 }
 

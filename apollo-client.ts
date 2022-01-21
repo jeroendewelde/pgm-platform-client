@@ -1,14 +1,26 @@
-import { 
-  ApolloClient,
-  InMemoryCache
- } from '@apollo/client';
+import { ApolloClient, InMemoryCache } from "@apollo/client";
+// import { createUploadLink } from "apollo-upload-client";
+import { createUploadLink } from "apollo-upload-client";
+
+const uploadLink = createUploadLink({
+  uri: process.env.NEXT_PUBLIC_HOST_URL,
+  headers: {
+    "keep-alive": "true",
+  },
+});
 
 const client = new ApolloClient({
-  // uri: 'http://localhost:3000/graphql',
-  uri: process.env.NEXT_PUBLIC_HOST_URL,
+  link: uploadLink,
+  ssrMode: true,
+  // uri: process.env.NEXT_PUBLIC_HOST_URL,
   cache: new InMemoryCache(),
-  
 });
+// const client = new ApolloClient({
+//   ssrMode: true,
+//   uri: process.env.NEXT_PUBLIC_HOST_URL,
+//   cache: new InMemoryCache(),
+// });
+
 // const client = new ApolloClient({
 //   uri: 'https://pgm-platform-server.herokuapp.com/graphql',
 //   cache: new InMemoryCache(),

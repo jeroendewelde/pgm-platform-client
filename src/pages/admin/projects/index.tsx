@@ -1,49 +1,43 @@
-import React, { ReactElement } from 'react'
+import React, { ReactElement } from "react";
 
 // Query
-import { GET_ALL_COURSES } from '../../../../graphql/courses';
+import { useQuery } from "@apollo/client";
+import { DELETE_PROJECT, GET_ALL_PROJECTS } from "../../../../graphql/projects";
 
 // Custom Components
-import client from '../../../../apollo-client';
-import BasicContainer from '../../../components/Admin/style/BasicContainer';
-import Dashboard from '../../../components/Admin/Dashboard'
-import DataGridContent from '../../../components/Admin/DataGridContent';
+import BasicContainer from "../../../components/Admin/style/BasicContainer";
+import Dashboard from "../../../components/Admin/Dashboard";
+import DataGridContent from "../../../components/Admin/DataGridContent";
+import NavigationButton from "../../../components/Admin/NavigationButton";
+import CustomLoading from "../../../components/Admin/style/CustomLoading";
 
 // Variabels
-import { tableColumns } from '../../../utils/constants';
-import { Course } from '../../../../interfaces';
+import { tableColumns } from "../../../utils/constants";
 
-interface ProjectsPageProps {
-	courses: Course[]
-}
+export default function ProjectsPage(): ReactElement {
+  const { data, error, loading } = useQuery(GET_ALL_PROJECTS, {
+    ssr: true,
+  });
 
-export default function ProjectsPage({courses}: ProjectsPageProps): ReactElement {
-	return (
-		<>
-			<BasicContainer title="Projecten" >
-				<Dashboard title="Projecten">
-					<DataGridContent 
-						data={courses}
-						info={tableColumns.courses} 
-					/>
-				</Dashboard>
-			</BasicContainer>
-		</>
-	)
-}
-
-export async function getStaticProps() {
-    const { data, error } = await client.query({
-        query: GET_ALL_COURSES
-    });
-
-    if (error) {
-        console.log(error);
-    }
-
-    return {
-        props: {
-            courses: data.courses,
-        },
-    };
+  return (
+    <BasicContainer title="Projecten">
+      <Dashboard title="Projecten">
+        <>
+          {loading ? (
+            <CustomLoading />
+          ) : (
+            <>
+              <NavigationButton title="nieuw project" />
+              <DataGridContent
+                data={data.projects}
+                info={tableColumns.projects}
+                deleteQuery={DELETE_PROJECT}
+                fetchAllQuery={GET_ALL_PROJECTS}
+              />
+            </>
+          )}
+        </>
+      </Dashboard>
+    </BasicContainer>
+  );
 }

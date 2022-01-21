@@ -1,159 +1,228 @@
+import { GET_ALL_COURSES } from "../../graphql/attachments";
+import { DELETE_COURSE } from "../../graphql/courses";
+import {
+  DELETE_LEARNING_LINE,
+  GET_ALL_LEARNING_LINES,
+} from "../../graphql/learningLines";
+import {
+  DELETE_SPECIALISATION,
+  GET_ALL_SPECIALISATIONS,
+} from "../../graphql/specialisations";
+
 const colors = {
-  primary: '#7e57c5',
-  orange: '#f58732',
-  blue: '#00a5d9',
-  purple: '#7e57c5',
-  red: '#ed0034',
-  green: '#5ab946',
-  pink: '#d20082',
-  pastelOrange: '#fac38c',
-  pastelBlue: '#a5cdd7',
-  pastelGreen: '#bed2b9',
-  pastelRed: '#dc6455',
-  pastelPink: '#e6a5aa',
-  pastelPurple: '#b9b4c3',
-  pastelRust: '#e18c5a',
-  pastelYellow: '#ebc37d'
-}
+  primary: "#7e57c5",
+  orange: "#f58732",
+  blue: "#00a5d9",
+  purple: "#7e57c5",
+  red: "#ed0034",
+  green: "#5ab946",
+  pink: "#d20082",
+  pastelOrange: "#fac38c",
+  pastelBlue: "#a5cdd7",
+  pastelGreen: "#bed2b9",
+  pastelRed: "#dc6455",
+  pastelPink: "#e6a5aa",
+  pastelPurple: "#b9b4c3",
+  pastelRust: "#e18c5a",
+  pastelYellow: "#ebc37d",
+  edit: "#FAA628",
+  delete: "#ED4245",
+  edit_bg: "#FCD293",
+  delete_bg: "#F6A0A1",
+  white: "#FFF",
+};
 
 const tableColumns = {
   companies: [
     {
-      dataName: 'id',
-      colName: 'id',
+      field: "id",
+      headerName: "id",
     },
     {
-      dataName: 'name',
-      colName: 'name',
+      field: "name",
+      headerName: "name",
     },
-    // {
-    //   dataName: 'teaserImage',
-    //   colName: 'teaserImage',
-    // }
   ],
-  courses : [
+  courses: [
     {
-      dataName: 'id',
-      colName: 'id'
+      field: "id",
+      headerName: "id",
     },
     {
-      dataName: 'name',
-      colName: 'naam'
+      field: "name",
+      headerName: "naam",
     },
     {
-      dataName: 'description',
-      colName: 'beschrijving'
+      field: "description",
+      headerName: "beschrijving",
     },
     {
-      dataName: 'term',
-      colName: 'periode'
+      field: "term",
+      headerName: "periode",
     },
     {
-      dataName: 'academicYear',
-      colName: 'academiejaar'
+      field: "academicYear",
+      headerName: "academiejaar",
     },
     {
-      dataName: 'learningLineId',
-      colName: 'leerlijn ID'
+      field: "learningLineId",
+      headerName: "leerlijn ID",
     },
     // {
-    //   dataName: 'learningLine["name"]',
-    //   colName: 'leerlijn'
+    //   field: 'learningLine["name"]',
+    //   headerName: 'leerlijn'
     // },
     {
-      dataName: 'specialisationId',
-      colName: 'specialisatie ID'
+      field: "specialisationId",
+      headerName: "specialisatie ID",
     },
   ],
   learningLines: [
     {
-      dataName: 'id',
-      colName: 'id'
+      field: "id",
+      headerName: "id",
     },
     {
-      dataName: 'name',
-      colName: 'naam'
+      field: "name",
+      headerName: "naam",
     },
     {
-      dataName: 'color',
-      colName: 'kleur'
+      field: "color",
+      headerName: "kleur",
     },
   ],
   persons: [
     {
-      dataName: 'id',
-      colName: 'id'
+      field: "id",
+      headerName: "id",
     },
     {
-      dataName: 'firstName',
-      colName: 'voornaam'
+      field: "firstName",
+      headerName: "voornaam",
     },
     {
-      dataName: 'lastName',
-      colName: 'familienaam'
+      field: "lastName",
+      headerName: "familienaam",
     },
     {
-      dataName: 'type',
-      colName: 'type'
+      field: "type",
+      headerName: "type",
+    },
+  ],
+  projects: [
+    {
+      field: "id",
+      headerName: "id",
+    },
+    {
+      field: "name",
+      headerName: "naam",
+    },
+    {
+      field: "teaserText",
+      headerName: "teaser",
+    },
+    {
+      field: "body",
+      headerName: "body",
+    },
+    {
+      field: "academicYear",
+      headerName: "academiejaar",
+    },
+    {
+      field: "courseId",
+      headerName: "vak id",
     },
   ],
   students: [
     {
-      dataName: 'id',
-      colName: 'id'
+      field: "id",
+      headerName: "id",
     },
     {
-      dataName: 'firstName',
-      colName: 'voornaam'
+      field: "firstName",
+      headerName: "voornaam",
     },
     {
-      dataName: 'lastName',
-      colName: 'familienaam'
+      field: "lastName",
+      headerName: "familienaam",
     },
     {
-      dataName: 'type',
-      colName: 'type'
+      field: "academicYear",
+      headerName: "academiejaar",
     },
-    {
-      dataName: 'generationId',
-      colName: 'generation ID'
-    }
+    // {
+    //   field: "type",
+    //   headerName: "type",
+    // },
+    // {
+    //   field: "generationId",
+    //   headerName: "generation ID",
+    // },
   ],
   teachers: [
     {
-      dataName: 'id',
-      colName: 'id'
+      field: "id",
+      headerName: "id",
     },
     {
-      dataName: 'firstName',
-      colName: 'voornaam'
+      field: "firstName",
+      headerName: "voornaam",
     },
     {
-      dataName: 'lastName',
-      colName: 'familienaam'
+      field: "lastName",
+      headerName: "familienaam",
+    },
+    // {
+    //   field: "type",
+    //   headerName: "type",
+    // },
+  ],
+  testimonials: [
+    {
+      field: "id",
+      headerName: "id",
     },
     {
-      dataName: 'type',
-      colName: 'type'
+      field: "quote",
+      headerName: "quote",
+    },
+    {
+      field: "name",
+      headerName: "auteur",
+    },
+    {
+      field: "company",
+      headerName: "bedrijf",
     },
   ],
-    specialisations: [
+  specialisations: [
     {
-      dataName: 'id',
-      colName: 'id'
+      field: "id",
+      headerName: "id",
     },
     {
-      dataName: 'name',
-      colName: 'naam'
+      field: "name",
+      headerName: "naam",
     },
     {
-      dataName: 'academicYear',
-      colName: 'academiejaren'
+      field: "academicYear",
+      headerName: "academiejaren",
     },
-  ]
-}
+  ],
+};
 
-export {
-  colors,
-  tableColumns
-}
+let deleteQueries: { [key: string]: any } = {
+  specialisations: DELETE_SPECIALISATION,
+  courses: DELETE_COURSE,
+};
+
+deleteQueries["learning-lines"] = DELETE_LEARNING_LINE;
+
+let fetchQueries: { [key: string]: any } = {
+  specialisations: GET_ALL_SPECIALISATIONS,
+  courses: GET_ALL_COURSES,
+};
+fetchQueries["learning-lines"] = GET_ALL_LEARNING_LINES;
+export { colors, deleteQueries, fetchQueries, tableColumns };
