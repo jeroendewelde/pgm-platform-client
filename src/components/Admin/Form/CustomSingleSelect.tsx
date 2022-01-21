@@ -70,6 +70,7 @@ export default function CustomSingleSelect(props: SelectProps): ReactElement {
 
           {data.map((item: any) => (
             <MenuItem key={item.id} value={item.id}>
+              {!labelProps && !extraData ? item.name : ""}
               {labelProps
                 ? item[labelProps[0]] +
                   " " +
@@ -77,9 +78,8 @@ export default function CustomSingleSelect(props: SelectProps): ReactElement {
                   " ( " +
                   item[labelProps[2]] +
                   " ) "
-                : item.name + " " + extraData
-                ? ` - ${item[extraData]}`
                 : ""}
+              {extraData && item.name + " ( " + item[extraData] + " ) "}
             </MenuItem>
           ))}
 

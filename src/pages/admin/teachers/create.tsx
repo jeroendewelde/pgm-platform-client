@@ -68,7 +68,7 @@ export default function createTeacher(): ReactElement {
   });
 
   const [showExtraInfo, setShowExtraInfo] = useState(false);
-  //   const [showCourses, setShowCourses] = useState(false);
+  const [showCourses, setShowCourses] = useState(false);
 
   const labelSwitch = {
     inputProps: { "aria-label": "Extra informatie toevoegen" },
@@ -78,9 +78,9 @@ export default function createTeacher(): ReactElement {
     setShowExtraInfo(!showExtraInfo);
   };
 
-  //   const handleChangeSwitchCourseInfo = () => {
-  //     setShowCourses(!showCourses);
-  //   };
+  const handleChangeSwitchCourseInfo = () => {
+    setShowCourses(!showCourses);
+  };
 
   return (
     <BasicContainer title="Nieuwe Docent">

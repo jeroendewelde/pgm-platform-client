@@ -217,6 +217,7 @@ export default function createProject(): ReactElement {
                           border: "1px solid #e0e0e0",
                         }}
                         helperText="Naam van het vak"
+                        extraData={"academicYear"}
 
                         // name="academicYear"
                         // type="text"

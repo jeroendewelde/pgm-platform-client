@@ -45,7 +45,7 @@ import {
   GET_ALL_TEACHERS,
 } from "../../../../../graphql/persons";
 import CustomMultiSelectWithChips from "../../../../components/Admin/Form/CustomMultiSelectWithChips";
-import { GET_ALL_COURSES } from "../../../../../graphql/attachments";
+import { GET_ALL_COURSES } from "../../../../../graphql/courses";
 import {
   DELETE_PROJECT,
   GET_PROJECT_BY_ID,
@@ -270,6 +270,7 @@ export default function editProject(): ReactElement {
                         value={values.courseId}
                         name="courseId"
                         data={dataCourses.courses}
+                        extraData="academicYear"
                         sx={{
                           // minWidth: '45%',
                           // minWidth: '40%',

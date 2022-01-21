@@ -89,7 +89,6 @@ export default function createCourse(): ReactElement {
           <CustomLoading />
         ) : (
           <>
-            {console.log("data....", dataTeachers)}
             <Box
               sx={{
                 maxWidth: "md",
@@ -106,14 +105,10 @@ export default function createCourse(): ReactElement {
                   learningLineId: "",
                   specialisationId: "",
                   teachers: [],
-                  //   fieldExperiences: [],
-                  // attachments: [],
-                  // teachers: [],
                 }}
                 validationSchema={validationSchema}
                 onSubmit={(values, { setSubmitting }) => {
                   setSubmitting(true);
-
                   addCourse({
                     variables: {
                       input: {

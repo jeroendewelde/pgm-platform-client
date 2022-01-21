@@ -27,17 +27,6 @@ export const GET_PERSON_BY_ID = gql`
       firstName
       lastName
       type
-    }
-  }
-`;
-
-export const GET_ALL_TEACHERS = gql`
-  {
-    teachers {
-      id
-      firstName
-      lastName
-      type
       academicYear
       personInformation {
         id
@@ -58,6 +47,17 @@ export const GET_ALL_TEACHERS = gql`
       courses {
         id
       }
+    }
+  }
+`;
+
+export const GET_ALL_TEACHERS = gql`
+  {
+    teachers {
+      id
+      firstName
+      lastName
+      type
     }
   }
 `;
