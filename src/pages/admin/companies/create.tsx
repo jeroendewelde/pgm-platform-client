@@ -1,4 +1,4 @@
-import React, { ReactElement } from "react";
+import React, { ReactElement, useState } from "react";
 import Router from "next/router";
 
 // Formik & Yup
@@ -6,7 +6,7 @@ import * as yup from "yup";
 import { Field, FieldArray, Form, Formik } from "formik";
 
 // Material UI Components
-import { Button, Typography } from "@mui/material";
+import { Button, Typography, Paper } from "@mui/material";
 import Box from "@mui/material/Box";
 import { TextField } from "formik-mui";
 
@@ -23,6 +23,10 @@ import { Remove, Add } from "@material-ui/icons";
 import { GET_ALL_STUDENTS } from "../../../../graphql/persons";
 import CustomLoading from "../../../components/Admin/style/CustomLoading";
 import CustomSingleSelect from "../../../components/Admin/Form/CustomSingleSelect";
+import { styled } from "@mui/material/styles";
+import ImageOutlinedIcon from "@mui/icons-material/ImageOutlined";
+import { colors } from "../../../utils/constants";
+import LandscapeIcon from "@mui/icons-material/Landscape";
 
 const validationSchema = yup.object({
   name: yup.string().required("Naam van het leerbedrijf is verplicht"),
@@ -40,8 +44,10 @@ const validationSchema = yup.object({
 });
 
 export default function createCompany(): ReactElement {
-  const [addTestimonial, { data, loading, error }] =
-    useMutation(CREATE_COMPANY);
+  const [imageSrc, setImageSrc] = useState();
+  const [uploadData, setUploadData] = useState();
+
+  const [addCompany, { data, loading, error }] = useMutation(CREATE_COMPANY);
 
   const {
     data: dataStudents,
@@ -50,6 +56,19 @@ export default function createCompany(): ReactElement {
   } = useQuery(GET_ALL_STUDENTS, {
     ssr: true,
   });
+
+  const Input = styled("input")({
+    display: "none",
+  });
+
+  const handleOnChangeImage = ({ target: { files } }) => {
+    const file = files[0];
+    console.log("...file", file);
+    if (files.length > 0) {
+      setUploadData(file);
+      setImageSrc(URL.createObjectURL(file));
+    }
+  };
 
   return (
     <BasicContainer title="Nieuw Leerbedrijf">
@@ -72,17 +91,18 @@ export default function createCompany(): ReactElement {
                 validationSchema={validationSchema}
                 onSubmit={(values, { setSubmitting }) => {
                   setSubmitting(true);
-                  addTestimonial({
+                  addCompany({
                     variables: {
                       input: {
                         name: values.name,
                         teaserImage: values.teaserImage,
                         interns: values.interns,
+                        // file: uploadData || null,
                       },
                     },
                   });
                   if (!error && !loading) {
-                    window.location.href = Router.pathname.split("/create")[0];
+                    // window.location.href = Router.pathname.split("/create")[0];
                   }
                 }}
               >
@@ -113,6 +133,63 @@ export default function createCompany(): ReactElement {
                         helperText="link naar de teaser image"
                         // fullWidth
                       />
+                    </Box>
+                    <Box margin={1}>
+                      <label htmlFor="contained-button-file">
+                        <Input
+                          accept="image/*"
+                          id="contained-button-file"
+                          multiple
+                          type="file"
+                          onChange={handleOnChangeImage}
+                        />
+                        <Button variant="contained" component="span">
+                          {imageSrc
+                            ? "Teaser Image aanpassen"
+                            : "Teaser Image toevoegen"}
+                        </Button>
+                      </label>
+                      <Paper
+                        sx={{
+                          width: "100%",
+                          height: 180,
+                          width: 320,
+                          mt: 2,
+                          mb: 2,
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          backgroundColor: "#E5E5E5",
+
+                          overflow: "hidden",
+                        }}
+                      >
+                        {imageSrc ? (
+                          <img
+                            src={imageSrc}
+                            alt="teaser image"
+                            style={{
+                              height: 180,
+                              width: 320,
+                              objectFit: "cover",
+                            }}
+                          />
+                        ) : (
+                          <LandscapeIcon
+                            sx={{
+                              color: "#FFF",
+                              fontSize: 64,
+                            }}
+                          />
+                          //   <ImageOutlinedIcon
+                          //     sx={{
+                          //       color: "#E5E5E5",
+                          //       fontSize: 64,
+                          //     }}
+                          //   />
+                        )}
+                        {/* <img src={imageSrc} /> */}
+                      </Paper>
                     </Box>
 
                     <Box margin={1}>
