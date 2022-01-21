@@ -79,6 +79,7 @@ export default function createCourse(): ReactElement {
     loading: loadingTeachers,
   } = useQuery(GET_ALL_TEACHERS, {
     ssr: true,
+    errorPolicy: "all",
   });
 
   return (
@@ -88,6 +89,7 @@ export default function createCourse(): ReactElement {
           <CustomLoading />
         ) : (
           <>
+            {console.log("data....", dataTeachers)}
             <Box
               sx={{
                 maxWidth: "md",
