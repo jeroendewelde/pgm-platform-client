@@ -94,7 +94,7 @@ const CoursesContainer = styled.div`
     }
   }
 
-  .courses {
+  ul {
     margin-top: 1rem;
     display: flex;
     flex-direction: row;
@@ -181,7 +181,7 @@ const CoursesPage = ({ courses, learningLines }: CoursesPageProps) => {
       <CoursesContainer>
         <span className="bg"></span>
 
-        <ul className="courses">
+        <ul>
           {!selected &&
             courses.map((course) => (
               <Card
@@ -195,7 +195,7 @@ const CoursesPage = ({ courses, learningLines }: CoursesPageProps) => {
         </ul>
 
         {selected && (
-          <ul className="courses">
+          <ul>
             {coursesByLearningLineId.map((course: Course) => (
               <Card
                 id={course.id}

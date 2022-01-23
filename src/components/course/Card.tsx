@@ -245,7 +245,7 @@ const Card = ({ tags, learningLine, title, id, key }: CardProps) => {
   };
 
   return (
-    <Link href={`vakken/${id}`} key={key}>
+    <Link href={`/vakken/${id}`} key={key}>
       <Container
         className="Card"
         learningLine={learningLine}
