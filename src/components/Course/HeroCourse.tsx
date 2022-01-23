@@ -4,9 +4,7 @@ import styled from "styled-components";
 
 import test from "../../assets/test/test.jpg";
 
-import { Course } from "../../../interfaces";
-import { GlitchTitle } from "../Titles/GlitchTitle";
-import Link from "next/link";
+import { CourseClient } from "../../../interfaces";
 import Tag from "./Tag";
 import { CourseTitle } from "../Titles/CourseTitle";
 import CTALink from "./CTALink";
@@ -68,7 +66,7 @@ const Container = styled.section`
 `;
 
 interface HeroCourseProps {
-  course: Course;
+  course: CourseClient;
 }
 
 const HeroCourse = ({ course }: HeroCourseProps) => {

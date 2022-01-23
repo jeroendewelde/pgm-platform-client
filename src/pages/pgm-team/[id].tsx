@@ -98,18 +98,21 @@ const TeacherDetail = ({ teacher }: DetailTeacherProps) => {
         <H2>Teaches following courses</H2>
         <ul>
           <Card
+            key={1}
             id={1}
             learningLine={"blue"}
             title={"It-communication"}
             tags={tags}
           />
           <Card
+            key={2}
             id={1}
             learningLine={"green"}
             title={"Content Management systems"}
             tags={tags}
           />
           <Card
+            key={3}
             id={1}
             learningLine={"pink"}
             title={"Programmeren 1"}
