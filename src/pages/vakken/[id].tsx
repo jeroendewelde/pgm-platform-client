@@ -2,7 +2,10 @@ import { GetStaticPaths } from "next";
 import React from "react";
 import styled from "styled-components";
 import client from "../../../apollo-client";
-import { GET_ALL_COURSES, GET_COURSE_BY_ID } from "../../../graphql/courses";
+import {
+  GET_ALL_COURSES,
+  GET_COURSE_BY_ID_client,
+} from "../../../graphql/courses";
 import { CourseClient } from "../../../interfaces";
 import {
   CourseProjects,
@@ -55,7 +58,7 @@ export const getStaticProps = async (context: { params: { id: any } }) => {
   typeof id === "string" ? (id = parseInt(id)) : id;
 
   const { data, error } = await client.query({
-    query: GET_COURSE_BY_ID,
+    query: GET_COURSE_BY_ID_client,
     variables: { id: id },
   });
 

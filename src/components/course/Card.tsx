@@ -190,7 +190,7 @@ const CTA = styled.div`
   }
 `;
 
-const FlexContainer = styled.div`
+const FlexContainer = styled.ul`
   display: none;
 
   @media (min-width: ${(props) => props.theme.width.small}) {
@@ -206,6 +206,7 @@ export interface CardProps {
   title: string;
   learningLine: string;
   id: number;
+  key: number;
 }
 
 const Icon = ({ learningLine = "blue" }: Props) => {
@@ -224,7 +225,7 @@ const Icon = ({ learningLine = "blue" }: Props) => {
   }
 };
 
-const Card = ({ tags, learningLine, title, id }: CardProps) => {
+const Card = ({ tags, learningLine, title, id, key }: CardProps) => {
   const { setCursorHover } = useContext(CursorContext);
 
   const handleMouseEnter = () => {
@@ -244,7 +245,7 @@ const Card = ({ tags, learningLine, title, id }: CardProps) => {
   };
 
   return (
-    <Link href={`vakken/${id}`}>
+    <Link href={`vakken/${id}`} key={key}>
       <Container
         className="Card"
         learningLine={learningLine}

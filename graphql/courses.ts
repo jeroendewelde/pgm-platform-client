@@ -113,3 +113,48 @@ export const DELETE_COURSE = gql`
     }
   }
 `;
+
+export const GET_COURSE_BY_ID_client = gql`
+  query getCourseById($id: Int!) {
+    course(id: $id) {
+      id
+      name
+      description
+      term
+      academicYear
+      tags
+      learningLineId
+      specialisationId
+      learningLine {
+        id
+        name
+        color
+      }
+      projects {
+        id
+        name
+        teaserText
+        tags
+        students {
+          id
+          firstName
+          lastName
+        }
+      }
+      teachers {
+        id
+        firstName
+        lastName
+        type
+
+        personInformation {
+          bio
+          socialMedias {
+            platform
+            url
+          }
+        }
+      }
+    }
+  }
+`;
