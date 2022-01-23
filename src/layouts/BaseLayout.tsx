@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import styled from "styled-components";
+import React, { ReactElement, useState } from "react";
+import styledComponent from "styled-components";
 import { motion } from "framer-motion";
 
 import { Footer } from "../components/layout/Footer";
@@ -7,7 +7,7 @@ import { Header } from "../components/layout/Header";
 import { useMousePosition } from "../hooks/useMousePosition";
 import { CursorContext } from "../context/CursorContext";
 
-const Cursor = styled(motion.div)`
+const Cursor = styledComponent(motion.div)`
   display: none;
 
   @media (min-width: ${(props) => props.theme.width.medium}) {
@@ -28,7 +28,7 @@ const Cursor = styled(motion.div)`
   }
 `;
 
-const MainLayout = styled.main`
+const MainLayout = styledComponent.main`
   max-width: ${(props) => props.theme.width.elarge};
   margin: 0 auto;
   padding: 2rem 1.5rem;
@@ -43,7 +43,9 @@ interface BaseLayoutProps {
   children: React.ReactNode;
 }
 
-const BaseLayout = ({ children }: BaseLayoutProps) => {
+export default function BaseLayout({
+  children,
+}: BaseLayoutProps): ReactElement {
   const [cursorHover, setCursorHover] = useState(false);
   const { x, y } = useMousePosition();
 
@@ -68,6 +70,6 @@ const BaseLayout = ({ children }: BaseLayoutProps) => {
       <Footer />
     </>
   );
-};
+}
 
-export default BaseLayout;
+// export default BaseLayout;

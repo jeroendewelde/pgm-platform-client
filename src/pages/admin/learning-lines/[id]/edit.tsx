@@ -1,4 +1,4 @@
-import React, { ReactElement, useEffect, useState } from "react";
+import React, { ReactElement } from "react";
 import { useRouter } from "next/router";
 
 // Formik & Yup
@@ -6,7 +6,7 @@ import * as yup from "yup";
 import { Field, Form, Formik } from "formik";
 
 // Material UI Components
-import { Box, Button } from "@mui/material";
+import { Button, Grid } from "@mui/material";
 import { TextField } from "formik-mui";
 
 // Queries
@@ -16,32 +16,19 @@ import {
   UPDATE_LEARNING_LINE,
 } from "../../../../../graphql/learningLines";
 import { useMutation, useQuery } from "@apollo/client";
-import { LearningLine } from "../../../../../interfaces";
 
 // Custom Components
 import BasicContainer from "../../../../components/Admin/style/BasicContainer";
-import Dashboard from "../../../../components/Admin/Dashboard";
 import CustomLoading from "../../../../components/Admin/style/CustomLoading";
-
-// Variabels
-import { colors } from "../../../../utils/constants";
 
 const validationSchema = yup.object({
   name: yup.string().required("Naam is verplicht"),
-  color: yup
-    .string()
-    .matches(
-      /(^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$)/,
-      "Kleur moet een hexadecimaal getal zijn, bv. #FFFFFF"
-    )
-    .required("Kleur is verplicht"),
+  color: yup.string().required("Kleur is verplicht"),
 });
 
 export default function editLearningLine(): ReactElement {
   const router = useRouter();
   const { id } = router.query;
-  const adminPath = router.pathname.split("/admin/")[1].split("/")[0];
-  const [learningLine, setLearningLine] = useState<LearningLine>();
 
   const {
     data: dataGet,
@@ -54,12 +41,6 @@ export default function editLearningLine(): ReactElement {
     ssr: true,
   });
 
-  useEffect(() => {
-    if (dataGet) {
-      setLearningLine(dataGet.learningLine);
-    }
-  }, [dataGet]);
-
   const [
     updateLearningLine,
     { data: dataUpdate, loading: loadingUpdate, error: errorUpdate },
@@ -67,8 +48,10 @@ export default function editLearningLine(): ReactElement {
     notifyOnNetworkStatusChange: true,
   });
 
-  const [deleteLearningLine, { data, loading, error }] =
-    useMutation(DELETE_LEARNING_LINE);
+  const [
+    deleteLearningLine,
+    { data: dataDelete, loading: loadingDelete, error: errorDelete },
+  ] = useMutation(DELETE_LEARNING_LINE);
 
   const handleDelete = () => {
     deleteLearningLine({
@@ -76,122 +59,110 @@ export default function editLearningLine(): ReactElement {
         id: Number(id),
       },
       notifyOnNetworkStatusChange: true,
-    }).then(() => (window.location.href = `/admin/${adminPath}`));
+    });
+    if (!errorDelete && !loadingDelete) {
+      window.location.href = "/admin/testimonials";
+    }
   };
 
   return (
     <BasicContainer title="Bewerk Afstudeerrichting">
-      <Dashboard title="Bewerk Afstudeerrichting">
-        <Box
-          sx={{
-            maxWidth: "lg",
+      {loadingGet ? (
+        <CustomLoading />
+      ) : (
+        <Formik
+          initialValues={{
+            name: dataGet?.learningLine.name || "",
+            color: dataGet?.learningLine.color || "",
+          }}
+          validationSchema={validationSchema}
+          onSubmit={(values, { setSubmitting }) => {
+            setSubmitting(true);
+
+            updateLearningLine({
+              variables: {
+                input: {
+                  name: values.name,
+                  color: values.color,
+                },
+                id: Number(id),
+              },
+            });
+            if (!errorUpdate && !loadingUpdate) {
+              setSubmitting(false);
+              window.location.href = "/admin/learning-lines";
+            }
           }}
         >
-          {!learningLine ? (
-            <CustomLoading />
-          ) : (
-            <>
-              <Formik
-                initialValues={{
-                  name: learningLine?.name ? learningLine?.name : "",
-                  color: learningLine?.color ? learningLine?.color : "",
-                }}
-                validationSchema={validationSchema}
-                onSubmit={(values, { setSubmitting }) => {
-                  setSubmitting(true);
-
-                  updateLearningLine({
-                    variables: {
-                      input: {
-                        name: values.name,
-                        color: values.color,
-                      },
-                      id: learningLine?.id,
-                    },
-                  }).then(() => {
-                    window.location.href = `/admin/${adminPath}`;
-                  });
+          {({ values, submitForm, isSubmitting }) => (
+            <Form
+              style={{
+                width: "100%",
+              }}
+            >
+              <Grid
+                container
+                spacing={{ xs: 2 }}
+                sx={{
+                  maxWidth: "xl",
+                  mb: 4,
                 }}
               >
-                {({ values, submitForm, isSubmitting }) => (
-                  <Form>
-                    <Box margin={1}>
-                      <Field
-                        required
-                        component={TextField}
-                        name="name"
-                        type="text"
-                        label="Naam"
-                        value={values.name ? values.name : learningLine?.name}
-                        helperText="Naam van de leerlijn"
-                        multiline
-                        maxRows={2}
-                        sx={{
-                          width: "75%",
-                          // maxWidth: 'lg'
-                        }}
-                      />
-                    </Box>
-                    <Box margin={1}>
-                      <Field
-                        required
-                        component={TextField}
-                        name="color"
-                        type="text"
-                        label="Kleur"
-                        value={
-                          values.color ? values.color : learningLine?.color
-                        }
-                        helperText="Kleur van de leerlijn"
-                        // fullWidth
-                      />
-                    </Box>
-                    <Box
-                      sx={{
-                        display: "flex",
-                      }}
-                    >
-                      <Box margin={1}>
-                        <Button
-                          sx={{ margin: 1 }}
-                          variant="contained"
-                          color="primary"
-                          disabled={isSubmitting}
-                          onClick={submitForm}
-                          // type="submit"
-                        >
-                          Pas aan
-                        </Button>
-                      </Box>
-                      <Box margin={1}>
-                        <Button
-                          sx={{
-                            margin: 1,
-                            // backgroundColor: colors.delete,
-                            color: colors.delete,
-                            borderColor: colors.delete,
-                            "&:hover": {
-                              backgroundColor: colors.delete,
-                              color: colors.white,
-                              borderColor: colors.delete,
-                            },
-                          }}
-                          variant="outlined"
-                          disabled={isSubmitting}
-                          onClick={(e) => handleDelete()}
-                        >
-                          Verwijder
-                        </Button>
-                      </Box>
-                    </Box>
-                    <pre>{JSON.stringify(values, null, 2)}</pre>
-                  </Form>
-                )}
-              </Formik>
-            </>
+                <Grid item xs={12} md={8}>
+                  <Field
+                    required
+                    component={TextField}
+                    name="name"
+                    type="text"
+                    label="Naam"
+                    helperText="Naam van de leerlijn"
+                    fullWidth
+                    multiline
+                    maxRows={2}
+                  />
+                </Grid>
+                <Grid item xs={12} md={4}>
+                  <Field
+                    required
+                    component={TextField}
+                    name="color"
+                    type="text"
+                    label="Kleur"
+                    helperText="Kleur van de leerlijn"
+                    fullWidth
+                  />
+                </Grid>
+                <Grid
+                  item
+                  xs={12}
+                  sx={{
+                    display: "flex",
+                  }}
+                >
+                  <Button
+                    variant="contained"
+                    disabled={isSubmitting || loadingDelete}
+                    onClick={submitForm}
+                  >
+                    Pas aan
+                  </Button>
+                  <Button
+                    variant="outlined"
+                    color="error"
+                    sx={{
+                      marginLeft: "auto",
+                    }}
+                    disabled={isSubmitting || loadingDelete}
+                    onClick={(e) => handleDelete()}
+                  >
+                    Verwijder
+                  </Button>
+                </Grid>
+              </Grid>
+            </Form>
           )}
-        </Box>
-      </Dashboard>
+        </Formik>
+      )}
     </BasicContainer>
   );
 }

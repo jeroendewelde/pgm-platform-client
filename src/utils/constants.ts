@@ -1,3 +1,4 @@
+import { GridRenderCellParams } from "@mui/x-data-grid";
 import { GET_ALL_COURSES } from "../../graphql/attachments";
 import { DELETE_COURSE } from "../../graphql/courses";
 import {
@@ -8,6 +9,7 @@ import {
   DELETE_SPECIALISATION,
   GET_ALL_SPECIALISATIONS,
 } from "../../graphql/specialisations";
+import { LearningLine } from "../../interfaces";
 
 const colors = {
   primary: "#7e57c5",
@@ -68,10 +70,12 @@ const tableColumns = {
       field: "learningLineId",
       headerName: "leerlijn ID",
     },
-    // {
-    //   field: 'learningLine["name"]',
-    //   headerName: 'leerlijn'
-    // },
+    {
+      field: "learningLine",
+      headerName: "leerlijn",
+      renderCell: (params: GridRenderCellParams<LearningLine>) =>
+        params.value.name,
+    },
     {
       field: "specialisationId",
       headerName: "specialisatie ID",

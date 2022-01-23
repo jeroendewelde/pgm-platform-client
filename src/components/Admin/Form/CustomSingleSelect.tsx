@@ -9,17 +9,9 @@ import React, { ReactElement, useState } from "react";
 
 import { fieldToSelect, SelectProps } from "formik-mui";
 
-interface CustomSingleSelectProps {
-  // data: any[],
-  // label: string,
-  props: SelectProps;
-}
-
-export default function CustomSingleSelect(props: SelectProps): ReactElement {
+export default function CustomSingleSelect(props: any): ReactElement {
   const {
-    // form: {setFieldValue},
-    // field: {data, label}
-    form: { setFieldValue },
+    form: { setFieldValue, touched, errors, values },
     data,
     label,
     sx,
@@ -30,12 +22,7 @@ export default function CustomSingleSelect(props: SelectProps): ReactElement {
     value: valueFromData,
     labelProps,
   } = props;
-  const [value, setValue] = useState(valueFromData || "");
-
-  // const handleChange = (event: SelectChangeEvent) => {
-  //   setValue(event.target.value);
-  //   [setFieldValue, name]
-  // };
+  const [value, setValue] = useState(values[name] || "");
 
   const onChange = React.useCallback(
     (event) => {
@@ -45,32 +32,35 @@ export default function CustomSingleSelect(props: SelectProps): ReactElement {
     },
     [setFieldValue, name]
   );
+  const getLabelContent = (item: any) => {
+    let labelContent = "";
+    if (labelProps.length === 3) {
+      labelContent = `${item[labelProps[0]]} ${item[labelProps[1]]} ( ${
+        item[labelProps[2]]
+      } )`;
+    }
+
+    if (labelProps.length === 2) {
+      labelContent = `${item[labelProps[0]]} - ${item[labelProps[1]]}`;
+    }
+
+    if (labelProps.length === 1) {
+      labelContent = item[labelProps[0]];
+    }
+    return labelContent;
+  };
 
   return (
-    <div>
-      <FormControl sx={{ minWidth: 80, ...sx }}>
-        <InputLabel id="demo-simple-select-autowidth-label">{label}</InputLabel>
-        <Select
-          autoWidth
-          required={required}
-          labelId="demo-simple-select-autowidth-label"
-          id="demo-simple-select-autowidth"
-          value={value}
-          onChange={onChange}
-          autoWidth
-          label={label}
-          //   {...required}
-
-          // {...fieldToSelect(props)}
-          // sx={sx}
-        >
-          {/* <MenuItem value="">
-			  <em>None</em>
-			</MenuItem> */}
-
-          {data.map((item: any) => (
-            <MenuItem key={item.id} value={item.id}>
-              {!labelProps && !extraData ? item.name : ""}
+    <FormControl
+      required={required}
+      sx={{ minWidth: 80, ...sx }}
+      error={touched[name] && errors[name]}
+    >
+      <InputLabel>{label}</InputLabel>
+      <Select value={value} onChange={onChange} label={label}>
+        {data.map((item: any) => (
+          <MenuItem key={item.id} value={item.id}>
+            {/* {!labelProps && !extraData ? item.name : ""}
               {labelProps
                 ? item[labelProps[0]] +
                   " " +
@@ -79,16 +69,17 @@ export default function CustomSingleSelect(props: SelectProps): ReactElement {
                   item[labelProps[2]] +
                   " ) "
                 : ""}
-              {extraData && item.name + " ( " + item[extraData] + " ) "}
-            </MenuItem>
-          ))}
+              {extraData && item.name + " ( " + item[extraData] + " ) "} */}
+            {/* {labelContent} */}
+            {getLabelContent(item)}
+          </MenuItem>
+        ))}
+      </Select>
 
-          {/* <MenuItem value={10}>Twenty</MenuItem>
-			<MenuItem value={21}>Twenty one</MenuItem>
-			<MenuItem value={22}>Twenty one and a half</MenuItem> */}
-        </Select>
-        <FormHelperText>{helperText}</FormHelperText>
-      </FormControl>
-    </div>
+      <FormHelperText>
+        {touched[name] && errors[name] ? errors[name] : helperText}
+        {/* {!errors[name] && helperText} */}
+      </FormHelperText>
+    </FormControl>
   );
 }

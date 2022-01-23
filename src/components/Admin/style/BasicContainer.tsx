@@ -1,29 +1,23 @@
 import React, { ReactElement } from "react";
 import styled from "styled-components";
+import Dashboard from "../Dashboard";
 import PageTitle from "./PageTitle";
 
 interface BasicContainerProps {
   children: ReactElement;
   title: string;
+  alsoTitle?: boolean;
 }
 
 export default function BasicContainer({
   title,
   children,
+  alsoTitle = true,
 }: BasicContainerProps): ReactElement {
   return (
     <>
       <PageTitle title={title} />
-      <Container>{children}</Container>
+      <Dashboard title={alsoTitle ? title : null}>{children}</Dashboard>
     </>
   );
 }
-
-const Container = styled.div`
-  display: flex;
-  background-color: #fff;
-  flex-direction: "column";
-  justify-content: "center";
-  align-items: "center";
-  min-height: 100vh;
-`;

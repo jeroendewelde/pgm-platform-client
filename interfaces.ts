@@ -177,6 +177,7 @@ export enum AttachmentType {
  */
 export interface LearningLinesData {
   learningLines: LearningLine[];
+}
 
 /**
  * Client

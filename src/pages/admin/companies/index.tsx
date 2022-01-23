@@ -9,7 +9,6 @@ import {
 
 // Custom Components
 import BasicContainer from "../../../components/Admin/style/BasicContainer";
-import Dashboard from "../../../components/Admin/Dashboard";
 import DataGridContent from "../../../components/Admin/DataGridContent";
 import CustomLoading from "../../../components/Admin/style/CustomLoading";
 import NavigationButton from "../../../components/Admin/NavigationButton";
@@ -24,21 +23,19 @@ export default function CompaniesPage(): ReactElement {
 
   return (
     <BasicContainer title="Leerbedrijven">
-      <Dashboard title="Leerbedrijven">
-        {loading ? (
-          <CustomLoading />
-        ) : (
-          <>
-            <NavigationButton title="nieuw leerbedrijf" />
-            <DataGridContent
-              data={data.companies}
-              info={tableColumns.companies}
-              deleteQuery={DELETE_COMPANY}
-              fetchAllQuery={GET_ALL_COMPANIES}
-            />
-          </>
-        )}
-      </Dashboard>
+      {loading ? (
+        <CustomLoading />
+      ) : (
+        <>
+          <NavigationButton title="nieuw leerbedrijf" />
+          <DataGridContent
+            data={data.companies}
+            info={tableColumns.companies}
+            deleteQuery={DELETE_COMPANY}
+            fetchAllQuery={GET_ALL_COMPANIES}
+          />
+        </>
+      )}
     </BasicContainer>
   );
 }

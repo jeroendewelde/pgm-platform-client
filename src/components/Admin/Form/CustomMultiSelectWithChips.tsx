@@ -17,7 +17,7 @@ export default function CustomMultiSelectWithChips({
   ...props
 }: CustomMultiSelectWithChipsProps): ReactElement {
   const {
-    form: { setFieldValue },
+    form: { setFieldValue, values },
     field: { name },
     label,
     sx,
@@ -38,7 +38,23 @@ export default function CustomMultiSelectWithChips({
     [setFieldValue, name]
   );
 
-  //   const labelProps = ["firstName", "lastName"];
+  const getLabelContent = (item: any) => {
+    let labelContent = "";
+    if (labelProps.length === 3) {
+      labelContent = `${item[labelProps[0]]} ${item[labelProps[1]]} ( ${
+        item[labelProps[2]]
+      } )`;
+    }
+
+    if (labelProps.length === 2) {
+      labelContent = `${item[labelProps[0]]} - ${item[labelProps[1]]}`;
+    }
+
+    if (labelProps.length === 1) {
+      labelContent = item[labelProps[0]];
+    }
+    return labelContent;
+  };
 
   return (
     <Autocomplete
@@ -46,24 +62,28 @@ export default function CustomMultiSelectWithChips({
       multiple
       id="tags-standard"
       sx={sx}
-      value={props.form.values[name]}
+      defaultValue={values[name]}
       options={data}
       onChange={onChange}
-      getOptionLabel={(option: Person) =>
-        // option.firstName + " " + option.lastName
+      getOptionLabel={(option: any) =>
         option[labelProps[0]] + " " + option[labelProps[1]]
       }
       renderOption={(props, option, { selected }) => (
         <li {...props}>
-          {console.log("props.....", props)}
           <Checkbox
             icon={checkBoxIconUnchecked}
             checkedIcon={checkedIconChecked}
             style={{ marginRight: 8 }}
-            checked={selected}
+            // checked={selected}
+            checked={values[name].some(
+              (element: Person) => element.id === option.id
+            )}
+            // checked={values[name].inclues(option)}
+            // checked={props.form.values[name]}
+            // checked={props.form.values[name].includes(option)}
           />
           {/* {option.firstName + " " + option.lastName} */}
-          {labelProps.length == 2
+          {/* {labelProps.length == 2
             ? option[labelProps[0]] + " - " + option[labelProps[1]]
             : ""}
 
@@ -74,7 +94,9 @@ export default function CustomMultiSelectWithChips({
               " ( " +
               option[labelProps[2]] +
               " ) "
-            : ""}
+            : ""} */}
+          {getLabelContent(option)}
+
           {/* //   {option[labelProps[0]] + " - " + option[labelProps[1]]} */}
           {/* {option.firstName + " " + option.lastName} */}
         </li>

@@ -79,14 +79,7 @@ export const GET_COURSE_BY_ID = gql`
         id
         firstName
         lastName
-
-        personInformation {
-          bio
-          socialMedias {
-            platform
-            url
-          }
-        }
+        type
       }
     }
   }

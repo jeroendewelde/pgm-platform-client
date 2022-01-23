@@ -1,34 +1,26 @@
 import React, { ReactElement } from "react";
-import Router from "next/router";
 
+// Formik & Yup
 import * as yup from "yup";
 import { Field, FieldArray, Form, Formik } from "formik";
-import Box from "@mui/material/Box";
 
-import { Button, Typography } from "@mui/material";
+// Material UI Components
+import { Button, Grid, Typography } from "@mui/material";
 import { TextField } from "formik-mui";
+import { Remove, Add } from "@material-ui/icons";
 
 // Queries
-import {
-  CREATE_LEARNING_LINE,
-  GET_ALL_LEARNING_LINES,
-} from "../../../../graphql/learningLines";
-import client from "../../../../apollo-client";
+import { GET_ALL_COURSES } from "../../../../graphql/courses";
+import { GET_ALL_STUDENTS } from "../../../../graphql/persons";
+import { CREATE_PROJECT } from "../../../../graphql/projects";
+import { useMutation, useQuery } from "@apollo/client";
+import { Person } from "../../../../interfaces";
 
 // Custom Components
 import BasicContainer from "../../../components/Admin/style/BasicContainer";
-import Dashboard from "../../../components/Admin/Dashboard";
-import { CREATE_COURSE, GET_ALL_COURSES } from "../../../../graphql/courses";
-import { GET_ALL_SPECIALISATIONS } from "../../../../graphql/specialisations";
-import { LearningLine, Person, Specialisation } from "../../../../interfaces";
 import CustomSingleSelect from "../../../components/Admin/Form/CustomSingleSelect";
-import { AsyncLocalStorage } from "async_hooks";
-import { CREATE_PROJECT } from "../../../../graphql/projects";
 import { CheckBoxOutlineBlank, CheckBox } from "@mui/icons-material";
-import { useMutation, useQuery } from "@apollo/client";
-import { GET_ALL_STUDENTS } from "../../../../graphql/persons";
 import CustomLoading from "../../../components/Admin/style/CustomLoading";
-import { Remove, Add } from "@material-ui/icons";
 import CustomMultiSelectWithChips from "../../../components/Admin/Form/CustomMultiSelectWithChips";
 
 const validationSchema = yup.object({
@@ -47,10 +39,7 @@ const validationSchema = yup.object({
 });
 
 export default function createProject(): ReactElement {
-  const [
-    addProject,
-    { data: dataProject, loading: loadingProject, error: errorProject },
-  ] = useMutation(CREATE_PROJECT);
+  const [addProject, { data, loading, error }] = useMutation(CREATE_PROJECT);
   const checkBoxIcon = <CheckBoxOutlineBlank fontSize="small" />;
   const checkedIconChecked = <CheckBox fontSize="small" />;
 
@@ -72,294 +61,221 @@ export default function createProject(): ReactElement {
 
   return (
     <BasicContainer title="Nieuw Project">
-      <Dashboard title="Nieuw Project">
-        {loadingCourses || loadingStudents ? (
-          <CustomLoading />
-        ) : (
-          <>
-            <Box
-              sx={{
-                maxWidth: "md",
-                border: "1px solid #e0e0e0",
+      {loadingCourses || loadingStudents ? (
+        <CustomLoading />
+      ) : (
+        <Formik
+          initialValues={{
+            name: "",
+            teaserText: "",
+            body: "",
+            academicYear: "",
+            tags: [],
+            courseId: "",
+            students: [],
+          }}
+          validationSchema={validationSchema}
+          onSubmit={(values, { setSubmitting }) => {
+            setSubmitting(true);
+            addProject({
+              variables: {
+                input: {
+                  name: values.name,
+                  teaserText: values.teaserText,
+                  body: values.body,
+                  academicYear: values.academicYear,
+                  tags: values.tags,
+                  courseId: values.courseId,
+                  studentIds: values.students.map(
+                    (student: Person) => student.id
+                  ),
+                },
+              },
+            });
+
+            if (!error && !loading) {
+              setSubmitting(false);
+              window.location.href = "/admin/projects";
+            }
+          }}
+        >
+          {({ values, submitForm, isSubmitting }) => (
+            <Form
+              style={{
+                width: "100%",
               }}
             >
-              <Formik
-                initialValues={{
-                  name: "",
-                  teaserText: "",
-                  body: "",
-                  academicYear: "",
-                  tags: [],
-                  courseId: "",
-                  students: [],
-                }}
-                validationSchema={validationSchema}
-                onSubmit={(values, { setSubmitting }) => {
-                  setSubmitting(true);
-                  addProject({
-                    variables: {
-                      input: {
-                        name: values.name,
-                        teaserText: values.teaserText,
-                        body: values.body,
-                        academicYear: values.academicYear,
-                        tags: values.tags,
-                        courseId: values.courseId,
-                        studentIds: values.students.map(
-                          (student: Person) => student.id
-                        ),
-                      },
-                    },
-                  });
-
-                  if (!errorProject && !loadingProject) {
-                    window.location.href = Router.pathname.split("/create")[0];
-                  }
+              <Grid
+                container
+                spacing={{ xs: 2 }}
+                sx={{
+                  maxWidth: "xl",
+                  mb: 4,
                 }}
               >
-                {({ values, submitForm, isSubmitting }) => (
-                  <Form>
-                    <Box margin={1}>
-                      <Field
-                        required
-                        component={TextField}
-                        name="name"
-                        type="text"
-                        label="Naam"
-                        helperText="Naam van het project"
-                        multiline
-                        maxRows={2}
-                        sx={{
-                          width: "100%",
-                          // maxWidth: 'lg'
-                        }}
-                      />
-                    </Box>
-                    <Box margin={1}>
-                      <Field
-                        required
-                        component={TextField}
-                        name="teaserText"
-                        type="text"
-                        label="Teaser text"
-                        helperText=""
-                        multiline
-                        maxRows={2}
-                        sx={{
-                          width: "100%",
-                          // maxWidth: 'lg'
-                        }}
-                      />
-                    </Box>
-                    <Box margin={1}>
-                      <Field
-                        required
-                        component={TextField}
-                        name="body"
-                        type="text"
-                        label="Body"
-                        helperText="Beschrijving van het project"
-                        multiline
-                        sx={{
-                          width: "100%",
-                        }}
-                        // fullWidth
-                      />
-                    </Box>
-                    {/* <Box margin={1}> */}
-                    <Box
-                      sx={{
-                        border: "1px solid #e0e0e0",
-                        width: "100%",
-                      }}
-                    >
-                      <Field
-                        required
-                        component={TextField}
-                        name="academicYear"
-                        type="text"
-                        label="Academiejaar"
-                        helperText="Academiejaar in formaat 2019-2020"
-                        sx={{
-                          minWidth: "25%",
-                          margin: 1,
-                        }}
-                        // fullWidth
-                      />
-                    </Box>
-                    {/* <Box sx={{
-									border: '1px solid #e0e0e0',
-									width: '100%',
-									display: 'flex',
-									justifyContent: 'stretch'
-								}}> */}
+                <Grid item xs={12} md={8}>
+                  <Field
+                    required
+                    component={TextField}
+                    name="name"
+                    type="text"
+                    label="Naam"
+                    helperText="Naam van het project"
+                    fullWidth
+                    multiline
+                    maxRows={2}
+                  />
+                </Grid>
+                <Grid item xs={12} md={4}>
+                  <Field
+                    required
+                    component={TextField}
+                    name="academicYear"
+                    type="text"
+                    label="Academiejaar"
+                    helperText="Academiejaar in formaat 2019-2020"
+                    fullWidth
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <Field
+                    required
+                    component={TextField}
+                    name="teaserText"
+                    type="text"
+                    label="Teaser text"
+                    fullWidth
+                    multiline
+                    maxRows={2}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <Field
+                    required
+                    component={TextField}
+                    name="body"
+                    type="text"
+                    label="Body"
+                    helperText="Beschrijving van het project"
+                    fullWidth
+                    multiline
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <Field
+                    required
+                    component={CustomSingleSelect}
+                    name="courseId"
+                    label="Vak"
+                    helperText="Naam van het vak"
+                    fullWidth
+                    data={dataCourses.courses}
+                    labelProps={["name", "academicYear"]}
+                    sx={{
+                      width: "100%",
+                    }}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <Typography variant="h2" component="h2">
+                    Studenten
+                  </Typography>
+                  <Typography variant="subtitle1">
+                    De (optionele) studenten die aan dit project hebben gewerkt,
+                    dit kan nog aangepast worden
+                  </Typography>
 
-                    <Box
-                      sx={{
-                        margin: 1,
-                        // display: 'flex',
-                        // gap: 2
-                      }}
-                    >
-                      <Field
-                        required
-                        component={CustomSingleSelect}
-                        label="Vak"
-                        name="courseId"
-                        data={dataCourses.courses}
-                        sx={{
-                          // minWidth: '45%',
-                          // minWidth: '40%',
-                          width: "50%",
-                          flexGrow: 1,
+                  <Field
+                    required
+                    component={CustomMultiSelectWithChips}
+                    name="students"
+                    label="Studenten"
+                    placeholder="Zoek een student..."
+                    data={dataStudents.students}
+                    labelProps={["firstName", "lastName", "academicYear"]}
+                  />
+                </Grid>
 
-                          // margin: 1,
-                          border: "1px solid #e0e0e0",
-                        }}
-                        helperText="Naam van het vak"
-                        extraData={"academicYear"}
+                <Grid item xs={12}>
+                  <Typography variant="h2" component="h2">
+                    Optionele Tags
+                  </Typography>
+                  <Typography variant="subtitle1">
+                    De tags kunnen talen/technologieën, vaardigheden of andere
+                    belangrijke elementen zijn. Plaats de 5 meest belangrijkste
+                    bovenaan.
+                  </Typography>
+                </Grid>
 
-                        // name="academicYear"
-                        // type="text"
-                        // label="Academiejaar"
-                        // helperText="Academiejaar in formaat 2019-2020"
-                        // fullWidth
-                      />
-                    </Box>
-                    <Box margin={1}>
-                      <Typography
-                        variant="h6"
-                        noWrap
-                        component="div"
-                        sx={{
-                          flexGrow: 1,
-                          mb: 2,
-                          // ml: 1,
-                          color: "black",
-                        }}
-                      >
-                        Studenten
-                      </Typography>
-                      <Typography variant="subtitle1" sx={{ color: "black" }}>
-                        De (optionele) studenten die aan dit project hebben
-                        gewerkt, dit kan nog aangepast worden
-                      </Typography>
-
-                      <Box margin={1}>
-                        <Field
-                          required
-                          component={CustomMultiSelectWithChips}
-                          label="Studenten"
-                          placeholder="Zoek een studennt..."
-                          name="students"
-                          // data={dataLearningLines.teachers}
-                          data={dataStudents.students}
-                          // helperText="Naam van de docenten"
-                          labelProps={["firstName", "lastName", "academicYear"]}
-                        />
-                      </Box>
-                    </Box>
-
-                    {/* </Box> */}
-
-                    <Box margin={1}>
-                      <FieldArray
-                        name="tags"
-                        render={(arrayHelpers) => (
-                          <div>
-                            <Typography
-                              variant="h6"
-                              noWrap
-                              component="div"
-                              sx={{
-                                flexGrow: 1,
-                                mb: 2,
-                                // ml: 1,
-                                color: "black",
+                <Grid item xs={12}>
+                  <FieldArray
+                    name="tags"
+                    render={(arrayHelpers) => (
+                      <div>
+                        {values.tags && values.tags.length > 0 ? (
+                          values.tags.map((tag, index) => (
+                            <div
+                              key={index}
+                              style={{
+                                marginBottom: "1rem",
                               }}
                             >
-                              Optionele Tags
-                            </Typography>
-                            <Typography
-                              variant="subtitle1"
-                              sx={{ color: "black" }}
-                            >
-                              De tags kunnen talen/technologieën, vaardigheden
-                              of andere belangrijke elementen zijn. Plaats de 5
-                              meest belangrijkste bovenaan.
-                            </Typography>
-                            {values.tags && values.tags.length > 0 ? (
-                              values.tags.map((tag, index) => (
-                                <div key={index}>
-                                  <Field
-                                    component={TextField}
-                                    name={`tags.${index}`}
-                                    type="text"
-                                    label="Tag"
-                                  />
+                              <Field
+                                component={TextField}
+                                name={`tags.${index}`}
+                                type="text"
+                                label="Tag"
+                              />
 
-                                  <Button
-                                    sx={{ margin: 1 }}
-                                    variant="outlined"
-                                    disabled={isSubmitting}
-                                    onClick={() => arrayHelpers.remove(index)}
-                                  >
-                                    <Remove />
-                                  </Button>
-
-                                  <Button
-                                    sx={{ margin: 1 }}
-                                    variant="outlined"
-                                    disabled={isSubmitting}
-                                    onClick={() =>
-                                      arrayHelpers.insert(index, "")
-                                    }
-                                  >
-                                    <Add />
-                                  </Button>
-                                </div>
-                              ))
-                            ) : (
                               <Button
                                 sx={{ margin: 1 }}
                                 variant="outlined"
                                 disabled={isSubmitting}
-                                onClick={() => arrayHelpers.push("")}
+                                onClick={() => arrayHelpers.remove(index)}
                               >
-                                Tags toevoegen
+                                <Remove />
                               </Button>
-                            )}
-                          </div>
-                        )}
-                      />
-                    </Box>
-                    <Box margin={1}>
-                      <Button
-                        sx={{ margin: 1 }}
-                        variant="contained"
-                        color="primary"
-                        disabled={isSubmitting}
-                        onClick={submitForm}
-                        // type="submit"
-                      >
-                        Maak aan
-                      </Button>
-                    </Box>
 
-                    <pre
-                      style={{
-                        color: "black",
-                      }}
-                    >
-                      {JSON.stringify(values, null, 2)}
-                    </pre>
-                  </Form>
-                )}
-              </Formik>
-            </Box>
-          </>
-        )}
-      </Dashboard>
+                              <Button
+                                sx={{ margin: 1 }}
+                                variant="outlined"
+                                disabled={isSubmitting}
+                                onClick={() =>
+                                  arrayHelpers.insert(index + 1, "")
+                                }
+                              >
+                                <Add />
+                              </Button>
+                            </div>
+                          ))
+                        ) : (
+                          <Button
+                            variant="outlined"
+                            disabled={isSubmitting}
+                            onClick={() => arrayHelpers.push("")}
+                          >
+                            Tags toevoegen
+                          </Button>
+                        )}
+                      </div>
+                    )}
+                  />
+                </Grid>
+
+                <Grid item xs={12}>
+                  <Button
+                    variant="contained"
+                    disabled={isSubmitting}
+                    onClick={submitForm}
+                  >
+                    Maak aan
+                  </Button>
+                </Grid>
+              </Grid>
+            </Form>
+          )}
+        </Formik>
+      )}
     </BasicContainer>
   );
 }

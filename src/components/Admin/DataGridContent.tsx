@@ -1,13 +1,8 @@
-import React, { ReactElement, MouseEvent } from "react";
-import Router from "next/router";
+import React, { ReactElement } from "react";
+import { useRouter } from "next/router";
 
 // Material UI Components
-import {
-  DataGrid,
-  GridRenderCellParams,
-  GridCellParams,
-  MuiEvent,
-} from "@mui/x-data-grid";
+import { DataGrid, GridRenderCellParams } from "@mui/x-data-grid";
 
 // Graphql
 import { DocumentNode, useMutation } from "@apollo/client";
@@ -29,6 +24,7 @@ export default function DataGridContent({
   deleteQuery,
   fetchAllQuery,
 }: DataGridContentProps): ReactElement {
+  const router = useRouter();
   const [
     deleteRecord,
     { data: dataDelete, loading: loadingDelete, error: errorDelete },
@@ -42,35 +38,29 @@ export default function DataGridContent({
     {
       field: "edit",
       headerName: "bewerk",
-      renderCell: (params: GridRenderCellParams) => <EditButton />,
+      renderCell: (params: GridRenderCellParams) => (
+        <EditButton params={params} handleClick={handleClickEdit} />
+      ),
     },
     {
       field: "delete",
       headerName: "wis",
-      renderCell: (params: GridRenderCellParams) => <DeleteButton />,
+      renderCell: (params: GridRenderCellParams) => (
+        <DeleteButton params={params} handleClick={handleClickDelete} />
+      ),
     }
   );
 
-  const handleClick = (params: GridCellParams, event: MuiEvent<MouseEvent>) => {
-    if (
-      params.field === "delete" &&
-      (event.target.classList.contains("delete-button") ||
-        event.target.parentNode.classList.contains("delete-button"))
-    ) {
-      deleteRecord({
-        variables: {
-          id: Number(params.id),
-        },
-      });
-    }
+  const handleClickEdit = (id: number) => {
+    window.location.href = `${router.pathname}/${id}/edit`;
+  };
 
-    if (
-      params.field === "edit" &&
-      (event.target.classList.contains("edit-button") ||
-        event.target.parentNode.classList.contains("edit-button"))
-    ) {
-      Router.push(`${Router.pathname}/${params.id}/edit`);
-    }
+  const handleClickDelete = (id: number) => {
+    deleteRecord({
+      variables: {
+        id: id,
+      },
+    });
   };
 
   return (
@@ -82,14 +72,12 @@ export default function DataGridContent({
           <DataGrid
             rows={data}
             columns={info}
-            // checkboxSelection
             disableSelectionOnClick
             sortModel={[{ field: "id", sort: "desc" }]}
+            rowsPerPageOptions={[5, 10, 20, 30, 50, 100]}
             sx={{
-              flexGrow: 1,
-              height: 600,
+              width: "100%",
             }}
-            onCellClick={handleClick}
           />
         </>
       )}

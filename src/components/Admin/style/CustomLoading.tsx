@@ -17,9 +17,9 @@ export default function CustomLoading() {
         loop: true,
         autoplay: true,
         animationData: animationData,
-        renderSettings: {
-          preserveAspectRatio: "xMidYMid slice",
-        },
+        // rendererSettings: {
+        //   preserveAspectRatio: "xMidYMid slice",
+        // },
       }}
       height={400}
       width={400}

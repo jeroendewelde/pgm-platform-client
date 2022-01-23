@@ -99,7 +99,7 @@ const Drawer = styled(MuiDrawer, {
 
 interface Props {
   children: ReactElement;
-  title: String;
+  title?: String | null;
 }
 
 export default function Dashboard({ title, children }: Props): ReactElement {
@@ -175,22 +175,15 @@ export default function Dashboard({ title, children }: Props): ReactElement {
           sx={{
             flexGrow: 1,
             p: 3,
-            border: 1,
-            borderColor: "blue",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "flex-start",
+            alignContent: "flex-start",
+            height: "100vh",
           }}
         >
           <DrawerHeader />
-          <Typography
-            variant="h5"
-            noWrap
-            component="div"
-            sx={{
-              flexGrow: 1,
-              mb: 2,
-              ml: 1,
-              color: "black",
-            }}
-          >
+          <Typography variant="h1" component="h1">
             {title}
           </Typography>
           {children}

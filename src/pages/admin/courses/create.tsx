@@ -1,39 +1,29 @@
 import React, { ReactElement } from "react";
-import Router from "next/router";
+import { useRouter } from "next/router";
 
 // Formik & Yup
 import * as yup from "yup";
 import { Field, FieldArray, Form, Formik } from "formik";
 
 // Material UI Components
-import {
-  Button,
-  Typography,
-  Autocomplete,
-  Chip,
-  TextField as TextMUI,
-  Checkbox,
-} from "@mui/material";
-import Box from "@mui/material/Box";
+import { Button, Grid, TextField as TextMUI, Typography } from "@mui/material";
 import { Remove, Add } from "@material-ui/icons";
 import { TextField } from "formik-mui";
+import { CheckBoxOutlineBlank, CheckBox } from "@mui/icons-material";
 
 // Queries
 import { useMutation, useQuery } from "@apollo/client";
-import { CREATE_COURSE, GET_ALL_COURSES } from "../../../../graphql/courses";
+import { CREATE_COURSE } from "../../../../graphql/courses";
 import { GET_ALL_LEARNING_LINES } from "../../../../graphql/learningLines";
 import { GET_ALL_SPECIALISATIONS } from "../../../../graphql/specialisations";
+import { GET_ALL_TEACHERS } from "../../../../graphql/persons";
+import { Person } from "../../../../interfaces";
 
 // Custom Components
 import BasicContainer from "../../../components/Admin/style/BasicContainer";
-import Dashboard from "../../../components/Admin/Dashboard";
 import CustomSingleSelect from "../../../components/Admin/Form/CustomSingleSelect";
 import CustomMultiSelectWithChips from "../../../components/Admin/Form/CustomMultiSelectWithChips";
 import CustomLoading from "../../../components/Admin/style/CustomLoading";
-import { GET_ALL_TEACHERS } from "../../../../graphql/persons";
-import CustomMultiSelect from "../../../components/Admin/Form/CustomMultiSelect";
-import { Person } from "../../../../interfaces";
-import { CheckBoxOutlineBlank, CheckBox } from "@mui/icons-material";
 
 const validationSchema = yup.object({
   name: yup.string().required("Naam is verplicht"),
@@ -45,14 +35,13 @@ const validationSchema = yup.object({
       "De duurtijd moet in het formaat 2019-2020 zijn"
     )
     .required("Academiejaar is verplicht"),
+  term: yup.number().min(1).max(8).required("Periode is verplicht"),
   learningLineId: yup.number().required("Leerlijn is verplicht"),
-  //   tags: yup.array().of(yup.string()).required("Tags zijn verplicht"),
-
-  // specialisationId: yup.string().required('Naam is verplicht'),
-  // color: yup.string().matches(/(^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$)/, 'Kleur moet een hexadecimaal getal zijn, bv. #FFFFFF').required('Kleur is verplicht')
+  specialisationId: yup.number().required("Afstudeerrichting is verplicht"),
 });
 
 export default function createCourse(): ReactElement {
+  const router = useRouter();
   const [addCourse, { data, loading, error }] = useMutation(CREATE_COURSE);
   const checkBoxIcon = <CheckBoxOutlineBlank fontSize="small" />;
   const checkedIconChecked = <CheckBox fontSize="small" />;
@@ -84,339 +73,236 @@ export default function createCourse(): ReactElement {
 
   return (
     <BasicContainer title="Nieuw Vak">
-      <Dashboard title="Nieuw Vak">
-        {loadingLearningLines || loadingSpecialisations || loadingTeachers ? (
-          <CustomLoading />
-        ) : (
-          <>
-            <Box
-              sx={{
-                maxWidth: "md",
-                border: "1px solid #e0e0e0",
+      {loadingLearningLines || loadingSpecialisations || loadingTeachers ? (
+        <CustomLoading />
+      ) : (
+        <Formik
+          initialValues={{
+            name: "",
+            description: "",
+            term: "",
+            academicYear: "",
+            tags: [],
+            learningLineId: "",
+            specialisationId: "",
+            teachers: [],
+          }}
+          validationSchema={validationSchema}
+          onSubmit={(values, { setSubmitting }) => {
+            setSubmitting(true);
+            addCourse({
+              variables: {
+                input: {
+                  name: values.name,
+                  description: values.description,
+                  term: values.term,
+                  academicYear: values.academicYear,
+                  tags: values.tags,
+                  learningLineId: values.learningLineId,
+                  specialisationId: values.specialisationId,
+                  // attachments: values.attachments,
+                  teacherIds: values.teachers.map(
+                    (teacher: Person) => teacher.id
+                  ),
+                },
+              },
+            });
+            if (!error && !loading) {
+              setSubmitting(false);
+              window.location.href = "/admin/courses";
+            }
+          }}
+        >
+          {({ values, submitForm, isSubmitting }) => (
+            <Form
+              style={{
+                width: "100%",
               }}
             >
-              <Formik
-                initialValues={{
-                  name: "",
-                  description: "",
-                  term: "",
-                  academicYear: "",
-                  tags: [],
-                  learningLineId: "",
-                  specialisationId: "",
-                  teachers: [],
-                }}
-                validationSchema={validationSchema}
-                onSubmit={(values, { setSubmitting }) => {
-                  setSubmitting(true);
-                  addCourse({
-                    variables: {
-                      input: {
-                        name: values.name,
-                        description: values.description,
-                        term: values.term,
-                        academicYear: values.academicYear,
-                        tags: values.tags,
-                        learningLineId: values.learningLineId,
-                        specialisationId: values.specialisationId,
-                        // attachments: values.attachments,
-                        teacherIds: values.teachers.map(
-                          (teacher: Person) => teacher.id
-                        ),
-                      },
-                    },
-                  }).then(
-                    () =>
-                      (window.location.href =
-                        Router.pathname.split("/create")[0])
-                  );
+              <Grid
+                container
+                spacing={{ xs: 2 }}
+                sx={{
+                  maxWidth: "xl",
+                  mb: 4,
                 }}
               >
-                {({ values, submitForm, isSubmitting }) => (
-                  <Form>
-                    <Box margin={1}>
-                      <Field
-                        required
-                        component={TextField}
-                        name="name"
-                        type="text"
-                        label="Naam"
-                        helperText="Naam van het vak"
-                        multiline
-                        maxRows={2}
-                        sx={{
-                          width: "100%",
-                          // maxWidth: 'lg'
-                        }}
-                      />
-                    </Box>
-                    <Box margin={1}>
-                      <Field
-                        required
-                        component={TextField}
-                        name="description"
-                        type="text"
-                        label="Beschrijving"
-                        helperText="Beschrijving van het vak"
-                        multiline
-                        sx={{
-                          width: "100%",
-                        }}
-                        // fullWidth
-                      />
-                    </Box>
-                    {/* <Box margin={1}> */}
-                    <Box
-                      sx={{
-                        border: "1px solid #e0e0e0",
-                        width: "100%",
-                      }}
-                    >
-                      <Field
-                        required
-                        component={TextField}
-                        name="term"
-                        type="number"
-                        label="Periode"
-                        helperText="Periode van het vak"
-                        sx={{
-                          minWidth: "25%",
-                          margin: 1,
-                        }}
-                        // fullWidth
-                      />
-                      {/* </Box> */}
-                      {/* <Box margin={1}> */}
-                      <Field
-                        required
-                        component={TextField}
-                        name="academicYear"
-                        type="text"
-                        label="Academiejaar"
-                        helperText="Academiejaar in formaat 2019-2020"
-                        sx={{
-                          minWidth: "25%",
-                          margin: 1,
-                        }}
-                        // fullWidth
-                      />
-                    </Box>
-                    {/* <Box sx={{
-									border: '1px solid #e0e0e0',
-									width: '100%',
-									display: 'flex',
-									justifyContent: 'stretch'
-								}}> */}
+                <Grid item xs={12} md={7} lg={8} xl={9}>
+                  <Field
+                    required
+                    component={TextField}
+                    name="name"
+                    type="text"
+                    label="Naam"
+                    helperText="Naam van het vak"
+                    fullWidth
+                    multiline
+                    maxRows={2}
+                  />
+                </Grid>
+                <Grid item xs={6} md={3} lg={2} xl={2}>
+                  <Field
+                    required
+                    component={TextField}
+                    name="academicYear"
+                    type="text"
+                    label="Academiejaar"
+                    helperText="in formaat 2019-2020"
+                    fullWidth
+                  />
+                </Grid>
+                <Grid item xs={6} md={2} lg={2} xl={1}>
+                  <Field
+                    required
+                    component={TextField}
+                    name="term"
+                    type="number"
+                    label="Periode"
+                    helperText=" "
+                    fullWidth
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <Field
+                    required
+                    component={TextField}
+                    name="description"
+                    type="text"
+                    label="Beschrijving"
+                    helperText="Beschrijving van het vak"
+                    fullWidth
+                    multiline
+                  />
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <Field
+                    required
+                    component={CustomSingleSelect}
+                    name="learningLineId"
+                    label="Leerlijn"
+                    helperText="Naam van de Leerlijn"
+                    fullWidth
+                    data={dataLearningLines.learningLines}
+                    labelProps={["name"]}
+                    sx={{
+                      width: "100%",
+                    }}
+                  />
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <Field
+                    required
+                    component={CustomSingleSelect}
+                    name="specialisationId"
+                    label="Afstudeerrichting"
+                    helperText="Naam van de Afstudeerrichting"
+                    data={dataSpecialisations.specialisations}
+                    labelProps={["name", "academicYear"]}
+                    sx={{
+                      width: "100%",
+                    }}
+                  />
+                </Grid>
 
-                    <Box
-                      sx={{
-                        margin: 1,
-                        // display: 'flex',
-                        // gap: 2
-                      }}
-                    >
-                      <Field
-                        required
-                        component={CustomSingleSelect}
-                        label="Leerlijn"
-                        name="learningLineId"
-                        data={dataLearningLines.learningLines}
-                        sx={{
-                          // minWidth: '45%',
-                          // minWidth: '40%',
-                          width: "50%",
-                          flexGrow: 1,
+                <Grid item xs={12}>
+                  <Typography variant="h2" component="h2">
+                    Docenten
+                  </Typography>
+                  <Typography variant="subtitle1">
+                    De docenten die dit vak in deze periode geven, dit kan nog
+                    aangepast worden
+                  </Typography>
 
-                          // margin: 1,
-                          border: "1px solid #e0e0e0",
-                        }}
-                        helperText="Naam van de Leerlijn"
+                  <Field
+                    required
+                    component={CustomMultiSelectWithChips}
+                    name="teachers"
+                    label="Docenten"
+                    placeholder="Zoek een docent..."
+                    data={dataTeachers.teachers}
+                    labelProps={["firstName", "lastName"]}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <Typography variant="h2" component="h2">
+                    Optionele Tags
+                  </Typography>
+                  <Typography variant="subtitle1">
+                    De tags kunnen talen/technologieën, vaardigheden of andere
+                    belangrijke elementen zijn. Plaats de 5 meest belangrijkste
+                    bovenaan.
+                  </Typography>
+                </Grid>
 
-                        // name="academicYear"
-                        // type="text"
-                        // label="Academiejaar"
-                        // helperText="Academiejaar in formaat 2019-2020"
-                        // fullWidth
-                      />
-                    </Box>
-
-                    <Box margin={1}>
-                      <Field
-                        required
-                        component={CustomSingleSelect}
-                        label="Afstudeerrichting"
-                        name="specialisationId"
-                        data={dataSpecialisations.specialisations}
-                        extraData={"academicYear"}
-                        sx={{
-                          minWidth: "50%",
-                          // minWidth: '40%',
-                          // margin: 1
-                        }}
-                        helperText="Naam van de Afstudeerrichting"
-
-                        // name="academicYear"
-                        // type="text"
-                        // label="Academiejaar"
-                        // helperText="Academiejaar in formaat 2019-2020"
-                        // fullWidth
-                      />
-                    </Box>
-
-                    <Box margin={1}>
-                      <Typography
-                        variant="h6"
-                        noWrap
-                        component="div"
-                        sx={{
-                          flexGrow: 1,
-                          mb: 2,
-                          // ml: 1,
-                          color: "black",
-                        }}
-                      >
-                        Docenten
-                      </Typography>
-                      <Typography variant="subtitle1" sx={{ color: "black" }}>
-                        De docenten die dit vak in deze periode geven, dit kan
-                        nog aangepast worden
-                      </Typography>
-
-                      <Box margin={1}>
-                        <Field
-                          required
-                          component={CustomMultiSelectWithChips}
-                          label="Docenten"
-                          placeholder="Zoek een docent..."
-                          name="teachers"
-                          // data={dataLearningLines.teachers}
-                          data={dataTeachers.teachers}
-                          // helperText="Naam van de docenten"
-                          labelProps={["firstName", "lastName"]}
-                        />
-                      </Box>
-                    </Box>
-                    {/* </Box> */}
-
-                    <Box margin={1}>
-                      <FieldArray
-                        name="tags"
-                        render={(arrayHelpers) => (
-                          <div>
-                            <Typography
-                              variant="h6"
-                              noWrap
-                              component="div"
-                              sx={{
-                                flexGrow: 1,
-                                mb: 2,
-                                // ml: 1,
-                                color: "black",
+                <Grid item xs={12}>
+                  <FieldArray
+                    name="tags"
+                    render={(arrayHelpers) => (
+                      <div>
+                        {values.tags && values.tags.length > 0 ? (
+                          values.tags.map((tag, index) => (
+                            <div
+                              key={index}
+                              style={{
+                                marginBottom: "1rem",
                               }}
                             >
-                              Optionele Tags
-                            </Typography>
-                            <Typography
-                              variant="subtitle1"
-                              sx={{ color: "black" }}
-                            >
-                              De tags kunnen talen/technologieën, vaardigheden
-                              of andere belangrijke elementen zijn. Plaats de 5
-                              meest belangrijkste bovenaan.
-                            </Typography>
-                            {values.tags && values.tags.length > 0 ? (
-                              values.tags.map((tag, index) => (
-                                <div key={index}>
-                                  <Field
-                                    component={TextField}
-                                    name={`tags.${index}`}
-                                    type="text"
-                                    label="Tag"
-                                  />
+                              <Field
+                                component={TextField}
+                                name={`tags.${index}`}
+                                type="text"
+                                label="Tag"
+                              />
 
-                                  <Button
-                                    sx={{ margin: 1 }}
-                                    variant="outlined"
-                                    disabled={isSubmitting}
-                                    onClick={() => arrayHelpers.remove(index)}
-                                  >
-                                    <Remove />
-                                  </Button>
-
-                                  <Button
-                                    sx={{ margin: 1 }}
-                                    variant="outlined"
-                                    disabled={isSubmitting}
-                                    onClick={() =>
-                                      arrayHelpers.insert(index, "")
-                                    }
-                                  >
-                                    <Add />
-                                  </Button>
-                                </div>
-                              ))
-                            ) : (
                               <Button
                                 sx={{ margin: 1 }}
                                 variant="outlined"
                                 disabled={isSubmitting}
-                                onClick={() => arrayHelpers.push("")}
+                                onClick={() => arrayHelpers.remove(index)}
                               >
-                                Tags toevoegen
+                                <Remove />
                               </Button>
-                            )}
-                          </div>
-                        )}
-                      />
-                    </Box>
 
-                    <Box margin={1}>
-                      <Button
-                        sx={{ margin: 1 }}
-                        variant="contained"
-                        color="primary"
-                        disabled={isSubmitting}
-                        onClick={submitForm}
-                        // type="submit"
-                      >
-                        Maak aan
-                      </Button>
-                    </Box>
-                    <pre
-                      style={{
-                        color: "black",
-                      }}
-                    >
-                      {JSON.stringify(values, null, 2)}
-                    </pre>
-                  </Form>
-                )}
-              </Formik>
-            </Box>
-          </>
-        )}
-      </Dashboard>
+                              <Button
+                                sx={{ margin: 1 }}
+                                variant="outlined"
+                                disabled={isSubmitting}
+                                onClick={() =>
+                                  arrayHelpers.insert(index + 1, "")
+                                }
+                              >
+                                <Add />
+                              </Button>
+                            </div>
+                          ))
+                        ) : (
+                          <Button
+                            variant="outlined"
+                            disabled={isSubmitting}
+                            onClick={() => arrayHelpers.push("")}
+                          >
+                            Tags toevoegen
+                          </Button>
+                        )}
+                      </div>
+                    )}
+                  />
+                </Grid>
+
+                <Grid item xs={12}>
+                  <Button
+                    variant="contained"
+                    disabled={isSubmitting}
+                    onClick={submitForm}
+                  >
+                    Maak aan
+                  </Button>
+                </Grid>
+              </Grid>
+            </Form>
+          )}
+        </Formik>
+      )}
     </BasicContainer>
   );
 }
-
-const teachersDataTest = [
-  {
-    id: 1,
-    firstName: "voornaam",
-    lastName: "familienaam",
-    type: "TEACHER",
-  },
-  {
-    id: 2,
-    firstName: "Jeroen",
-    lastName: "Dewelde",
-    type: "TEACHER",
-  },
-  {
-    id: 3,
-    firstName: "Pieter",
-    lastName: "Dewelde",
-    type: "TEACHER",
-  },
-];

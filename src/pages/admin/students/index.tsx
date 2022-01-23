@@ -6,7 +6,6 @@ import { DELETE_PERSON, GET_ALL_STUDENTS } from "../../../../graphql/persons";
 
 // Custom Components
 import BasicContainer from "../../../components/Admin/style/BasicContainer";
-import Dashboard from "../../../components/Admin/Dashboard";
 import DataGridContent from "../../../components/Admin/DataGridContent";
 import CustomLoading from "../../../components/Admin/style/CustomLoading";
 import NavigationButton from "../../../components/Admin/NavigationButton";
@@ -21,21 +20,19 @@ export default function StudentsPage(): ReactElement {
 
   return (
     <BasicContainer title="Studenten">
-      <Dashboard title="Studenten">
-        {loading ? (
-          <CustomLoading />
-        ) : (
-          <>
-            <NavigationButton title="nieuwe student" />
-            <DataGridContent
-              data={data.students}
-              info={tableColumns.students}
-              deleteQuery={DELETE_PERSON}
-              fetchAllQuery={GET_ALL_STUDENTS}
-            />
-          </>
-        )}
-      </Dashboard>
+      {loading ? (
+        <CustomLoading />
+      ) : (
+        <>
+          <NavigationButton title="nieuwe student" />
+          <DataGridContent
+            data={data.students}
+            info={tableColumns.students}
+            deleteQuery={DELETE_PERSON}
+            fetchAllQuery={GET_ALL_STUDENTS}
+          />
+        </>
+      )}
     </BasicContainer>
   );
 }

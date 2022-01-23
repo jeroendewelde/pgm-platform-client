@@ -1,45 +1,64 @@
 import React, { ReactElement } from "react";
+import { useRouter } from "next/router";
 
-import { IconButton, ListItemIcon, Tooltip } from "@mui/material";
-
+// Material UI Components
+import { IconButton, Tooltip } from "@mui/material";
 import { ModeEditOutlined, DeleteOutline } from "@mui/icons-material";
+import { GridRenderCellParams } from "@mui/x-data-grid";
 
+// Custom imports
 import { colors } from "../../../utils/constants";
 
-interface Props {}
+interface EditButtonProps {
+  params: GridRenderCellParams;
+  handleClick: (id: number) => void;
+}
 
-export function EditButton({}: Props): ReactElement {
+export function EditButton({
+  params,
+  handleClick,
+}: EditButtonProps): ReactElement {
   return (
-    <Tooltip
-      title="Bewerk"
-      placement="left"
-      sx={{
-        "&:hover": {
-          color: colors.edit,
-          backgroundColor: colors.edit_bg,
-        },
-      }}
-    >
-      <IconButton className="edit-button">
+    <Tooltip title="Bewerk" placement="left">
+      <IconButton
+        className="edit-button"
+        sx={{
+          "&:hover": {
+            color: colors.edit,
+            backgroundColor: colors.edit_bg,
+          },
+        }}
+        onClick={() => handleClick(Number(params.id))}
+      >
         <ModeEditOutlined />
       </IconButton>
     </Tooltip>
   );
 }
 
-export function DeleteButton({}: Props): ReactElement {
+interface DeleteButtonprops {
+  params: GridRenderCellParams;
+  handleClick: (id: number) => void;
+}
+
+export function DeleteButton({
+  params,
+  handleClick,
+}: DeleteButtonprops): ReactElement {
+  const router = useRouter();
+
   return (
-    <Tooltip
-      title="Verwijder"
-      placement="left"
-      sx={{
-        "&:hover": {
-          color: colors.delete,
-          backgroundColor: colors.delete_bg,
-        },
-      }}
-    >
-      <IconButton className="delete-button">
+    <Tooltip title="Verwijder" placement="left">
+      <IconButton
+        className="delete-button"
+        sx={{
+          "&:hover": {
+            color: colors.delete,
+            backgroundColor: colors.delete_bg,
+          },
+        }}
+        onClick={() => handleClick(Number(params.id))}
+      >
         <DeleteOutline />
       </IconButton>
     </Tooltip>

@@ -1,13 +1,12 @@
 import React, { ReactElement } from "react";
-import Router from "next/router";
+import { useRouter } from "next/router";
 
 // Formik & Yup
 import * as yup from "yup";
 import { Field, Form, Formik } from "formik";
 
 // Material UI Components
-import { Button } from "@mui/material";
-import Box from "@mui/material/Box";
+import { Button, Grid } from "@mui/material";
 import { TextField } from "formik-mui";
 
 // Queries
@@ -16,7 +15,6 @@ import { CREATE_SPECIALISATION } from "../../../../graphql/specialisations";
 
 // Custom Components
 import BasicContainer from "../../../components/Admin/style/BasicContainer";
-import Dashboard from "../../../components/Admin/Dashboard";
 
 const validationSchema = yup.object({
   name: yup.string().required("Naam is verplicht"),
@@ -30,85 +28,87 @@ const validationSchema = yup.object({
 });
 
 export default function createLearningLine(): ReactElement {
+  const router = useRouter();
   const [addSpecialisation, { data, loading, error }] = useMutation(
     CREATE_SPECIALISATION
   );
 
   return (
     <BasicContainer title="Nieuwe Afstudeerrichting">
-      <Dashboard title="Nieuwe Afstudeerrichting">
-        <Box
-          sx={{
-            maxWidth: "lg",
-          }}
-        >
-          <Formik
-            initialValues={{
-              name: "",
-              academicYear: "",
-            }}
-            validationSchema={validationSchema}
-            onSubmit={(values, { setSubmitting }) => {
-              setSubmitting(true);
-              addSpecialisation({
-                variables: {
-                  input: {
-                    name: values.name,
-                    academicYear: values.academicYear,
-                  },
-                },
-              }).then(() => {
-                window.location.href = Router.pathname.split("/create")[0];
-              });
+      <Formik
+        initialValues={{
+          name: "",
+          academicYear: "",
+        }}
+        validationSchema={validationSchema}
+        onSubmit={(values, { setSubmitting }) => {
+          setSubmitting(true);
+          addSpecialisation({
+            variables: {
+              input: {
+                name: values.name,
+                academicYear: values.academicYear,
+              },
+            },
+          });
+          if (!error && !loading) {
+            setSubmitting(false);
+            window.location.href = "/admin/specialisations";
+          }
+        }}
+      >
+        {({ values, submitForm, isSubmitting }) => (
+          <Form
+            style={{
+              width: "100%",
             }}
           >
-            {({ values, submitForm, isSubmitting }) => (
-              <Form>
-                <Box margin={1}>
-                  <Field
-                    required
-                    component={TextField}
-                    name="name"
-                    type="text"
-                    label="Naam"
-                    helperText="Naam van de afstudeerrichting"
-                    multiline
-                    maxRows={2}
-                    sx={{
-                      width: "75%",
-                      // maxWidth: 'lg'
-                    }}
-                  />
-                </Box>
-                <Box margin={1}>
-                  <Field
-                    required
-                    component={TextField}
-                    name="academicYear"
-                    type="text"
-                    label="Academiejaren"
-                    helperText="Academiejaren in formaat 2019-2021"
-                    // fullWidth
-                  />
-                </Box>
-                <Box margin={1}>
-                  <Button
-                    sx={{ margin: 1 }}
-                    variant="contained"
-                    color="primary"
-                    disabled={isSubmitting}
-                    onClick={submitForm}
-                    // type="submit"
-                  >
-                    Maak aan
-                  </Button>
-                </Box>
-                <pre>{JSON.stringify(values, null, 2)}</pre>
-              </Form>
-            )}
-          </Formik>
-        </Box>
-      </Dashboard>
+            <Grid
+              container
+              spacing={{ xs: 2 }}
+              sx={{
+                maxWidth: "xl",
+                mb: 4,
+              }}
+            >
+              <Grid item xs={12} md={8}>
+                <Field
+                  required
+                  component={TextField}
+                  name="name"
+                  type="text"
+                  label="Naam"
+                  helperText="Naam van de afstudeerrichting"
+                  fullWidth
+                  multiline
+                  maxRows={2}
+                />
+              </Grid>
+              <Grid item xs={12} md={4}>
+                <Field
+                  required
+                  component={TextField}
+                  name="academicYear"
+                  type="text"
+                  label="Academiejaren"
+                  helperText="Academiejaren in formaat 2019-2021"
+                  fullWidth
+                />
+              </Grid>
+
+              <Grid item xs={12}>
+                <Button
+                  variant="contained"
+                  disabled={isSubmitting}
+                  onClick={submitForm}
+                >
+                  Maak aan
+                </Button>
+              </Grid>
+            </Grid>
+          </Form>
+        )}
+      </Formik>
     </BasicContainer>
   );
 }

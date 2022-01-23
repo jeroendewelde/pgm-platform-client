@@ -9,7 +9,6 @@ import {
 
 // Custom Components
 import BasicContainer from "../../../components/Admin/style/BasicContainer";
-import Dashboard from "../../../components/Admin/Dashboard";
 import DataGridContent from "../../../components/Admin/DataGridContent";
 import NavigationButton from "../../../components/Admin/NavigationButton";
 import CustomLoading from "../../../components/Admin/style/CustomLoading";
@@ -24,21 +23,19 @@ export default function LearningLinesPage(): ReactElement {
 
   return (
     <BasicContainer title="Leerlijnen">
-      <Dashboard title="Leerlijnen">
-        {loading ? (
-          <CustomLoading />
-        ) : (
-          <>
-            <NavigationButton title="nieuwe leerlijn" />
-            <DataGridContent
-              data={data.learningLines}
-              info={tableColumns.learningLines}
-              deleteQuery={DELETE_LEARNING_LINE}
-              fetchAllQuery={GET_ALL_LEARNING_LINES}
-            />
-          </>
-        )}
-      </Dashboard>
+      {loading ? (
+        <CustomLoading />
+      ) : (
+        <>
+          <NavigationButton title="nieuwe leerlijn" />
+          <DataGridContent
+            data={data?.learningLines}
+            info={tableColumns.learningLines}
+            deleteQuery={DELETE_LEARNING_LINE}
+            fetchAllQuery={GET_ALL_LEARNING_LINES}
+          />
+        </>
+      )}
     </BasicContainer>
   );
 }

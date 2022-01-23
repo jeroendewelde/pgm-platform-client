@@ -1,58 +1,45 @@
-import { NextPage } from "next";
-
 // Query
-import { GET_ALL_COURSES } from "../../../graphql/courses";
-import { Course } from "../../../interfaces";
-import client from "../../../apollo-client";
 
 // Custom Imports
 import BasicContainer from "../../components/Admin/style/BasicContainer";
-import Dashboard from "../../components/Admin/Dashboard";
-import DataGridContent from "../../components/Admin/DataGridContent";
 
 // Variables
-import { tableColumns } from "../../utils/constants";
 import NavigationButton from "../../components/Admin/NavigationButton";
 
-interface AdminPanelProps {
-  courses: Course[];
-}
-
-export default function AdminPanel({ courses }: AdminPanelProps) {
+export default function AdminPanel() {
   return (
-    <BasicContainer title="Home">
-      <Dashboard title="Vakken">
-        <>
-          <p>Choose an entity in the left navigation</p>
-          <NavigationButton title="nieuw vak" path="courses" />
-          <NavigationButton title="nieuw project" path="projects" />
-          <NavigationButton title="nieuwe docent" path="teachers" />
-          <NavigationButton title="nieuwe student" path="students" />
-          <NavigationButton title="nieuwe leerlijn" path="learning-lines" />
-          <NavigationButton
-            title="nieuwe afstuderrichting"
-            path="specialisations"
-          />
-          <NavigationButton title="nieuw leerbedrijf" path="companies" />
-          <NavigationButton title="nieuwe testimonial" path="testimonials" />
-        </>
-      </Dashboard>
+    <BasicContainer title="Home" alsoTitle={false}>
+      <>
+        <NavigationButton title="nieuw vak toevoegen" path="courses/create" />
+        <NavigationButton
+          title="nieuw project toevoegen"
+          path="projects/create"
+        />
+        <NavigationButton
+          title="nieuwe docent toevoegen"
+          path="teachers/create"
+        />
+        <NavigationButton
+          title="nieuwe student toevoegen"
+          path="students/create"
+        />
+        <NavigationButton
+          title="nieuwe leerlijn toevoegen"
+          path="learning-lines/create"
+        />
+        <NavigationButton
+          title="nieuwe afstuderrichting toevoegen"
+          path="specialisations/create"
+        />
+        <NavigationButton
+          title="nieuw leerbedrijf toevoegen"
+          path="companies/create"
+        />
+        <NavigationButton
+          title="nieuwe testimonial toevoegen"
+          path="testimonials/create"
+        />
+      </>
     </BasicContainer>
   );
-}
-
-export async function getStaticProps() {
-  const { data, error } = await client.query({
-    query: GET_ALL_COURSES,
-  });
-
-  if (error) {
-    console.log(error);
-  }
-
-  return {
-    props: {
-      courses: data.courses,
-    },
-  };
 }
