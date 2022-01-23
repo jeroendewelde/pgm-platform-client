@@ -246,3 +246,9 @@ export interface CourseClient {
   learningLine: LearningLine;
   specialisation: Specialisation;
 }
+
+export interface Generation {
+  id: number;
+  years: string;
+  name: string;
+}
