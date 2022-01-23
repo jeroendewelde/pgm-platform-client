@@ -209,6 +209,8 @@ export interface GetOneTeacherClient {
   firstName: string;
   lastName: string;
 
+  courses: Course[];
+
   personInformation: {
     bio: string;
     socialMedias: SocialMedia[];

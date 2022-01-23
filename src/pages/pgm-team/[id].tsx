@@ -62,7 +62,7 @@ const CoursesContainer = styled.div`
     }
   }
 
-  ul {
+  .course-card-list {
     margin-top: 1rem;
     display: flex;
     flex-direction: row;
@@ -82,6 +82,8 @@ interface DetailTeacherProps {
 const tags = ["react", "javascript", "typescript"];
 
 const TeacherDetail = ({ teacher }: DetailTeacherProps) => {
+  console.log(teacher.courses);
+
   return (
     <Container>
       <HeroDetail teacher={teacher} />
@@ -96,28 +98,16 @@ const TeacherDetail = ({ teacher }: DetailTeacherProps) => {
       <CoursesContainer>
         <span className="bg"></span>
         <H2>Teaches following courses</H2>
-        <ul>
-          <Card
-            key={1}
-            id={1}
-            learningLine={"blue"}
-            title={"It-communication"}
-            tags={tags}
-          />
-          <Card
-            key={2}
-            id={1}
-            learningLine={"green"}
-            title={"Content Management systems"}
-            tags={tags}
-          />
-          <Card
-            key={3}
-            id={1}
-            learningLine={"pink"}
-            title={"Programmeren 1"}
-            tags={tags}
-          />
+        <ul className="course-card-list">
+          {teacher.courses.map((course) => (
+            <Card
+              key={course.id}
+              id={course.id}
+              title={course.name}
+              tags={course.tags}
+              learningLine={course.learningLine.color}
+            />
+          ))}
         </ul>
       </CoursesContainer>
     </Container>
