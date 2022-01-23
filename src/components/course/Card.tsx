@@ -251,6 +251,9 @@ const Card = ({ tags, learningLine, title, id, key }: CardProps) => {
         learningLine={learningLine}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
+        onClick={() => {
+          setCursorHover(false);
+        }}
       >
         <Title>
           <Icon learningLine={learningLine} />
