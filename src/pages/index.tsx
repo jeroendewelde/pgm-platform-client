@@ -6,15 +6,24 @@ import { Company, Testimonial } from "../../interfaces";
 import { GET_ALL_TESTIMONIALS } from "../../graphql/testimonials";
 import styled from "styled-components";
 import { GET_ALL_COMPANIES_CLIENT } from "../../graphql/companies";
+import { H2 } from "../components/Titles/H2";
 
-const AudioPlayerWrapper = styled.div`
-  position: relative;
-  padding-top: 56.25% /* Player ratio: 100 / (1280 / 720) */;
+const VideoPlayerContainer = styled.div`
   margin: 5rem 0;
 
   @media (min-width: ${(props) => props.theme.width.medium}) {
     margin: 8rem auto;
   }
+
+  @media (min-width: ${(props) => props.theme.width.elarge}) {
+    padding: 0 10rem;
+  }
+`;
+
+const VideoPlayerWrapper = styled.div`
+  position: relative;
+  padding-top: 56.25% /* Player ratio: 100 / (1280 / 720) */;
+  margin: 2rem auto;
 
   .react-player {
     position: absolute;
@@ -35,17 +44,36 @@ export default function Home({ testimonials, companies }: HomeProps) {
     <>
       <Hero />
       <Companies companies={companies} />
-
-      <AudioPlayerWrapper>
-        <ReactPlayer
-          className="react-player"
-          width="100%"
-          height="100%"
-          controls
-          url="https://www.youtube.com/watch?v=oZE6MQnM0cQ&t=5s"
-        />
-      </AudioPlayerWrapper>
       <TestimonialsCarousel testimonials={testimonials} />
+
+      <VideoPlayerContainer>
+        <H2>Praktische info</H2>
+
+        <VideoPlayerWrapper>
+          <ReactPlayer
+            className="react-player"
+            width="100%"
+            height="100%"
+            controls
+            url="https://www.youtube.com/watch?v=oZE6MQnM0cQ&t=5s"
+          />
+        </VideoPlayerWrapper>
+      </VideoPlayerContainer>
+
+      {/* MSS toch zetten op contact pagina */}
+
+      {/* <VideoPlayerContainer>
+        <H2>Praktische info</H2>
+        <VideoPlayerWrapper>
+          <ReactPlayer
+            className="react-player"
+            width="100%"
+            height="100%"
+            controls
+            url="https://www.youtube.com/watch?v=DG1jVe9l1FM&t=99s"
+          />
+        </VideoPlayerWrapper>
+      </VideoPlayerContainer> */}
     </>
   );
 }

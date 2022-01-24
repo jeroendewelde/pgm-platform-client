@@ -37,8 +37,8 @@ const SwiperContainer = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    box-shadow: inset 0 0 5px ${(props) => props.theme.colors.red},
-      0 0 10px ${(props) => props.theme.colors.red};
+    /* box-shadow: inset 0 0 5px ${(props) => props.theme.colors.red},
+      0 0 10px ${(props) => props.theme.colors.red}; */
 
     &::after {
       font-size: ${(props) => props.theme.fontSizes.normal};
