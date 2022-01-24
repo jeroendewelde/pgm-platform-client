@@ -9,6 +9,7 @@ import { Project } from "../../../interfaces";
 import Link from "next/link";
 
 const Container = styled.li`
+  list-style: none;
   margin-bottom: 2rem;
   cursor: pointer;
   min-width: 15rem;
@@ -67,6 +68,7 @@ const Container = styled.li`
       li {
         margin: 0;
         margin-right: 0.5rem;
+        list-style: none;
 
         &:last-child ::after {
           content: "";

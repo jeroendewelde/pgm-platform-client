@@ -9,14 +9,14 @@ import { Quote } from "../Quote";
 import { H2 } from "../Titles/H2";
 
 const SwiperContainer = styled.div`
-  margin: 5rem auto;
+  margin: 3rem auto;
+
+  @media (min-width: ${(props) => props.theme.width.medium}) {
+    margin-top: 5rem;
+  }
 
   max-width: 50rem;
   width: 100%;
-
-  @media (min-width: ${(props) => props.theme.width.medium}) {
-    margin-top: 20rem;
-  }
 
   .swiper-button-next,
   .swiper-button-prev {
@@ -68,8 +68,6 @@ const TestimonialsCarousel = ({ testimonials }: TestimonialProps) => {
         navigation={true}
         spaceBetween={50}
         slidesPerView={1}
-        onSlideChange={() => console.log("slide change")}
-        onSwiper={(swiper) => console.log(swiper)}
       >
         {testimonials.map((testimonial) => (
           <SwiperSlide key={testimonial.id}>

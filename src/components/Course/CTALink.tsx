@@ -13,6 +13,7 @@ const LinkStyle = styled.div`
   a {
     display: flex;
     align-items: center;
+    color: ${(props) => props.theme.colors.white};
 
     .cta {
       border-bottom: 2px solid ${(props) => props.theme.colors.turquoise};
@@ -52,12 +53,12 @@ const LinkStyle = styled.div`
   }
 `;
 
-interface Props {
+export interface CTALinkProps {
   href: string;
   children: React.ReactNode;
 }
 
-const CTALink = ({ href, children }: Props) => {
+const CTALink = ({ href, children }: CTALinkProps) => {
   return (
     <LinkStyle>
       <Link href={href}>

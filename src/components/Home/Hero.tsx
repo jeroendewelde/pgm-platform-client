@@ -4,6 +4,7 @@ import Image from "next/image";
 
 import { GlitchTitle } from "../Titles/GlitchTitle";
 import heroImage from "../../assets/hero-image.png";
+import { LinkButton } from "../Button";
 
 const Container = styled.div`
   display: flex;
@@ -23,6 +24,13 @@ const Content = styled.div`
     width: 50%;
     margin-right: 2rem;
     order: 0;
+  }
+
+  p {
+    margin-bottom: 2rem;
+    @media (min-width: ${(props) => props.theme.width.medium}) {
+      margin-bottom: 5rem;
+    }
   }
 `;
 
@@ -83,6 +91,9 @@ const Hero = () => {
             Je wordt een programmeur gespecialiseerd in JavaScript, maar ook in
             HTML, CSS, UI/UX, software engineering …
           </p>
+          <LinkButton href="https://www.arteveldehogeschool.be/inschrijven/inschrijven-voor-een-bachelor-graduaat-bachelor-na-bachelor/je-inschrijving/inschrijven-als-nieuwe-student">
+            <a>Schrijf je online in</a>
+          </LinkButton>
         </div>
       </Content>
       <ImageContainer>
