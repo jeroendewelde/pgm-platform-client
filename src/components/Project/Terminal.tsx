@@ -103,7 +103,7 @@ const Terminal = ({ project }: TerminalProps) => {
     },
     {
       id: 5,
-      title: "~/students",
+      title: "~/made-by",
       project_title: project.students
         .map((student) => student.firstName + " " + student.lastName)
         .join(" & "),

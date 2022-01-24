@@ -29,11 +29,6 @@ const Container = styled(motion.div)`
   .header__container {
     width: 100%;
     padding: 0 1rem;
-    background-color: ${(props) =>
-      transparentize(0.7, props.theme.colors.turquoise)};
-    background-color: transparent;
-    -webkit-backdrop-filter: blur(2em);
-    backdrop-filter: blur(2em);
 
     @media (min-width: ${(props) => props.theme.width.medium}) {
       padding: 0 2rem;

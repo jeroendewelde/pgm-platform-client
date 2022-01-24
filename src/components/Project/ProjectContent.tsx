@@ -71,7 +71,7 @@ interface ProjectContentProps {
 const ProjectContent = ({ project }: ProjectContentProps) => {
   return (
     <Container>
-      <H2>Samenvatting</H2>
+      <H2>Beschrijving</H2>
       <div className="flex">
         <div className="body">
           <p>{project.body}</p>
