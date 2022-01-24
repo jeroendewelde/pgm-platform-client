@@ -1,3 +1,4 @@
 import Hero from "./Hero";
+import TestimonialsCarousel from "./TestimonialsCarousel";
 
-export { Hero };
+export { Hero, TestimonialsCarousel };

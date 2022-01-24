@@ -5,8 +5,8 @@ import { transparentize } from "polished";
 
 import Tag from "./Tag";
 import test from "../../assets/test/test.jpg";
-import profile from "../../assets/test/profile.jpg";
 import { Project } from "../../../interfaces";
+import Link from "next/link";
 
 const Container = styled.li`
   margin-bottom: 2rem;
@@ -136,28 +136,30 @@ export interface CardProps {
 const Card = ({ key, project }: CardProps) => {
   console.log(project);
   return (
-    <Container key={key}>
-      <CardImage>
-        <Image src={test} layout="fill" alt="project-1" objectFit="cover" />
-        <ul>
-          {project.tags.map((tag, index) => (
-            <Tag key={index} title={tag} />
-          ))}
-        </ul>
+    <Link href={`/projecten/${project.id}`} key={key}>
+      <Container>
+        <CardImage>
+          <Image src={test} layout="fill" alt="project-1" objectFit="cover" />
+          <ul>
+            {project.tags.map((tag, index) => (
+              <Tag key={index} title={tag} />
+            ))}
+          </ul>
 
-        <h3>{project.name}</h3>
-      </CardImage>
-      <div className="card-content">
-        <ul className="students">
-          <span>Made by </span>
-          {project.students.map((student, index) => (
-            <li key={index}>{student.firstName}</li>
-          ))}
-        </ul>
+          <h3>{project.name}</h3>
+        </CardImage>
+        <div className="card-content">
+          <ul className="students">
+            <span>Made by </span>
+            {project.students.map((student, index) => (
+              <li key={index}>{student.firstName}</li>
+            ))}
+          </ul>
 
-        <p className="teaser-text">{project.teaserText}</p>
-      </div>
-    </Container>
+          <p className="teaser-text">{project.teaserText}</p>
+        </div>
+      </Container>
+    </Link>
   );
 };
 

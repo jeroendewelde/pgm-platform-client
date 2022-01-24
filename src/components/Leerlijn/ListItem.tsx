@@ -3,11 +3,11 @@ import styled from "styled-components";
 import Image from "next/image";
 
 import { CourseTitle } from "../Titles/CourseTitle";
-import { Button } from "../Button";
 
 import test from "../../assets/test/test.jpg";
 import { Course } from "../../../interfaces";
 import Tag from "../Course/Tag";
+import CTALink from "../Course/CTALink";
 
 const CourseListItem = styled.div`
   width: 100%;
@@ -98,10 +98,11 @@ const Description = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  position: relative;
 
   @media (min-width: ${(props) => props.theme.width.small}) {
     margin-top: 2rem;
-    height: 20rem;
+    min-height: 20rem;
   }
 
   p {
@@ -114,6 +115,10 @@ const Description = styled.div`
     /* @media (min-width: ${(props) => props.theme.width.small}) {
       -webkit-line-clamp: 8;
     } */
+  }
+
+  .cta-container {
+    margin-top: 2rem;
   }
 
   ul {
@@ -158,7 +163,11 @@ const ListItem = ({ course }: Props) => {
 
           <p>{course.description}</p>
 
-          <Button>Meer over Webdesign</Button>
+          <div className="cta-container">
+            <CTALink href={`/vakken/${course.id}`}>
+              Meer over {course.name}
+            </CTALink>
+          </div>
         </Description>
       </FlexContainer>
     </CourseListItem>

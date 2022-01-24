@@ -105,7 +105,7 @@ const HeroDetail = ({ project }: HeroDetailProps) => {
       <GlitchTitle>{project.name}</GlitchTitle>
       <div className="students">
         {project.students.map((student) => (
-          <div className="student">
+          <div className="student" key={student.id}>
             <div className="image-container">
               <Image src={profileImage} width={100} height={100} />
             </div>

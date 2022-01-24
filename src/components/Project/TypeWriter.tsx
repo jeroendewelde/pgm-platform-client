@@ -21,10 +21,14 @@ const TypeWriter = ({ typeWriterText }: TerminalProps) => {
       return;
     }
 
-    setTimeout(() => {
+    const unsubscribe = setTimeout(() => {
       setText((value) => value + typeWriterText.charAt(index.current));
       index.current++;
     }, 50);
+
+    return () => {
+      clearTimeout(unsubscribe);
+    };
   }, [text]);
 
   return <TypeWriterStyle>{text}</TypeWriterStyle>;

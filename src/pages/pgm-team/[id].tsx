@@ -94,7 +94,6 @@ const TeacherDetail = ({ teacher }: DetailTeacherProps) => {
         />
       </FlexContainer>
 
-      {/* tijdelijk hard coded */}
       <CoursesContainer>
         <span className="bg"></span>
         <H2>Teaches following courses</H2>

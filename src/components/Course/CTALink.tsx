@@ -14,6 +14,10 @@ const LinkStyle = styled.div`
     display: flex;
     align-items: center;
 
+    .cta {
+      border-bottom: 2px solid ${(props) => props.theme.colors.turquoise};
+    }
+
     &:hover {
       .cta {
         color: ${(props) => props.theme.colors.turquoise};
