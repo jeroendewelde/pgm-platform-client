@@ -10,10 +10,10 @@ import { GET_ALL_COMPANIES_CLIENT } from "../../graphql/companies";
 const AudioPlayerWrapper = styled.div`
   position: relative;
   padding-top: 56.25% /* Player ratio: 100 / (1280 / 720) */;
-  margin-top: 3rem;
+  margin: 5rem 0;
 
   @media (min-width: ${(props) => props.theme.width.medium}) {
-    margin-top: 8rem;
+    margin: 8rem auto;
   }
 
   .react-player {
@@ -34,7 +34,8 @@ export default function Home({ testimonials, companies }: HomeProps) {
   return (
     <>
       <Hero />
-      <TestimonialsCarousel testimonials={testimonials} />
+      <Companies companies={companies} />
+
       <AudioPlayerWrapper>
         <ReactPlayer
           className="react-player"
@@ -44,7 +45,7 @@ export default function Home({ testimonials, companies }: HomeProps) {
           url="https://www.youtube.com/watch?v=oZE6MQnM0cQ&t=5s"
         />
       </AudioPlayerWrapper>
-      <Companies companies={companies} />
+      <TestimonialsCarousel testimonials={testimonials} />
     </>
   );
 }

@@ -16,11 +16,13 @@ const SuperContainer = styled.div`
   }
 
   .multiple-students {
-    padding-right: 5rem;
-
     @media (min-width: ${(props) => props.theme.width.small}) {
       padding-right: 5rem;
     }
+  }
+
+  .multiple-students-image {
+    width: calc(100% - 3rem);
   }
 `;
 
@@ -32,6 +34,7 @@ const CompanyName = styled.div`
 
   .company-name {
     font-size: ${(props) => props.theme.fontSizes.medium};
+    margin-right: 1rem;
   }
 
   .info {
@@ -62,23 +65,35 @@ const Container = styled.div`
     height: 100%;
     overflow-y: auto;
     overflow-x: hidden;
+    max-height: 15rem;
+
+    @media (min-width: ${(props) => props.theme.width.esmall}) {
+      height: 20rem;
+      max-height: 20rem;
+    }
+    @media (min-width: ${(props) => props.theme.width.small}) {
+      background-color: ${(props) =>
+        lighten(0.05, props.theme.colors.bg_gradient_color_1)};
+      backdrop-filter: blur(3px);
+      -webkit-backdrop-filter: blur(3px);
+      border-radius: ${(props) => props.theme.borderRadius.small};
+      border: 1px solid
+        ${(props) => lighten(0.2, props.theme.colors.bg_gradient_color_1)};
+      height: 20rem;
+      max-height: 20rem;
+    }
   }
 
   .student__list {
-    background-color: ${(props) =>
-      lighten(0.1, props.theme.colors.bg_gradient_color_1)};
-    backdrop-filter: blur(3px);
-    -webkit-backdrop-filter: blur(3px);
-
     padding: 0.5rem;
-    border-radius: ${(props) => props.theme.borderRadius.normal};
+    padding-bottom: 0;
     transition: ${(props) => props.theme.transition.normal};
 
     li {
       cursor: pointer;
       position: relative;
-      width: 2.5rem;
-      height: 2.5rem;
+      width: 2rem;
+      height: 2rem;
       margin-bottom: 0.5rem;
       //border: 2px solid ${(props) => props.theme.colors.pink};
       border-radius: ${(props) => props.theme.borderRadius.circle};
@@ -93,9 +108,9 @@ const Container = styled.div`
 const CardImage = styled.div`
   padding: 0.5rem;
   position: relative;
-
+  margin-right: 5rem;
   width: 100%;
-  height: 12rem;
+  height: 15rem;
   overflow: hidden;
   border-radius: ${(props) => props.theme.borderRadius.small};
 
@@ -104,9 +119,11 @@ const CardImage = styled.div`
   }
 
   @media (min-width: ${(props) => props.theme.width.small}) {
-    max-width: 17rem;
-    width: 100%;
-    height: auto;
+    min-width: 15rem;
+    max-width: 15rem;
+    width: 15rem;
+    height: 17rem;
+    margin-right: 2rem;
   }
 `;
 
@@ -141,16 +158,21 @@ const ActiveStudent = styled.div`
 `;
 
 const CardContent = styled.div`
+  height: 100%;
+
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   align-items: flex-start;
-  padding: 1rem;
-  min-height: 8rem;
+  padding-bottom: 0.5rem;
+  padding-top: 1rem;
+
+  @media (min-width: ${(props) => props.theme.width.small}) {
+    padding-top: 0;
+  }
 
   p {
     margin-top: 1rem;
-    font-size: ${(props) => props.theme.fontSizes.small};
+    font-size: ${(props) => props.theme.fontSizes.normal};
   }
 `;
 
@@ -176,7 +198,11 @@ const Card = ({ company }: CardProps) => {
         <Container
           className={company.interns.length > 1 ? "multiple-students" : ""}
         >
-          <CardImage>
+          <CardImage
+            className={
+              company.interns.length > 1 ? "multiple-students-image" : ""
+            }
+          >
             <Image
               src={companyTest}
               layout="fill"

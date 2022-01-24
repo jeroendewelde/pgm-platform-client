@@ -9,10 +9,10 @@ import { Quote } from "../Quote";
 import { H2 } from "../Titles/H2";
 
 const SwiperContainer = styled.div`
-  margin: 3rem auto;
+  margin: 5rem auto;
 
   @media (min-width: ${(props) => props.theme.width.medium}) {
-    margin-top: 15rem;
+    margin: 8rem auto;
   }
 
   max-width: 50rem;

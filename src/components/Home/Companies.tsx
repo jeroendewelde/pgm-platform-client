@@ -8,12 +8,16 @@ import "swiper/swiper.min.css";
 import { Company } from "../../../interfaces";
 import { Card } from "../Interns";
 import { H2 } from "../Titles/H2";
+import { transparentize } from "polished";
 
 const SwiperContainer = styled.div`
   margin: 5rem auto;
+  border-bottom: 1px dashed ${(props) => props.theme.colors.turquoise};
 
   @media (min-width: ${(props) => props.theme.width.medium}) {
     margin-top: 15rem;
+    margin-bottom: 10rem;
+    border: none;
   }
 
   max-width: 70rem;
@@ -22,10 +26,9 @@ const SwiperContainer = styled.div`
   .swiper-button-next,
   .swiper-button-prev {
     color: ${(props) => props.theme.colors.red};
-    bottom: 0;
-    left: calc(50% + 1rem);
-    top: auto;
-    transform: translateY(-50%);
+    bottom: auto;
+    right: 0;
+    top: 2rem;
     border: 2px solid ${(props) => props.theme.colors.red};
     height: 2rem;
     width: 2rem;
@@ -41,11 +44,28 @@ const SwiperContainer = styled.div`
       font-size: ${(props) => props.theme.fontSizes.normal};
       font-weight: ${(props) => props.theme.fontWeights.bold};
     }
+
+    @media (min-width: ${(props) => props.theme.width.esmall}) {
+      top: 1.5rem;
+    }
   }
 
   .swiper-button-prev {
     left: auto;
-    right: calc(50% + 1rem);
+    right: 3rem;
+  }
+
+  .company-swiper {
+    padding-top: 3rem;
+  }
+
+  .swiper-slide {
+    border-top: 1px solid
+      ${(props) => transparentize(0.5, props.theme.colors.purple)};
+  }
+
+  .section-title {
+    margin-bottom: -2.5rem;
   }
 `;
 
@@ -58,8 +78,15 @@ const Companies = ({ companies }: CompaniesProps) => {
 
   return (
     <SwiperContainer>
-      <H2>Leerbedrijven</H2>
-      <Swiper navigation={true} spaceBetween={50} slidesPerView={1}>
+      <div className="section-title">
+        <H2>Leerbedrijven</H2>
+      </div>
+      <Swiper
+        navigation={true}
+        spaceBetween={50}
+        slidesPerView={1}
+        className="company-swiper"
+      >
         {companies.map((company) => (
           <SwiperSlide key={company.id}>
             <Card company={company} />
