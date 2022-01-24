@@ -7,6 +7,7 @@ import heroImage from "../../assets/hero-image.png";
 import { LinkButton } from "../Button";
 
 const Container = styled.div`
+  margin-top: 2rem;
   display: flex;
   flex-direction: column;
   position: relative;

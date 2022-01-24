@@ -1,21 +1,22 @@
 import styled from "styled-components";
 import React from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import SwiperCore, { Navigation, Autoplay } from "swiper";
+import SwiperCore, { Navigation } from "swiper";
 import "swiper/swiper-bundle.min.css";
 import "swiper/swiper.min.css";
-import { Testimonial } from "../../../interfaces";
-import { Quote } from "../Quote";
+
+import { Company } from "../../../interfaces";
+import { Card } from "../Interns";
 import { H2 } from "../Titles/H2";
 
 const SwiperContainer = styled.div`
-  margin: 3rem auto;
+  margin: 5rem auto;
 
   @media (min-width: ${(props) => props.theme.width.medium}) {
     margin-top: 15rem;
   }
 
-  max-width: 50rem;
+  max-width: 70rem;
   width: 100%;
 
   .swiper-button-next,
@@ -48,35 +49,20 @@ const SwiperContainer = styled.div`
   }
 `;
 
-interface TestimonialProps {
-  testimonials: Testimonial[];
+interface CompaniesProps {
+  companies: Company[];
 }
 
-const TestimonialsCarousel = ({ testimonials }: TestimonialProps) => {
-  SwiperCore.use([Navigation, Autoplay]);
+const Companies = ({ companies }: CompaniesProps) => {
+  SwiperCore.use([Navigation]);
 
   return (
     <SwiperContainer>
-      <div className="h2_padding">
-        <H2>Testimonials</H2>
-      </div>
-      <Swiper
-        autoplay={{
-          delay: 10000,
-          disableOnInteraction: false,
-        }}
-        navigation={true}
-        spaceBetween={50}
-        slidesPerView={1}
-      >
-        {testimonials.map((testimonial) => (
-          <SwiperSlide key={testimonial.id}>
-            <Quote
-              source={`${testimonial.name} ${
-                testimonial.company ? "[" + testimonial.company + "]" : ""
-              }`}
-              content={testimonial.quote}
-            />
+      <H2>Leerbedrijven</H2>
+      <Swiper navigation={true} spaceBetween={50} slidesPerView={1}>
+        {companies.map((company) => (
+          <SwiperSlide key={company.id}>
+            <Card company={company} />
           </SwiperSlide>
         ))}
       </Swiper>
@@ -84,4 +70,4 @@ const TestimonialsCarousel = ({ testimonials }: TestimonialProps) => {
   );
 };
 
-export default TestimonialsCarousel;
+export default Companies;

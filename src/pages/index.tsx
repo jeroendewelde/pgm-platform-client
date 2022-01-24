@@ -1,10 +1,11 @@
 import ReactPlayer from "react-player/youtube";
 
 import client from "../../apollo-client";
-import { Hero, TestimonialsCarousel } from "../components/Home";
-import { Testimonial } from "../../interfaces";
+import { Companies, Hero, TestimonialsCarousel } from "../components/Home";
+import { Company, Testimonial } from "../../interfaces";
 import { GET_ALL_TESTIMONIALS } from "../../graphql/testimonials";
 import styled from "styled-components";
+import { GET_ALL_COMPANIES_CLIENT } from "../../graphql/companies";
 
 const AudioPlayerWrapper = styled.div`
   position: relative;
@@ -12,7 +13,7 @@ const AudioPlayerWrapper = styled.div`
   margin-top: 3rem;
 
   @media (min-width: ${(props) => props.theme.width.medium}) {
-    margin-top: 15rem;
+    margin-top: 8rem;
   }
 
   .react-player {
@@ -26,12 +27,14 @@ const AudioPlayerWrapper = styled.div`
 
 interface HomeProps {
   testimonials: Testimonial[];
+  companies: Company[];
 }
 
-export default function Home({ testimonials }: HomeProps) {
+export default function Home({ testimonials, companies }: HomeProps) {
   return (
     <>
       <Hero />
+      <TestimonialsCarousel testimonials={testimonials} />
       <AudioPlayerWrapper>
         <ReactPlayer
           className="react-player"
@@ -41,23 +44,41 @@ export default function Home({ testimonials }: HomeProps) {
           url="https://www.youtube.com/watch?v=oZE6MQnM0cQ&t=5s"
         />
       </AudioPlayerWrapper>
-      <TestimonialsCarousel testimonials={testimonials} />
+      <Companies companies={companies} />
     </>
   );
 }
 
 export async function getStaticProps() {
-  const { data, error } = await client.query({
-    query: GET_ALL_TESTIMONIALS,
-  });
+  const queryMultiple = async () => {
+    const query_Testimonials = await client.query({
+      query: GET_ALL_TESTIMONIALS,
+    });
 
-  if (error) {
-    console.log(error);
-  }
+    const query_Leerbedrijven = await client.query({
+      query: GET_ALL_COMPANIES_CLIENT,
+    });
+
+    return [query_Testimonials, query_Leerbedrijven];
+  };
+
+  const [query_Testimonials, query_Leerbedrijven] = await queryMultiple();
+
+  const {
+    data: data_Testimonials,
+    error: error_Testimonials,
+    loading: loading_Testimonials,
+  } = query_Testimonials;
+  const {
+    data: data_Leerbedrijven,
+    error: error_Leerbedrijven,
+    loading: loading_Leerbedrijven,
+  } = query_Leerbedrijven;
 
   return {
     props: {
-      testimonials: data.testimonials,
+      testimonials: data_Testimonials.testimonials,
+      companies: data_Leerbedrijven.companies,
     },
   };
 }
