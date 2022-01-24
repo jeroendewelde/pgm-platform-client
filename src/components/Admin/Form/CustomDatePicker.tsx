@@ -1,135 +1,131 @@
-import React, { ReactElement, useState } from 'react'
-import {fieldToTextField, TextFieldProps} from 'formik-mui';
-import Badge from '@mui/material/Badge';
+import React, { ReactElement, useState } from "react";
+import { fieldToTextField, TextFieldProps } from "formik-mui";
+import Badge from "@mui/material/Badge";
 
-import { TextField } from '@mui/material';
-import LocalizationProvider from '@mui/lab/LocalizationProvider';
+import { TextField } from "@mui/material";
+import LocalizationProvider from "@mui/lab/LocalizationProvider";
 // import AdapterDateDayjs from '@mui/lab/AdapterDayjs';
-import AdapterDateFns from '@mui/lab/AdapterDateFns';
-import DatePicker from '@mui/lab/DatePicker';
-import PickersDay from '@mui/lab/PickersDay';
-import CalendarPickerSkeleton from '@mui/lab/CalendarPickerSkeleton';
-import getDaysInMonth from 'date-fns/getDaysInMonth';
+import AdapterDateFns from "@mui/lab/AdapterDateFns";
+import DatePicker from "@mui/lab/DatePicker";
+import PickersDay from "@mui/lab/PickersDay";
+import CalendarPickerSkeleton from "@mui/lab/CalendarPickerSkeleton";
+import getDaysInMonth from "date-fns/getDaysInMonth";
 
 // import DateAdapter from '@mui/lab/AdapterDayjs';
 
-
 // interface CustomDatePickerProps {
-// 	props: 
+// 	props:
 // }
 
 function getRandomNumber(min: number, max: number) {
-	return Math.round(Math.random() * (max - min) + min);
-  }
+  return Math.round(Math.random() * (max - min) + min);
+}
 
 /**
  * Mimic fetch with abort controller https://developer.mozilla.org/en-US/docs/Web/API/AbortController/abort
  * ⚠️ No IE11 support
  */
- function fakeFetch(date: Date, { signal }: { signal: AbortSignal }) {
-	return new Promise<{ daysToHighlight: number[] }>((resolve, reject) => {
-	  const timeout = setTimeout(() => {
-		const daysInMonth = getDaysInMonth(date);
-		const daysToHighlight = [1, 2, 3].map(() => getRandomNumber(1, daysInMonth));
-  
-		resolve({ daysToHighlight });
-	  }, 500);
-  
-	  signal.onabort = () => {
-		clearTimeout(timeout);
-		reject(new DOMException('aborted', 'AbortError'));
-	  };
-	});
-  }
-  
+function fakeFetch(date: Date, { signal }: { signal: AbortSignal }) {
+  return new Promise<{ daysToHighlight: number[] }>((resolve, reject) => {
+    const timeout = setTimeout(() => {
+      const daysInMonth = getDaysInMonth(date);
+      const daysToHighlight = [1, 2, 3].map(() =>
+        getRandomNumber(1, daysInMonth)
+      );
+
+      resolve({ daysToHighlight });
+    }, 500);
+
+    signal.onabort = () => {
+      clearTimeout(timeout);
+      reject(new DOMException("aborted", "AbortError"));
+    };
+  });
+}
 
 const initialValue = new Date();
 
 // export default function CustomDatePicker({  children, ...props}: TextFieldProps): ReactElement {
 export default function CustomDatePicker(props: TextFieldProps): ReactElement {
-	const requestAbortController = React.useRef<AbortController | null>(null);
-  	const [isLoading, setIsLoading] = React.useState(false);
-	const [highlightedDays, setHighlightedDays] = React.useState([1, 2, 15]);
-	const [value, setValue] = React.useState<Date | null>(initialValue);
+  const requestAbortController = React.useRef<AbortController | null>(null);
+  const [isLoading, setIsLoading] = React.useState(false);
+  const [highlightedDays, setHighlightedDays] = React.useState([1, 2, 15]);
+  const [value, setValue] = React.useState<Date | null>(initialValue);
 
-	
-	// FOR FORMIK
-	const {
-		form: {setFieldValue},
-		field: {name},
-		children,
-		helperText,
-		label,
-		
-	  } = props;
+  // FOR FORMIK
+  const {
+    form: { setFieldValue },
+    field: { name },
+    children,
+    helperText,
+    label,
+  } = props;
 
-	//   const onChange = React.useCallback(
-	// 	(event) => {
-	// 	//   const {value} = event.target;
-	// 	console.log('event.....', event);
-	// 	console.log('target.....', event.target);
-	// 	setValue(event.target.value);
-	// 	  setFieldValue(name, value ? value : '');
-	// 	},
-	// 	[setFieldValue, name]
-	//   );
+  //   const onChange = React.useCallback(
+  // 	(event) => {
+  // 	//   const {value} = event.target;
+  // 	console.log('event.....', event);
+  // 	console.log('target.....', event.target);
+  // 	setValue(event.target.value);
+  // 	  setFieldValue(name, value ? value : '');
+  // 	},
+  // 	[setFieldValue, name]
+  //   );
 
-	//   onChange={(newValue) => {
-	// 	setValue(newValue);
-	//   }}
+  //   onChange={(newValue) => {
+  // 	setValue(newValue);
+  //   }}
 
-	  const fetchHighlightedDays = (date: Date) => {
-		const controller = new AbortController();
-		fakeFetch(date, {
-		  signal: controller.signal,
-		})
-		  .then(({ daysToHighlight }) => {
-			setHighlightedDays(daysToHighlight);
-			setIsLoading(false);
-		  })
-		  .catch((error) => {
-			// ignore the error if it's caused by `controller.abort`
-			if (error.name !== 'AbortError') {
-			  throw error;
-			}
-		  });
-	
-		requestAbortController.current = controller;
-	  };
-	
-	  React.useEffect(() => {
-		fetchHighlightedDays(initialValue);
-		// abort request on unmount
-		return () => requestAbortController.current?.abort();
-	  }, []);
-	
-	  const handleMonthChange = (date: Date) => {
-		if (requestAbortController.current) {
-		  // make sure that you are aborting useless requests
-		  // because it is possible to switch between months pretty quickly
-		  requestAbortController.current.abort();
-		}
-	
-		setIsLoading(true);
-		setHighlightedDays([]);
-		fetchHighlightedDays(date);
-	  };
+  const fetchHighlightedDays = (date: Date) => {
+    const controller = new AbortController();
+    fakeFetch(date, {
+      signal: controller.signal,
+    })
+      .then(({ daysToHighlight }) => {
+        setHighlightedDays(daysToHighlight);
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        // ignore the error if it's caused by `controller.abort`
+        if (error.name !== "AbortError") {
+          throw error;
+        }
+      });
 
-	  return (
-		// <LocalizationProvider dateAdapter={DateAdapter}>{children}</LocalizationProvider>
-		// <TextField {...fieldToTextField(props)} onChange={onChange} />
-		<LocalizationProvider
-			dateAdapter={AdapterDateFns}
-		>
-			<DatePicker
-			helperText={helperText}
-			label={label}
+    requestAbortController.current = controller;
+  };
+
+  React.useEffect(() => {
+    fetchHighlightedDays(initialValue);
+    // abort request on unmount
+    return () => requestAbortController.current?.abort();
+  }, []);
+
+  const handleMonthChange = (date: Date) => {
+    if (requestAbortController.current) {
+      // make sure that you are aborting useless requests
+      // because it is possible to switch between months pretty quickly
+      requestAbortController.current.abort();
+    }
+
+    setIsLoading(true);
+    setHighlightedDays([]);
+    fetchHighlightedDays(date);
+  };
+
+  return (
+    // <LocalizationProvider dateAdapter={DateAdapter}>{children}</LocalizationProvider>
+    // <TextField {...fieldToTextField(props)} onChange={onChange} />
+    <LocalizationProvider dateAdapter={AdapterDateFns}>
+      <DatePicker
+        helperText={helperText}
+        label={label}
         value={value}
         loading={isLoading}
-		// onChange={onChange}
+        // onChange={onChange}
         onChange={(newValue) => {
           setValue(newValue);
-		  setFieldValue(name, newValue ? newValue : '');
+          setFieldValue(name, newValue ? newValue : "");
         }}
         // onChange={(newValue) => onChange(newValue)}
         onMonthChange={handleMonthChange}
@@ -144,15 +140,13 @@ export default function CustomDatePicker(props: TextFieldProps): ReactElement {
             <Badge
               key={day.toString()}
               overlap="circular"
-              badgeContent={isSelected ? '🌚' : undefined}
+              badgeContent={isSelected ? "🌚" : undefined}
             >
               <PickersDay {...DayComponentProps} />
             </Badge>
           );
         }}
       />
-
-		</LocalizationProvider>
-	  )
+    </LocalizationProvider>
+  );
 }
-
