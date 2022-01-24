@@ -209,6 +209,8 @@ export interface GetOneTeacherClient {
   firstName: string;
   lastName: string;
 
+  courses: Course[];
+
   personInformation: {
     bio: string;
     socialMedias: SocialMedia[];
@@ -245,4 +247,10 @@ export interface CourseClient {
   specialisationId: number;
   learningLine: LearningLine;
   specialisation: Specialisation;
+}
+
+export interface Generation {
+  id: number;
+  years: string;
+  name: string;
 }

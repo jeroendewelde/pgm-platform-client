@@ -7,6 +7,7 @@ import "swiper/swiper.min.css";
 import styled from "styled-components";
 import { StudentCard } from ".";
 import { transparentize } from "polished";
+import { Person } from "../../../interfaces";
 
 SwiperCore.use([Navigation, Autoplay]);
 
@@ -55,34 +56,33 @@ const SwiperContainer = styled.div`
   }
 `;
 
-const StudentCarousel = () => {
+interface Props {
+  students: Person[];
+}
+
+const StudentCarousel = ({ students }: Props) => {
+  console.log(students);
   return (
     <SwiperContainer>
-      <Swiper
-        autoplay={{
-          delay: 10000,
-          disableOnInteraction: true,
-        }}
-        grabCursor={true}
-        centeredSlides={true}
-        slidesPerView={"auto"}
-        navigation={true}
-        loop={true}
-        className="mySwiper"
-      >
-        <SwiperSlide>
-          <StudentCard name="Valerie De Bruycker" />
-        </SwiperSlide>
-        <SwiperSlide>
-          <StudentCard name="Valerie De Bruycker" />
-        </SwiperSlide>
-        <SwiperSlide>
-          <StudentCard name="Valerie De Bruycker" />
-        </SwiperSlide>
-        <SwiperSlide>
-          <StudentCard name="Valerie De Bruycker" />
-        </SwiperSlide>
-      </Swiper>
+      {students.length > 0 && (
+        <Swiper
+          autoplay={{
+            delay: 10000,
+            disableOnInteraction: true,
+          }}
+          grabCursor={true}
+          centeredSlides={true}
+          slidesPerView={"auto"}
+          navigation={true}
+          loop={true}
+        >
+          {students.map((student) => (
+            <SwiperSlide key={student.id}>
+              <StudentCard name={`${student.firstName} ${student.lastName}`} />
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      )}
     </SwiperContainer>
   );
 };

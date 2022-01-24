@@ -235,8 +235,10 @@ const LeerlijnPage = ({ courses }: LeerlijnProps) => {
   let term_8_with_spec: Course[] = [];
   let term_8_without_spec: Course[] = [];
 
+  console.log(courses);
+
   const map = courses.map((course) => {
-    if (course.specialisationId) {
+    if (course.specialisationId === 1 || course.specialisationId === 2) {
       term_1_with_spec = [...term_1_with_spec, course];
       term_1_with_spec = term_1_with_spec.filter((course) => course.term === 1);
       term_2_with_spec = term_2_with_spec.filter((course) => course.term === 2);
@@ -253,7 +255,7 @@ const LeerlijnPage = ({ courses }: LeerlijnProps) => {
       term_7_with_spec = term_7_with_spec.filter((course) => course.term === 7);
       term_8_with_spec = [...term_8_with_spec, course];
       term_8_with_spec = term_8_with_spec.filter((course) => course.term === 8);
-    } else if (!course.specialisationId) {
+    } else if (course.specialisationId === 3) {
       term_1_without_spec = [...term_1_without_spec, course];
       term_1_without_spec = term_1_without_spec.filter(
         (course) => course.term === 1
@@ -289,6 +291,8 @@ const LeerlijnPage = ({ courses }: LeerlijnProps) => {
     }
   });
 
+  console.log(term_1_with_spec);
+
   return (
     <SuperContainer>
       <div className="titles">
@@ -302,7 +306,7 @@ const LeerlijnPage = ({ courses }: LeerlijnProps) => {
               <ListItem course={course} />
             ))}
         </ul>
-        {term_1_with_spec && (
+        {term_1_with_spec.length > 0 && (
           <>
             <span className="beginLine">
               <svg viewBox="0 0 113 142">
@@ -335,7 +339,7 @@ const LeerlijnPage = ({ courses }: LeerlijnProps) => {
               <ListItem course={course} />
             ))}
         </ul>
-        {term_2_with_spec && (
+        {term_2_with_spec.length > 0 && (
           <>
             <span className="beginLine">
               <svg viewBox="0 0 113 142">
@@ -374,7 +378,7 @@ const LeerlijnPage = ({ courses }: LeerlijnProps) => {
               <ListItem course={course} />
             ))}
         </ul>
-        {term_3_with_spec && (
+        {term_3_with_spec.length > 0 && (
           <>
             <span className="beginLine">
               <svg viewBox="0 0 113 142">
@@ -407,7 +411,7 @@ const LeerlijnPage = ({ courses }: LeerlijnProps) => {
               <ListItem course={course} />
             ))}
         </ul>
-        {term_4_with_spec && (
+        {term_4_with_spec.length > 0 && (
           <>
             <span className="beginLine">
               <svg viewBox="0 0 113 142">
@@ -448,7 +452,7 @@ const LeerlijnPage = ({ courses }: LeerlijnProps) => {
               <ListItem course={course} />
             ))}
         </ul>
-        {term_5_with_spec && (
+        {term_5_with_spec.length > 0 && (
           <>
             <span className="beginLine">
               <svg viewBox="0 0 113 142">
@@ -481,7 +485,7 @@ const LeerlijnPage = ({ courses }: LeerlijnProps) => {
               <ListItem course={course} />
             ))}
         </ul>
-        {term_6_with_spec && (
+        {term_6_with_spec.length > 0 && (
           <>
             <span className="beginLine">
               <svg viewBox="0 0 113 142">
@@ -521,7 +525,7 @@ const LeerlijnPage = ({ courses }: LeerlijnProps) => {
               <ListItem course={course} />
             ))}
         </ul>
-        {term_7_with_spec && (
+        {term_7_with_spec.length > 0 && (
           <>
             <span className="beginLine">
               <svg viewBox="0 0 113 142">
@@ -551,14 +555,14 @@ const LeerlijnPage = ({ courses }: LeerlijnProps) => {
       </Container>
 
       <Container>
-        <ul className="courseList ">
+        <ul className="courseList last">
           {term_8_without_spec &&
             term_8_without_spec.map((course: Course) => (
               <ListItem course={course} />
             ))}
         </ul>
 
-        {term_8_with_spec && (
+        {term_8_with_spec.length > 0 && (
           <>
             <span className="beginLine">
               <svg viewBox="0 0 113 142">

@@ -1,8 +1,12 @@
 import React from "react";
 import styled from "styled-components";
 import client from "../../../apollo-client";
-import { GET_ALL_TEACHERS_CLIENT } from "../../../graphql/persons";
-import { AllTeachersClient } from "../../../interfaces";
+import { GET_ALL_GENERATIONS } from "../../../graphql/generations";
+import {
+  GET_ALL_STUDENTS,
+  GET_ALL_TEACHERS_CLIENT,
+} from "../../../graphql/persons";
+import { AllTeachersClient, Generation, Person } from "../../../interfaces";
 
 import { StudentCarousel, TeachersCarousel } from "../../components/PGM-Team";
 import { GlitchTitle } from "../../components/Titles/GlitchTitle";
@@ -12,10 +16,12 @@ const Container = styled.div``;
 
 interface PgmTeamProps {
   teachers: AllTeachersClient[];
+  students: Person[];
+  generations: Generation[];
 }
 
-const PgmTeam = ({ teachers }: PgmTeamProps) => {
-  console.log(teachers);
+const PgmTeam = ({ teachers, students, generations }: PgmTeamProps) => {
+  // sort generations on year
 
   return (
     <Container>
@@ -26,23 +32,23 @@ const PgmTeam = ({ teachers }: PgmTeamProps) => {
       <div className="h1_padding">
         <GlitchTitle>Studenten</GlitchTitle>
       </div>
+
       <>
-        <div className="h2_padding">
-          <H2>2021 - 2022</H2>
-        </div>
-        <StudentCarousel />
-      </>
-      <>
-        <div className="h2_padding">
-          <H2>2020 - 2021</H2>
-        </div>
-        <StudentCarousel />
-      </>
-      <>
-        <div className="h2_padding">
-          <H2>2019 - 2020</H2>
-        </div>
-        <StudentCarousel />
+        {generations?.map((generation) => (
+          <>
+            <div className="h2_padding">
+              <H2 key={generation.id}>{generation.years}</H2>
+            </div>
+
+            {students && students.length > 0 && (
+              <StudentCarousel
+                students={students?.filter(
+                  (student) => student.academicYear === generation.years
+                )}
+              />
+            )}
+          </>
+        ))}
       </>
     </Container>
   );
@@ -51,17 +57,46 @@ const PgmTeam = ({ teachers }: PgmTeamProps) => {
 export default PgmTeam;
 
 export async function getStaticProps() {
-  const { data, error } = await client.query({
-    query: GET_ALL_TEACHERS_CLIENT,
-  });
+  const queryMultiple = async () => {
+    const query_Teachers = await client.query({
+      query: GET_ALL_TEACHERS_CLIENT,
+    });
 
-  if (error) {
-    console.log(error);
+    const query_Students = await client.query({
+      query: GET_ALL_STUDENTS,
+    });
+
+    const query_Generations = await client.query({
+      query: GET_ALL_GENERATIONS,
+    });
+
+    return [query_Teachers, query_Students, query_Generations];
+  };
+
+  const [query_Teachers, query_Students, query_Generations] =
+    await queryMultiple();
+
+  const { data, error, loading } = query_Teachers;
+  const {
+    data: data_Students,
+    error: error_Students,
+    loading: loading_Students,
+  } = query_Students;
+  const {
+    data: data_Generations,
+    error: error_Generations,
+    loading: loading_Generations,
+  } = query_Generations;
+
+  if (error || error_Students || error_Generations) {
+    console.log(error || error_Students || error_Generations);
   }
 
   return {
     props: {
       teachers: data.teachers,
+      students: data_Students.students,
+      generations: data_Generations.generations,
     },
   };
 }

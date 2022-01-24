@@ -32,6 +32,9 @@ export const GET_PROJECT_BY_ID = gql`
       academicYear
       tags
       courseId
+      course {
+        name
+      }
       students {
         id
         firstName

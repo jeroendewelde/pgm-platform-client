@@ -135,6 +135,15 @@ export const GET_TEACHER_BY_ID = gql`
       firstName
       lastName
 
+      courses {
+        id
+        name
+        tags
+        learningLine {
+          color
+        }
+      }
+
       personInformation {
         bio
         socialMedias {
