@@ -5,7 +5,7 @@ import Select, { SelectChangeEvent } from "@mui/material/Select";
 
 import { FormHelperText } from "@mui/material";
 
-import React, { ReactElement, useState } from "react";
+import React, { ReactElement, useEffect, useState } from "react";
 
 import { fieldToSelect, SelectProps } from "formik-mui";
 
@@ -20,9 +20,20 @@ export default function CustomSingleSelect(props: any): ReactElement {
     field: { name },
     extraData,
     value: valueFromData,
+    otherId,
     labelProps,
   } = props;
+  //   const [value, setValue] = useState(values[name] || "");
   const [value, setValue] = useState(values[name] || "");
+
+  useEffect(() => {
+    if (valueFromData) {
+      setValue(valueFromData);
+    }
+    if (values[name]) {
+      setValue(values[name]);
+    }
+  }, []);
 
   const onChange = React.useCallback(
     (event) => {

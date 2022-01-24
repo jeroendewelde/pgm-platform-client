@@ -12,6 +12,7 @@ import {
   Box,
   Button,
   Fab,
+  Grid,
   Typography,
   Switch,
   FormControlLabel,
@@ -157,7 +158,10 @@ export default function editTeacher(): ReactElement {
     notifyOnNetworkStatusChange: true,
   });
 
-  const [deletePerson, { data, loading, error }] = useMutation(DELETE_PERSON);
+  const [
+    deletePerson,
+    { data: dataDelete, loading: loadingDelete, error: errorDelete },
+  ] = useMutation(DELETE_PERSON);
 
   const handleDelete = () => {
     deletePerson({
@@ -174,498 +178,430 @@ export default function editTeacher(): ReactElement {
 
   return (
     <BasicContainer title="Bewerk Docent">
-      <Dashboard title="Bewerk Docent">
-        <Box
-          sx={{
-            maxWidth: "lg",
+      {loadingGet ||
+      loadingCourses ||
+      loadingSocialMediaPlatforms ||
+      !coursesNEW ? (
+        <CustomLoading />
+      ) : (
+        <Formik
+          initialValues={{
+            firstName: dataGet.person.firstName || "",
+            lastName: dataGet.person.lastName || "",
+            dob: dataGet.person?.personInformation?.dob || null,
+            quote: dataGet.person?.personInformation?.quote || "",
+            bio: dataGet.person?.personInformation?.bio || "",
+
+            // dob: "",
+            // quote: "",
+            // bio: "",
+            //   fieldExperiences:
+            //     dataGet.person?.personInformation?.fieldExperiences || [],
+            socialMedias:
+              // dataGet.person?.personInformation?.socialMedias || [],
+              dataGet.person?.personInformation?.socialMedias?.map(
+                (sm: SocialMedia) => {
+                  return {
+                    platform: sm.platform,
+                    url: sm.url,
+                    //   id: sm.id || null,
+                  };
+                }
+              ) || [],
+            fieldExperiences:
+              // dataGet.person?.personInformation?.socialMedias || [],
+              dataGet.person?.personInformation?.fieldExperiences?.map(
+                (fe: FieldExperience) => {
+                  return {
+                    company: fe.company,
+                    function: fe.function,
+                    //   id: sm.id || null,
+                  };
+                }
+              ) || [],
+            //   courses: dataGet.person?.courses || [],
+            //   courses: dataGet.person?.courses ? courses : [],
+            //   courses: dataGet.person?.courses ? coursesNEW : [],
+            //   courses: dataGet.person?.courses,
+            courses: dataGet.person.courses.map((courseFromDb: Course) =>
+              dataCourses.courses.find((t: Course) => t.id === courseFromDb.id)
+            ),
+          }}
+          validationSchema={validationSchema}
+          onSubmit={(values, { setSubmitting }) => {
+            setSubmitting(true);
+            updateTeacher({
+              variables: {
+                input: {
+                  firstName: values.firstName,
+                  lastName: values.lastName,
+                  type: "TEACHER",
+                  courseIds: values.courses.map((course: Course) => course.id),
+                  personInformation: {
+                    dob: values.dob,
+                    quote: values.quote,
+                    bio: values.bio,
+                    //   personId: Number(id),
+                    fieldExperiences: values.fieldExperiences,
+                    socialMedias: values.socialMedias,
+                  },
+                  // fieldExperiences: values.fieldExperiences,
+                },
+                id: Number(id),
+              },
+            });
+            if (!errorUpdate && !loadingUpdate) {
+              setSubmitting(false);
+              window.location.href = "/admin/teachers";
+            }
           }}
         >
-          {/* {!teacher && !teacherInfo ? ( */}
-          {loadingGet ||
-          loadingCourses ||
-          loadingSocialMediaPlatforms ||
-          !coursesNEW ? (
-            <CustomLoading />
-          ) : (
-            <>
-              {console.log("data info....", dataGet.person)}
-              {/* {console.log("courses....", coursesNEW)} */}
-              <Formik
-                initialValues={{
-                  firstName: dataGet.person.firstName || "",
-                  lastName: dataGet.person.lastName || "",
-                  dob: dataGet.person?.personInformation?.dob || null,
-                  quote: dataGet.person?.personInformation?.quote || "",
-                  bio: dataGet.person?.personInformation?.bio || "",
-
-                  // dob: "",
-                  // quote: "",
-                  // bio: "",
-                  //   fieldExperiences:
-                  //     dataGet.person?.personInformation?.fieldExperiences || [],
-                  socialMedias:
-                    // dataGet.person?.personInformation?.socialMedias || [],
-                    dataGet.person?.personInformation?.socialMedias?.map(
-                      (sm: SocialMedia) => {
-                        return {
-                          platform: sm.platform,
-                          url: sm.url,
-                          //   id: sm.id || null,
-                        };
-                      }
-                    ) || [],
-                  fieldExperiences:
-                    // dataGet.person?.personInformation?.socialMedias || [],
-                    dataGet.person?.personInformation?.fieldExperiences?.map(
-                      (fe: FieldExperience) => {
-                        return {
-                          company: fe.company,
-                          function: fe.function,
-                          //   id: sm.id || null,
-                        };
-                      }
-                    ) || [],
-                  //   courses: dataGet.person?.courses || [],
-                  //   courses: dataGet.person?.courses ? courses : [],
-                  //   courses: dataGet.person?.courses ? coursesNEW : [],
-                  //   courses: dataGet.person?.courses,
-                  courses: dataGet.person.courses.map((courseFromDb: Course) =>
-                    dataCourses.courses.find(
-                      (t: Course) => t.id === courseFromDb.id
-                    )
-                  ),
-                }}
-                validationSchema={validationSchema}
-                onSubmit={(values, { setSubmitting }) => {
-                  setSubmitting(true);
-                  updateTeacher({
-                    variables: {
-                      input: {
-                        firstName: values.firstName,
-                        lastName: values.lastName,
-                        type: "TEACHER",
-                        courseIds: values.courses.map(
-                          (course: Course) => course.id
-                        ),
-                        personInformation: {
-                          dob: values.dob,
-                          quote: values.quote,
-                          bio: values.bio,
-                          //   personId: Number(id),
-                          fieldExperiences: values.fieldExperiences,
-                          socialMedias: values.socialMedias,
-                        },
-                        // fieldExperiences: values.fieldExperiences,
-                      },
-                      id: Number(id),
-                    },
-                  })
-                    // .then((res) => {
-                    //   // Add person information with person Id if it is toggled
-                    //   if (showExtraInfo) {
-                    //     addTeacherInformation({
-                    //       variables: {
-                    //         input: {
-                    //           personId: res.data.createPerson.id,
-                    //           quote: values.quote,
-                    //           bio: values.bio,
-                    //           dob: values.dob,
-                    //         },
-                    //       },
-                    //     }).then((res2) => {
-                    //       if (values.fieldExperiences.length > 0) {
-                    //         values.fieldExperiences.forEach(
-                    //           (fieldExperience: FieldExperience) => {
-                    //             addFieldExperience({
-                    //               variables: {
-                    //                 input: {
-                    //                   personId:
-                    //                     res2.data.createPersonInformation.id,
-                    //                   company: fieldExperience.company,
-                    //                   function: fieldExperience.function,
-                    //                 },
-                    //               },
-                    //             });
-                    //           }
-                    //         );
-                    //       }
-
-                    //       if (values.socialMedias.length > 0) {
-                    //         values.socialMedias.forEach(
-                    //           (socialMedia: SocialMedia) => {
-                    //             addSocialMedia({
-                    //               variables: {
-                    //                 input: {
-                    //                   personId:
-                    //                     res2.data.createPersonInformation.id,
-                    //                   platform: socialMedia.platform,
-                    //                   url: socialMedia.url,
-                    //                 },
-                    //               },
-                    //             });
-                    //           }
-                    //         );
-                    //       }
-                    //     });
-                    //   }
-                    // })
-                    .then(() => {
-                      window.location.href = `/admin/${adminPath}`;
-                    });
+          {({ values, submitForm, isSubmitting }) => (
+            <Form
+              style={{
+                width: "100%",
+              }}
+            >
+              <Grid
+                container
+                spacing={{ xs: 2 }}
+                sx={{
+                  maxWidth: "xl",
+                  mb: 4,
                 }}
               >
-                {({ values, submitForm, isSubmitting }) => (
-                  <Form>
-                    <Box margin={1}>
+                <Grid item xs={12} md={6}>
+                  <Field
+                    required
+                    component={TextField}
+                    name="firstName"
+                    type="text"
+                    label="Voornaam"
+                    helperText=""
+                    fullWidth
+                  />
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <Field
+                    required
+                    component={TextField}
+                    name="lastName"
+                    type="text"
+                    label="Familienaam"
+                    helperText=""
+                    fullWidth
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <Typography variant="h2" component="h2">
+                    Vakken
+                  </Typography>
+                  <Typography variant="subtitle1">
+                    De vakken die deze docent geeft, dit kan nog aangepast
+                    worden
+                  </Typography>
+                </Grid>
+                <Grid item xs={12} sm={12} md={12}>
+                  <Field
+                    required
+                    component={CustomMultiSelectWithChips}
+                    name="courses"
+                    label="Vakken"
+                    placeholder="Zoek een vak..."
+                    data={dataCourses.courses}
+                    labelProps={["name", "academicYear"]}
+                  />
+                </Grid>
+
+                <Grid item xs={12} sm={12} md={12}>
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        {...labelSwitch}
+                        checked={showExtraInfo}
+                        onChange={handleChangeSwitchExtraInfo}
+                      />
+                    }
+                    label="Extra informatie toevoegen"
+                  />
+                </Grid>
+                {showExtraInfo && (
+                  <>
+                    <Grid item xs={12}>
+                      <Typography variant="h2" component="h2">
+                        Extra Informatie
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={12} sm={12} md={12}>
                       <Field
-                        required
                         component={TextField}
-                        name="firstName"
+                        name="quote"
                         type="text"
-                        label="Voornaam"
+                        label="Quote"
+                        helperText="Quote over het leven of over de docent"
+                        fullWidth
+                        multiline
+                        maxRows={2}
+                      />
+                    </Grid>
+                    <Grid item xs={12} sm={12} md={12}>
+                      <Field
+                        component={TextField}
+                        name="bio"
+                        type="text"
+                        label="Bio"
+                        helperText="Kleine biografie over de docent"
+                        fullWidth
+                        multiline
+                      />
+                    </Grid>
+                    <Grid item xs={12} sm={12} md={6}>
+                      <Field
+                        component={CustomDatePicker}
+                        name="dob"
+                        type="date"
+                        label="Geboortedatum"
                         helperText=""
+                        InputLabelProps={{
+                          shrink: true,
+                        }}
                         sx={{
-                          width: "75%",
-                          // maxWidth: 'lg'
+                          width: "100%",
                         }}
                       />
-                    </Box>
-                    <Box margin={1}>
-                      <Field
-                        required
-                        component={TextField}
-                        name="lastName"
-                        type="text"
-                        label="Familienaam"
-                        helperText=""
-                        sx={{
-                          width: "75%",
-                          // maxWidth: 'lg'
-                        }}
+                    </Grid>
+                    <Grid item xs={12}>
+                      <Typography variant="h2" component="h2">
+                        Optionele Werkervaringen
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={12}>
+                      <FieldArray
+                        name="fieldExperiences"
+                        render={(arrayHelpers) => (
+                          <div>
+                            {values.fieldExperiences &&
+                            values.fieldExperiences.length > 0 ? (
+                              values.fieldExperiences.map((tag, index) => (
+                                <Grid
+                                  item
+                                  xs={12}
+                                  key={index}
+                                  sx={{
+                                    mb: "1rem",
+                                  }}
+                                  container
+                                  spacing={{ xs: 2 }}
+                                >
+                                  <Grid item xs={12} lg={6}>
+                                    <Field
+                                      component={TextField}
+                                      name={`fieldExperiences.${index}.company`}
+                                      type="text"
+                                      label="Bedrijf"
+                                      helperText="Optioneel bedrijf/sector waar de docent werkzaam was"
+                                      fullWidth
+                                    />
+                                  </Grid>
+                                  <Grid item xs={12} lg={4}>
+                                    <Field
+                                      component={TextField}
+                                      name={`fieldExperiences.${index}.function`}
+                                      type="text"
+                                      label="Functie"
+                                      helperText="Optionele functie die beoefend is"
+                                      fullWidth
+                                    />
+                                  </Grid>
+
+                                  <Grid item xs={12} lg={2}>
+                                    <Button
+                                      sx={{ margin: 1 }}
+                                      variant="outlined"
+                                      disabled={isSubmitting}
+                                      onClick={() => arrayHelpers.remove(index)}
+                                    >
+                                      <Remove />
+                                    </Button>
+
+                                    <Button
+                                      sx={{ margin: 1 }}
+                                      variant="outlined"
+                                      disabled={isSubmitting}
+                                      onClick={() =>
+                                        arrayHelpers.insert(index + 1, {
+                                          company: "",
+                                          function: "",
+                                        })
+                                      }
+                                    >
+                                      <Add />
+                                    </Button>
+                                  </Grid>
+                                </Grid>
+                              ))
+                            ) : (
+                              <Grid item xs={12}>
+                                <Button
+                                  variant="outlined"
+                                  disabled={isSubmitting}
+                                  onClick={() =>
+                                    arrayHelpers.push({
+                                      company: "",
+                                      function: "",
+                                    })
+                                  }
+                                >
+                                  Werk-ervaring toevoegen
+                                </Button>
+                              </Grid>
+                            )}
+                          </div>
+                        )}
                       />
-                    </Box>
+                    </Grid>
 
-                    <Box margin={1}>
-                      <Typography
-                        variant="h6"
-                        noWrap
-                        component="div"
-                        sx={{
-                          flexGrow: 1,
-                          mb: 2,
-                          // ml: 1,
-                          color: "black",
-                        }}
-                      >
-                        Docenten
+                    <Grid item xs={12}>
+                      <Typography variant="h2" component="h2">
+                        Optionele Social Media
                       </Typography>
-                      <Typography variant="subtitle1" sx={{ color: "black" }}>
-                        De vakken die deze docent geeft, dit kan nog aangepast
-                        worden
-                      </Typography>
+                    </Grid>
 
-                      <Box margin={1}>
-                        <Field
-                          required
-                          component={CustomMultiSelectWithChips}
-                          label="Vakken"
-                          name="courses"
-                          placeholder="Zoek een vak..."
-                          // data={dataLearningLines.teachers}
-                          data={dataCourses.courses}
-                          // helperText="Naam van de docenten"
-                          labelProps={["name", "academicYear"]}
-                        />
-                      </Box>
-                    </Box>
-
-                    <FormControlLabel
-                      control={
-                        <Switch
-                          {...labelSwitch}
-                          checked={showExtraInfo}
-                          onChange={handleChangeSwitchExtraInfo}
-                        />
-                      }
-                      label="Extra informatie toevoegen"
-                      sx={{
-                        color: "black",
-                        ml: 1,
-                      }}
-                    />
-                    {showExtraInfo && (
-                      <>
-                        <Box margin={1}>
-                          <Field
-                            component={TextField}
-                            name="quote"
-                            type="text"
-                            label="Quote"
-                            helperText="Quote over het leven of over de docent"
-                            multiline
-                            maxRows={2}
-                            sx={{
-                              width: "100%",
-                              // maxWidth: 'lg'
-                            }}
-                          />
-                        </Box>
-                        <Box margin={1}>
-                          <Field
-                            component={TextField}
-                            name="bio"
-                            type="text"
-                            label="Bio"
-                            helperText="Kleine biografie over de docent"
-                            multiline
-                            sx={{
-                              width: "100%",
-                              // maxWidth: 'lg'
-                            }}
-                          />
-                        </Box>
-                        <Box margin={1}>
-                          <Field
-                            component={CustomDatePicker}
-                            name="dob"
-                            type="date"
-                            label="Geboortedatum"
-                            helperText=""
-                            // defaultValue="1969-04-20"
-                            InputLabelProps={{
-                              shrink: true,
-                            }}
-                            sx={{
-                              width: "100%",
-                              // maxWidth: 'lg'
-                            }}
-                          />
-                        </Box>
-                        <Box margin={1}>
-                          <FieldArray
-                            name="fieldExperiences"
-                            render={(arrayHelpers) => (
-                              <div>
-                                <Typography
-                                  variant="h6"
-                                  noWrap
-                                  component="div"
+                    <Grid item xs={12} sm={12} md={12}>
+                      <FieldArray
+                        name="socialMedias"
+                        render={(arrayHelpers) => (
+                          <div>
+                            {values.socialMedias &&
+                            values.socialMedias.length > 0 ? (
+                              values.socialMedias.map((tag, index) => (
+                                <Grid
+                                  item
+                                  xs={12}
+                                  key={index}
                                   sx={{
-                                    flexGrow: 1,
-                                    mb: 2,
-                                    // ml: 1,
-                                    color: "black",
+                                    mb: "1rem",
                                   }}
+                                  container
+                                  spacing={{ xs: 2 }}
                                 >
-                                  Optionele Werkervaringen
-                                </Typography>
-                                {values.fieldExperiences &&
-                                values.fieldExperiences.length > 0 ? (
-                                  values.fieldExperiences.map((tag, index) => (
-                                    <div key={index}>
-                                      <Box margin={1}>
-                                        <Field
-                                          component={TextField}
-                                          name={`fieldExperiences.${index}.company`}
-                                          type="text"
-                                          label="Bedrijf"
-                                          helperText="Optioneel bedrijf/sector waar de docent werkzaam was"
-                                        />
-                                        <Field
-                                          component={TextField}
-                                          name={`fieldExperiences.${index}.function`}
-                                          type="text"
-                                          label="Functie"
-                                          helperText="Optionele functie die beoefend is"
-                                        />
-                                        <Button
-                                          sx={{ margin: 1 }}
-                                          variant="outlined"
-                                          disabled={isSubmitting}
-                                          onClick={() =>
-                                            arrayHelpers.remove(index)
-                                          }
-                                        >
-                                          <Remove />
-                                        </Button>
+                                  <Grid item xs={12} lg={6}>
+                                    <Field
+                                      component={TextField}
+                                      name={`socialMedias.${index}.url`}
+                                      type="text"
+                                      label="url"
+                                      helpText=""
+                                      fullWidth
+                                    />
+                                  </Grid>
+                                  <Grid item xs={12} lg={4}>
+                                    <Field
+                                      required
+                                      component={CustomSingleSelectForEnum}
+                                      label="Platform"
+                                      // name="platform"
+                                      fullWidth
+                                      value={
+                                        values.socialMedias[index].platform
+                                      }
+                                      name={`socialMedias.${index}.platform`}
+                                      data={
+                                        dataSocialMediaPlatforms.__type
+                                          .enumValues
+                                      }
+                                      sx={{
+                                        width: "100%",
+                                      }}
+                                      helperText="Optioneel platform"
+                                    />
+                                  </Grid>
+                                  <Grid item xs={12} md={3} lg={2}>
+                                    <Button
+                                      sx={{ margin: 1 }}
+                                      variant="outlined"
+                                      disabled={isSubmitting}
+                                      onClick={() => arrayHelpers.remove(index)}
+                                    >
+                                      <Remove />
+                                    </Button>
 
-                                        <Button
-                                          sx={{ margin: 1 }}
-                                          variant="outlined"
-                                          disabled={isSubmitting}
-                                          onClick={() =>
-                                            arrayHelpers.insert(index, "")
-                                          }
-                                        >
-                                          <Add />
-                                        </Button>
-                                      </Box>
-                                    </div>
-                                  ))
-                                ) : (
-                                  <Button
-                                    sx={{ margin: 1 }}
-                                    variant="outlined"
-                                    disabled={isSubmitting}
-                                    onClick={() => arrayHelpers.push("")}
-                                  >
-                                    Werk-ervaring toevoegen
-                                  </Button>
-                                )}
-                              </div>
-                            )}
-                          />
-                        </Box>
-                        <Box margin={1}>
-                          <FieldArray
-                            name="socialMedias"
-                            render={(arrayHelpers) => (
-                              <div>
-                                <Typography
-                                  variant="h6"
-                                  noWrap
-                                  component="div"
-                                  sx={{
-                                    flexGrow: 1,
-                                    mb: 2,
-                                    // ml: 1,
-                                    color: "black",
-                                  }}
+                                    <Button
+                                      sx={{ margin: 1 }}
+                                      variant="outlined"
+                                      disabled={isSubmitting}
+                                      onClick={
+                                        () =>
+                                          arrayHelpers.push({
+                                            platform: "",
+                                            url: "",
+                                          })
+                                        // arrayHelpers.insert(index + 1, {
+                                        //   platform: "",
+                                        //   url: "",
+                                        // })
+                                      }
+                                    >
+                                      <Add />
+                                    </Button>
+                                  </Grid>
+                                </Grid>
+                              ))
+                            ) : (
+                              <Grid item xs={12}>
+                                <Button
+                                  sx={{ margin: 1 }}
+                                  variant="outlined"
+                                  disabled={isSubmitting}
+                                  onClick={() =>
+                                    arrayHelpers.push({
+                                      platform: "",
+                                      url: "",
+                                    })
+                                  }
                                 >
-                                  Optionele Social Media toevoegen
-                                </Typography>
-                                {values.socialMedias &&
-                                values.socialMedias.length > 0 ? (
-                                  values.socialMedias.map((tag, index) => (
-                                    <div key={index}>
-                                      <Box margin={1}>
-                                        <Field
-                                          component={TextField}
-                                          name={`socialMedias.${index}.url`}
-                                          type="text"
-                                          label="url"
-                                          helpText=""
-                                        />
-
-                                        <Field
-                                          required
-                                          component={CustomSingleSelectForEnum}
-                                          label="Platform"
-                                          // name="platform"
-                                          value={
-                                            values.socialMedias[index].platform
-                                          }
-                                          name={`socialMedias.${index}.platform`}
-                                          data={
-                                            dataSocialMediaPlatforms.__type
-                                              .enumValues
-                                          }
-                                          sx={{
-                                            width: "50%",
-                                          }}
-                                          helperText="Optioneel platform"
-                                        />
-
-                                        <Button
-                                          sx={{ margin: 1 }}
-                                          variant="outlined"
-                                          disabled={isSubmitting}
-                                          onClick={() =>
-                                            arrayHelpers.remove(index)
-                                          }
-                                        >
-                                          <Remove />
-                                        </Button>
-
-                                        <Button
-                                          sx={{ margin: 1 }}
-                                          variant="outlined"
-                                          disabled={isSubmitting}
-                                          onClick={() =>
-                                            arrayHelpers.push({
-                                              platform: "",
-                                              url: "",
-                                            })
-                                          }
-                                        >
-                                          <Add />
-                                        </Button>
-                                      </Box>
-                                    </div>
-                                  ))
-                                ) : (
-                                  <Button
-                                    sx={{ margin: 1 }}
-                                    variant="outlined"
-                                    disabled={isSubmitting}
-                                    onClick={() =>
-                                      arrayHelpers.push({
-                                        platform: "",
-                                        url: "",
-                                      })
-                                    }
-                                  >
-                                    Social Media Toevoegen
-                                  </Button>
-                                )}
-                              </div>
+                                  Social Media Toevoegen
+                                </Button>
+                              </Grid>
                             )}
-                          />
-                        </Box>
-                      </>
-                    )}
-                    <Box
-                      sx={{
-                        display: "flex",
-                      }}
-                    >
-                      <Box margin={1}>
-                        <Button
-                          sx={{ margin: 1 }}
-                          variant="contained"
-                          color="primary"
-                          disabled={isSubmitting}
-                          onClick={submitForm}
-                          // type="submit"
-                        >
-                          Pas aan
-                        </Button>
-                      </Box>
-                      <Box margin={1}>
-                        <Button
-                          sx={{
-                            margin: 1,
-                            // backgroundColor: colors.delete,
-                            color: colors.delete,
-                            borderColor: colors.delete,
-                            "&:hover": {
-                              backgroundColor: colors.delete,
-                              color: colors.white,
-                              borderColor: colors.delete,
-                            },
-                          }}
-                          variant="outlined"
-                          disabled={isSubmitting}
-                          onClick={(e) => handleDelete()}
-                        >
-                          Verwijder
-                        </Button>
-                      </Box>
-                    </Box>
-                    <pre
-                      style={{
-                        color: "black",
-                      }}
-                    >
-                      {JSON.stringify(values, null, 2)}
-                    </pre>
-                  </Form>
+                          </div>
+                        )}
+                      />
+                    </Grid>
+                  </>
                 )}
-              </Formik>
-            </>
+
+                <Grid
+                  item
+                  xs={12}
+                  sx={{
+                    display: "flex",
+                  }}
+                >
+                  <Button
+                    variant="contained"
+                    disabled={isSubmitting || loadingDelete}
+                    onClick={submitForm}
+                  >
+                    Pas aan
+                  </Button>
+                  <Button
+                    variant="outlined"
+                    color="error"
+                    sx={{
+                      marginLeft: "auto",
+                    }}
+                    disabled={isSubmitting || loadingDelete}
+                    onClick={(e) => handleDelete()}
+                  >
+                    Verwijder
+                  </Button>
+                </Grid>
+              </Grid>
+            </Form>
           )}
-        </Box>
-      </Dashboard>
+        </Formik>
+      )}
     </BasicContainer>
   );
 }

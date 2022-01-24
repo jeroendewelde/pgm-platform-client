@@ -1,5 +1,4 @@
 import React, { ReactElement, useState } from "react";
-import Router from "next/router";
 
 // Formik & Yup
 import * as yup from "yup";
@@ -7,26 +6,20 @@ import { Field, FieldArray, Form, Formik } from "formik";
 
 // Material UI Components
 import { Button, Grid, Typography, Paper } from "@mui/material";
-import Box from "@mui/material/Box";
 import { TextField } from "formik-mui";
+import { Remove, Add } from "@material-ui/icons";
+import { styled } from "@mui/material/styles";
+import LandscapeIcon from "@mui/icons-material/Landscape";
 
 // Queries
+import { CREATE_COMPANY } from "../../../../graphql/companies";
+import { GET_ALL_STUDENTS } from "../../../../graphql/persons";
 import { useMutation, useQuery } from "@apollo/client";
-import { CREATE_SPECIALISATION } from "../../../../graphql/specialisations";
 
 // Custom Components
 import BasicContainer from "../../../components/Admin/style/BasicContainer";
-import Dashboard from "../../../components/Admin/Dashboard";
-import { CREATE_TESTIMONIAL } from "../../../../graphql/testimonials";
-import { CREATE_COMPANY } from "../../../../graphql/companies";
-import { Remove, Add } from "@material-ui/icons";
-import { GET_ALL_STUDENTS } from "../../../../graphql/persons";
 import CustomLoading from "../../../components/Admin/style/CustomLoading";
 import CustomSingleSelect from "../../../components/Admin/Form/CustomSingleSelect";
-import { styled } from "@mui/material/styles";
-import ImageOutlinedIcon from "@mui/icons-material/ImageOutlined";
-import { colors } from "../../../utils/constants";
-import LandscapeIcon from "@mui/icons-material/Landscape";
 
 const validationSchema = yup.object({
   name: yup.string().required("Naam van het leerbedrijf is verplicht"),
@@ -36,7 +29,6 @@ const validationSchema = yup.object({
       description: yup.string().required("Beschrijving is verplicht"),
       year: yup
         .string()
-        // .length(4, "Jaar moet 4 cijfers bevatten")
         .matches(/^[0-9]{4}$/, "Jaar moet 4 cijfers bevatten")
         .required("Jaar is verplicht"),
     })
@@ -113,7 +105,7 @@ export default function createCompany(): ReactElement {
                   mb: 4,
                 }}
               >
-                <Grid item xs={12} md={8}>
+                <Grid item xs={12}>
                   <Field
                     required
                     component={TextField}
@@ -125,7 +117,7 @@ export default function createCompany(): ReactElement {
                     maxRows={2}
                   />
                 </Grid>
-                <Grid item xs={12} md={4}>
+                <Grid item xs={12}>
                   <Field
                     component={TextField}
                     name="teaserImage"
@@ -135,6 +127,7 @@ export default function createCompany(): ReactElement {
                     fullWidth
                   />
                 </Grid>
+
                 <Grid item xs={12} md={4}>
                   <label htmlFor="contained-button-file">
                     <Input
@@ -144,7 +137,11 @@ export default function createCompany(): ReactElement {
                       type="file"
                       onChange={handleOnChangeImage}
                     />
-                    <Button variant="contained" component="span">
+                    <Button
+                      variant="outlined"
+                      component="span"
+                      color={imageSrc && "warning"}
+                    >
                       {imageSrc
                         ? "Teaser Image aanpassen"
                         : "Teaser Image toevoegen"}
@@ -161,7 +158,6 @@ export default function createCompany(): ReactElement {
                       alignItems: "center",
                       justifyContent: "center",
                       backgroundColor: "#E5E5E5",
-
                       overflow: "hidden",
                     }}
                   >
@@ -182,57 +178,67 @@ export default function createCompany(): ReactElement {
                           fontSize: 64,
                         }}
                       />
-                      //   <ImageOutlinedIcon
-                      //     sx={{
-                      //       color: "#E5E5E5",
-                      //       fontSize: 64,
-                      //     }}
-                      //   />
                     )}
-                    {/* <img src={imageSrc} /> */}
                   </Paper>
                 </Grid>
 
+                <Grid item xs={12}>
+                  <Typography variant="h2" component="h2">
+                    Studenten
+                  </Typography>
+                  <Typography variant="subtitle1">
+                    Studenten die bij dit leerbedrijf hun werkplekleren hebben
+                    beoefend
+                  </Typography>
+                </Grid>
                 <Grid item xs={12}>
                   <FieldArray
                     name="interns"
                     render={(arrayHelpers) => (
                       <div>
-                        <Typography
-                          variant="h6"
-                          noWrap
-                          component="div"
-                          sx={{
-                            flexGrow: 1,
-                            mb: 2,
-                            // ml: 1,
-                            color: "black",
-                          }}
-                        >
-                          Studenten
-                        </Typography>
-                        <Typography variant="subtitle1" sx={{ color: "black" }}>
-                          Studenten die bij dit leerbedrijf hun werkplekleren
-                          hebben beoefend
-                        </Typography>
                         {values.interns && values.interns.length > 0 ? (
                           values.interns.map((tag, index) => (
-                            <div key={index}>
-                              <Box margin={1}>
+                            <Grid
+                              item
+                              xs={12}
+                              key={index}
+                              sx={{
+                                mb: "1rem",
+                              }}
+                              container
+                              spacing={{ xs: 2 }}
+                            >
+                              <Grid item xs={12} lg={5} xl={4}>
                                 <Field
+                                  required
+                                  component={CustomSingleSelect}
+                                  name={`interns.${index}.studentId`}
+                                  label="Student"
+                                  helperText="Naam van de Student"
+                                  fullWidth
+                                  data={dataStudents.students}
+                                  labelProps={[
+                                    "firstName",
+                                    "lastName",
+                                    "academicYear",
+                                  ]}
+                                  sx={{
+                                    width: "100%",
+                                  }}
+                                />
+                              </Grid>
+                              <Grid item xs={12} lg={5}>
+                                <Field
+                                  required
                                   component={TextField}
                                   name={`interns.${index}.function`}
                                   type="text"
                                   label="Functie"
                                   helperText=" "
+                                  fullWidth
                                 />
-                                <Field
-                                  component={TextField}
-                                  name={`interns.${index}.description`}
-                                  type="text"
-                                  label="Beschrijving"
-                                  helperText=" "
-                                />
+                              </Grid>
+                              <Grid item xs={12} lg={2} xl={3}>
                                 <Field
                                   required
                                   component={TextField}
@@ -240,32 +246,23 @@ export default function createCompany(): ReactElement {
                                   type="text"
                                   label="Jaar"
                                   helperText="Jaar wanneer de student stage heeft gelopen"
-                                  sx={{
-                                    minWidth: "25%",
-                                    margin: 1,
-                                  }}
-                                  // fullWidth
+                                  fullWidth
                                 />
-
+                              </Grid>
+                              <Grid item xs={12} md={9} lg={10}>
                                 <Field
                                   required
-                                  component={CustomSingleSelect}
-                                  label="Student"
-                                  name={`interns.${index}.studentId`}
-                                  data={dataStudents.students}
-                                  sx={{
-                                    flexGrow: 1,
-
-                                    border: "1px solid #e0e0e0",
-                                  }}
-                                  helperText="Naam van de Student"
-                                  labelProps={[
-                                    "firstName",
-                                    "lastName",
-                                    "academicYear",
-                                  ]}
+                                  component={TextField}
+                                  name={`interns.${index}.description`}
+                                  type="text"
+                                  label="Beschrijving"
+                                  helperText=" "
+                                  fullWidth
+                                  multiline
+                                  maxRows={2}
                                 />
-
+                              </Grid>
+                              <Grid item xs={12} md={3} lg={2}>
                                 <Button
                                   sx={{ margin: 1 }}
                                   variant="outlined"
@@ -280,7 +277,7 @@ export default function createCompany(): ReactElement {
                                   variant="outlined"
                                   disabled={isSubmitting}
                                   onClick={() =>
-                                    arrayHelpers.push({
+                                    arrayHelpers.insert(index + 1, {
                                       function: "",
                                       description: "",
                                       year: "",
@@ -290,31 +287,31 @@ export default function createCompany(): ReactElement {
                                 >
                                   <Add />
                                 </Button>
-                              </Box>
-                            </div>
+                              </Grid>
+                            </Grid>
                           ))
                         ) : (
-                          <Button
-                            sx={{ margin: 1 }}
-                            variant="outlined"
-                            disabled={isSubmitting}
-                            onClick={() =>
-                              arrayHelpers.push({
-                                function: "",
-                                description: "",
-                                year: "",
-                                studentId: "",
-                              })
-                            }
-                          >
-                            studenten toevoegen
-                          </Button>
+                          <Grid item xs={12}>
+                            <Button
+                              variant="outlined"
+                              disabled={isSubmitting}
+                              onClick={() =>
+                                arrayHelpers.push({
+                                  function: "",
+                                  description: "",
+                                  year: "",
+                                  studentId: "",
+                                })
+                              }
+                            >
+                              studenten toevoegen
+                            </Button>
+                          </Grid>
                         )}
                       </div>
                     )}
                   />
                 </Grid>
-
                 <Grid item xs={12}>
                   <Button
                     variant="contained"

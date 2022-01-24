@@ -1,5 +1,4 @@
 import React, { ReactElement, useState } from "react";
-import Router from "next/router";
 
 // Formik & Yup
 import * as yup from "yup";
@@ -8,36 +7,27 @@ import { Field, Form, Formik, FieldArray } from "formik";
 // Material UI Components
 import {
   Button,
-  Fab,
   Typography,
   Switch,
   FormControlLabel,
   Grid,
 } from "@mui/material";
-import Box from "@mui/material/Box";
 import { TextField } from "formik-mui";
 import { Remove, Add } from "@material-ui/icons";
 
 // Queries
 import { useMutation, useQuery } from "@apollo/client";
 import { GET_ALL_SOCIAL_MEDIA_PLATFORMS } from "../../../../graphql/enums";
-import {
-  CREATE_FIELD_EXPERIENCE,
-  CREATE_PERSON,
-  CREATE_PERSON_INFORMATION,
-  CREATE_SOCIAL_MEDIA,
-} from "../../../../graphql/persons";
-import { Course, FieldExperience, SocialMedia } from "../../../../interfaces";
+import { GET_ALL_COURSES } from "../../../../graphql/courses";
+import { CREATE_PERSON } from "../../../../graphql/persons";
+import { Course } from "../../../../interfaces";
 
 // Custom Components
 import BasicContainer from "../../../components/Admin/style/BasicContainer";
-import Dashboard from "../../../components/Admin/Dashboard";
 import CustomDatePicker from "../../../components/Admin/Form/CustomDatePicker";
 import CustomSingleSelectForEnum from "../../../components/Admin/Form/CustomSingleSelectForEnum";
 import CustomLoading from "../../../components/Admin/style/CustomLoading";
-import { GET_ALL_COURSES } from "../../../../graphql/courses";
 import CustomMultiSelectWithChips from "../../../components/Admin/Form/CustomMultiSelectWithChips";
-import { ModeEditOutlined, DeleteOutline } from "@mui/icons-material";
 
 const validationSchema = yup.object({
   firstName: yup.string().required("Voornaam is verplicht"),
@@ -80,10 +70,6 @@ export default function createTeacher(): ReactElement {
     setShowExtraInfo(!showExtraInfo);
   };
 
-  const handleChangeSwitchCourseInfo = () => {
-    setShowCourses(!showCourses);
-  };
-
   return (
     <BasicContainer title="Nieuwe Docent">
       {loadingSocialMediaPlatforms || loadingCourses ? (
@@ -121,22 +107,26 @@ export default function createTeacher(): ReactElement {
               },
             });
             if (!errorTeacher && !loadingTeacher) {
-              window.location.href = Router.pathname.split("/create")[0];
+              setSubmitting(false);
+              window.location.href = "/admin/teachers";
             }
           }}
         >
           {({ values, submitForm, isSubmitting }) => (
-            <Form>
+            <Form
+              style={{
+                width: "100%",
+              }}
+            >
               <Grid
                 container
-                spacing={{ xs: 2, md: 2 }}
-                columns={{ xs: 4, sm: 8, md: 12 }}
+                spacing={{ xs: 2 }}
                 sx={{
-                  pt: 2,
-                  maxWidth: "lg",
+                  maxWidth: "xl",
+                  mb: 4,
                 }}
               >
-                <Grid item xs={12} sm={12} md={12}>
+                <Grid item xs={12} md={6}>
                   <Field
                     required
                     component={TextField}
@@ -147,7 +137,7 @@ export default function createTeacher(): ReactElement {
                     fullWidth
                   />
                 </Grid>
-                <Grid item xs={12} sm={12} md={12}>
+                <Grid item xs={12} md={6}>
                   <Field
                     required
                     component={TextField}
@@ -159,21 +149,11 @@ export default function createTeacher(): ReactElement {
                   />
                 </Grid>
 
-                <Grid item xs={12} sm={12} md={12}>
-                  <Typography
-                    variant="h6"
-                    noWrap
-                    component="div"
-                    sx={{
-                      flexGrow: 1,
-                      mb: 2,
-                      // ml: 1,
-                      color: "black",
-                    }}
-                  >
-                    Docenten
+                <Grid item xs={12}>
+                  <Typography variant="h2" component="h2">
+                    Vakken
                   </Typography>
-                  <Typography variant="subtitle1" sx={{ color: "black" }}>
+                  <Typography variant="subtitle1">
                     De vakken die deze docent geeft, dit kan nog aangepast
                     worden
                   </Typography>
@@ -183,12 +163,10 @@ export default function createTeacher(): ReactElement {
                   <Field
                     required
                     component={CustomMultiSelectWithChips}
-                    label="Vakken"
                     name="courses"
+                    label="Vakken"
                     placeholder="Zoek een vak..."
-                    // data={dataLearningLines.teachers}
                     data={dataCourses.courses}
-                    // helperText="Naam van de docenten"
                     labelProps={["name", "academicYear"]}
                   />
                 </Grid>
@@ -201,15 +179,16 @@ export default function createTeacher(): ReactElement {
                       />
                     }
                     label="Extra informatie toevoegen"
-                    sx={{
-                      color: "black",
-                      ml: 1,
-                    }}
                   />
                 </Grid>
 
                 {showExtraInfo && (
                   <>
+                    <Grid item xs={12}>
+                      <Typography variant="h2" component="h2">
+                        Extra Informatie
+                      </Typography>
+                    </Grid>
                     <Grid item xs={12} sm={12} md={12}>
                       <Field
                         component={TextField}
@@ -217,9 +196,9 @@ export default function createTeacher(): ReactElement {
                         type="text"
                         label="Quote"
                         helperText="Quote over het leven of over de docent"
+                        fullWidth
                         multiline
                         maxRows={2}
-                        fullWidth
                       />
                     </Grid>
                     <Grid item xs={12} sm={12} md={12}>
@@ -229,8 +208,8 @@ export default function createTeacher(): ReactElement {
                         type="text"
                         label="Bio"
                         helperText="Kleine biografie over de docent"
-                        multiline
                         fullWidth
+                        multiline
                       />
                     </Grid>
                     <Grid item xs={12} sm={12} md={6}>
@@ -240,53 +219,60 @@ export default function createTeacher(): ReactElement {
                         type="date"
                         label="Geboortedatum"
                         helperText=""
-                        // defaultValue="1969-04-20"
                         InputLabelProps={{
                           shrink: true,
                         }}
                         sx={{
                           width: "100%",
-                          // maxWidth: 'lg'
                         }}
                       />
                     </Grid>
-                    <Grid item xs={12} sm={12} md={12}>
+                    <Grid item xs={12}>
+                      <Typography variant="h2" component="h2">
+                        Optionele Werkervaringen
+                      </Typography>
+                    </Grid>
+
+                    <Grid item xs={12}>
                       <FieldArray
                         name="fieldExperiences"
                         render={(arrayHelpers) => (
                           <div>
-                            <Typography
-                              variant="h6"
-                              noWrap
-                              component="div"
-                              sx={{
-                                flexGrow: 1,
-                                mb: 2,
-                                // ml: 1,
-                                color: "black",
-                              }}
-                            >
-                              Optionele Werkervaringen
-                            </Typography>
                             {values.fieldExperiences &&
                             values.fieldExperiences.length > 0 ? (
                               values.fieldExperiences.map((tag, index) => (
-                                <div key={index}>
-                                  <Box margin={1}>
+                                <Grid
+                                  item
+                                  xs={12}
+                                  key={index}
+                                  sx={{
+                                    mb: "1rem",
+                                  }}
+                                  container
+                                  spacing={{ xs: 2 }}
+                                >
+                                  <Grid item xs={12} lg={6}>
                                     <Field
                                       component={TextField}
                                       name={`fieldExperiences.${index}.company`}
                                       type="text"
                                       label="Bedrijf"
                                       helperText="Optioneel bedrijf/sector waar de docent werkzaam was"
+                                      fullWidth
                                     />
+                                  </Grid>
+                                  <Grid item xs={12} lg={4}>
                                     <Field
                                       component={TextField}
                                       name={`fieldExperiences.${index}.function`}
                                       type="text"
                                       label="Functie"
                                       helperText="Optionele functie die beoefend is"
+                                      fullWidth
                                     />
+                                  </Grid>
+
+                                  <Grid item xs={12} lg={2}>
                                     <Button
                                       sx={{ margin: 1 }}
                                       variant="outlined"
@@ -301,7 +287,7 @@ export default function createTeacher(): ReactElement {
                                       variant="outlined"
                                       disabled={isSubmitting}
                                       onClick={() =>
-                                        arrayHelpers.insert(index, {
+                                        arrayHelpers.insert(index + 1, {
                                           company: "",
                                           function: "",
                                         })
@@ -309,51 +295,55 @@ export default function createTeacher(): ReactElement {
                                     >
                                       <Add />
                                     </Button>
-                                  </Box>
-                                </div>
+                                  </Grid>
+                                </Grid>
                               ))
                             ) : (
-                              <Button
-                                sx={{ margin: 1 }}
-                                variant="outlined"
-                                disabled={isSubmitting}
-                                onClick={() =>
-                                  arrayHelpers.push({
-                                    company: "",
-                                    function: "",
-                                  })
-                                }
-                              >
-                                Werk-ervaring toevoegen
-                              </Button>
+                              <Grid item xs={12}>
+                                <Button
+                                  variant="outlined"
+                                  disabled={isSubmitting}
+                                  onClick={() =>
+                                    arrayHelpers.push({
+                                      company: "",
+                                      function: "",
+                                    })
+                                  }
+                                >
+                                  Werk-ervaring toevoegen
+                                </Button>
+                              </Grid>
                             )}
                           </div>
                         )}
                       />
                     </Grid>
+
+                    <Grid item xs={12}>
+                      <Typography variant="h2" component="h2">
+                        Optionele Social Media
+                      </Typography>
+                    </Grid>
+
                     <Grid item xs={12} sm={12} md={12}>
                       <FieldArray
                         name="socialMedias"
                         render={(arrayHelpers) => (
                           <div>
-                            <Typography
-                              variant="h6"
-                              noWrap
-                              component="div"
-                              sx={{
-                                flexGrow: 1,
-                                mb: 2,
-                                // ml: 1,
-                                color: "black",
-                              }}
-                            >
-                              Optionele Social Media toevoegen
-                            </Typography>
                             {values.socialMedias &&
                             values.socialMedias.length > 0 ? (
                               values.socialMedias.map((tag, index) => (
-                                <div key={index}>
-                                  <Grid item xs={12} sm={12} md={6}>
+                                <Grid
+                                  item
+                                  xs={12}
+                                  key={index}
+                                  sx={{
+                                    mb: "1rem",
+                                  }}
+                                  container
+                                  spacing={{ xs: 2 }}
+                                >
+                                  <Grid item xs={12} lg={6}>
                                     <Field
                                       component={TextField}
                                       name={`socialMedias.${index}.url`}
@@ -363,7 +353,7 @@ export default function createTeacher(): ReactElement {
                                       fullWidth
                                     />
                                   </Grid>
-                                  <Grid item xs={12} sm={12} md={6}>
+                                  <Grid item xs={12} lg={4}>
                                     <Field
                                       required
                                       component={CustomSingleSelectForEnum}
@@ -371,6 +361,9 @@ export default function createTeacher(): ReactElement {
                                       // name="platform"
                                       fullWidth
                                       name={`socialMedias.${index}.platform`}
+                                      value={
+                                        values.socialMedias[index].platform
+                                      }
                                       data={
                                         dataSocialMediaPlatforms.__type
                                           .enumValues
@@ -380,50 +373,60 @@ export default function createTeacher(): ReactElement {
                                       }}
                                       helperText="Optioneel platform"
                                     />
+                                    {console.log(
+                                      "....selected",
+                                      index,
+                                      values.socialMedias[index]
+                                    )}
                                   </Grid>
-                                  <Button
-                                    sx={{ margin: 1 }}
-                                    variant="outlined"
-                                    disabled={isSubmitting}
-                                    onClick={() => arrayHelpers.remove(index)}
-                                  >
-                                    <Remove /> {index}
-                                  </Button>
 
-                                  <Button
-                                    sx={{ margin: 1 }}
-                                    variant="outlined"
-                                    disabled={isSubmitting}
-                                    onClick={
-                                      () =>
-                                        arrayHelpers.push({
-                                          platform: "",
-                                          url: "",
-                                        })
-                                      // arrayHelpers.insert(index + 1, {
-                                      //   platform: "",
-                                      //   url: "",
-                                      // })
-                                    }
-                                  >
-                                    <Add /> {index}
-                                  </Button>
-                                </div>
+                                  <Grid item xs={12} md={3} lg={2}>
+                                    <Button
+                                      sx={{ margin: 1 }}
+                                      variant="outlined"
+                                      disabled={isSubmitting}
+                                      onClick={() => arrayHelpers.remove(index)}
+                                    >
+                                      <Remove />
+                                    </Button>
+
+                                    <Button
+                                      sx={{ margin: 1 }}
+                                      variant="outlined"
+                                      disabled={isSubmitting}
+                                      onClick={
+                                        () =>
+                                          arrayHelpers.push({
+                                            platform: "",
+                                            url: "",
+                                          })
+                                        // arrayHelpers.insert(index + 1, {
+                                        //   platform: "",
+                                        //   url: "",
+                                        // })
+                                      }
+                                    >
+                                      <Add />
+                                    </Button>
+                                  </Grid>
+                                </Grid>
                               ))
                             ) : (
-                              <Button
-                                sx={{ margin: 1 }}
-                                variant="outlined"
-                                disabled={isSubmitting}
-                                onClick={() =>
-                                  arrayHelpers.push({
-                                    platform: "",
-                                    url: "",
-                                  })
-                                }
-                              >
-                                Social Media Toevoegen
-                              </Button>
+                              <Grid item xs={12}>
+                                <Button
+                                  sx={{ margin: 1 }}
+                                  variant="outlined"
+                                  disabled={isSubmitting}
+                                  onClick={() =>
+                                    arrayHelpers.push({
+                                      platform: "",
+                                      url: "",
+                                    })
+                                  }
+                                >
+                                  Social Media Toevoegen
+                                </Button>
+                              </Grid>
                             )}
                           </div>
                         )}

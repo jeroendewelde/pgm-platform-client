@@ -5,7 +5,7 @@ import Select, { SelectChangeEvent } from "@mui/material/Select";
 
 import { FormHelperText } from "@mui/material";
 
-import React, { ReactElement, useState } from "react";
+import React, { ReactElement, useEffect, useState } from "react";
 
 import { fieldToSelect, SelectProps } from "formik-mui";
 
@@ -21,7 +21,7 @@ export default function CustomSingleSelectForEnum(
   const {
     // form: {setFieldValue},
     // field: {data, label}
-    form: { setFieldValue },
+    form: { setFieldValue, values },
     data,
     label,
     sx,
@@ -32,7 +32,16 @@ export default function CustomSingleSelectForEnum(
     value: valueFromData,
   } = props;
   //   const [value, setValue] = useState("");
-  const [value, setValue] = useState(valueFromData || "");
+  const [value, setValue] = useState();
+
+  useEffect(() => {
+    if (valueFromData) {
+      setValue(valueFromData);
+    }
+    // if (values[name]) {
+    //   setValue(values[name]);
+    // }
+  }, []);
 
   // const handleChange = (event: SelectChangeEvent) => {
   //   setValue(event.target.value);
@@ -51,10 +60,8 @@ export default function CustomSingleSelectForEnum(
   return (
     <div>
       <FormControl sx={{ minWidth: 80, ...sx }}>
-        <InputLabel id="demo-simple-select-autowidth-label">{label}</InputLabel>
+        <InputLabel>{label}</InputLabel>
         <Select
-          labelId="demo-simple-select-autowidth-label"
-          id="demo-simple-select-autowidth"
           value={value}
           onChange={onChange}
           autoWidth
@@ -74,6 +81,7 @@ export default function CustomSingleSelectForEnum(
               //   selected={item.name == value ? true : false}
               value={item.name}
             >
+              {"...." + value + "...."}
               {item.name}
             </MenuItem>
           ))}
