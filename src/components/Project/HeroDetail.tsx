@@ -71,6 +71,7 @@ const FlexContainer = styled.div`
   }
 
   .image-container {
+    order: 2;
     position: relative;
     border-radius: ${(props) => props.theme.borderRadius.small};
     overflow: hidden;
@@ -83,6 +84,7 @@ const FlexContainer = styled.div`
     }
 
     @media (min-width: ${(props) => props.theme.width.small}) {
+      order: 0;
       height: 20rem;
       margin-right: 2rem;
     }

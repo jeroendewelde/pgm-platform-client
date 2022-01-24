@@ -17,10 +17,11 @@ const Container = styled.div`
   padding-top: 3rem;
   padding-left: 1rem;
   padding-right: 1rem;
-  margin-top: 1rem;
+  margin-top: 2rem;
 
   @media (min-width: ${(props) => props.theme.width.medium}) {
     min-height: 25rem;
+    margin-top: 1rem;
   }
 
   .buttons {

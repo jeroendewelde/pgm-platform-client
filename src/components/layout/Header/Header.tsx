@@ -14,8 +14,11 @@ const Container = styled.header`
   padding: 0 1rem;
   background-color: ${(props) =>
     transparentize(0.7, props.theme.colors.turquoise)};
+  background-color: ${(props) => props.theme.colors.bg_gradient_color_2};
   -webkit-backdrop-filter: blur(2em);
   backdrop-filter: blur(2em);
+  border-bottom: 1px solid
+    ${(props) => transparentize(0.7, props.theme.colors.turquoise)};
 
   @media (min-width: ${(props) => props.theme.width.medium}) {
     padding: 0 2rem;
@@ -23,7 +26,7 @@ const Container = styled.header`
 `;
 
 const Wrapper = styled.div`
-  max-width: ${(props) => props.theme.width.large};
+  max-width: 100rem;
   margin: 0 auto;
 `;
 

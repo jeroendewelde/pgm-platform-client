@@ -31,6 +31,7 @@ const Container = styled(motion.div)`
     padding: 0 1rem;
     background-color: ${(props) =>
       transparentize(0.7, props.theme.colors.turquoise)};
+    background-color: transparent;
     -webkit-backdrop-filter: blur(2em);
     backdrop-filter: blur(2em);
 
@@ -39,7 +40,8 @@ const Container = styled(motion.div)`
     }
 
     .wrapper {
-      max-width: ${(props) => props.theme.width.large};
+      max-width: 1244px;
+      padding: 0 2rem;
       margin: 0 auto;
 
       .flex__container {

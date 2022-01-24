@@ -3,7 +3,7 @@ import React from "react";
 import client from "../../../apollo-client";
 import { GET_ALL_PROJECTS, GET_PROJECT_BY_ID } from "../../../graphql/projects";
 import { Project } from "../../../interfaces";
-import { HeroDetail } from "../../components/Project";
+import { HeroDetail, ProjectContent } from "../../components/Project";
 
 interface ProjectDetailProps {
   project: Project;
@@ -15,6 +15,7 @@ const ProjectDetail = ({ project }: ProjectDetailProps) => {
   return (
     <div>
       <HeroDetail project={project} />
+      <ProjectContent project={project} />
     </div>
   );
 };
