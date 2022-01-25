@@ -9,8 +9,11 @@ import { Company } from "../../../interfaces";
 import { Card } from "../Interns";
 import { H2 } from "../Titles/H2";
 import { transparentize } from "polished";
+import { useInView } from "react-intersection-observer";
+import useInViewObserver from "../../hooks/useInView";
+import { motion } from "framer-motion";
 
-const SwiperContainer = styled.div`
+const SwiperContainer = styled(motion.section)`
   margin: 5rem auto;
   border-bottom: 1px dashed ${(props) => props.theme.colors.turquoise};
 
@@ -81,9 +84,11 @@ interface CompaniesProps {
 
 const Companies = ({ companies }: CompaniesProps) => {
   SwiperCore.use([Navigation]);
+  const { ref, inView } = useInView();
+  const animation = useInViewObserver(inView);
 
   return (
-    <SwiperContainer>
+    <SwiperContainer ref={ref} animate={animation}>
       <div className="section-title">
         <H2>Leerbedrijven</H2>
         <p>

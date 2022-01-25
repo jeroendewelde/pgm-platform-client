@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import Image from "next/image";
 
@@ -8,6 +8,8 @@ import test from "../../assets/test/test.jpg";
 import { Course } from "../../../interfaces";
 import Tag from "../Course/Tag";
 import CTALink from "../Course/CTALink";
+import { motion, useAnimation } from "framer-motion";
+import { useInView } from "react-intersection-observer";
 
 const CourseListItem = styled.div`
   width: 100%;
@@ -136,40 +138,68 @@ const Description = styled.div`
   }
 `;
 
+const Variants = {
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 1, type: "spring", bounce: 0.3 },
+  },
+  hidden: { opacity: 0, y: 100, type: "spring", bounce: 0.3 },
+};
+
 interface Props {
   course: Course;
 }
-
 const ListItem = ({ course }: Props) => {
+  const animation = useAnimation();
+  const [ref, inView] = useInView();
+
+  useEffect(() => {
+    if (inView) {
+      animation.start("visible");
+    }
+
+    if (!inView) {
+      animation.start("hidden");
+    }
+  }, [animation, inView]);
+
   return (
     <CourseListItem>
       <div className="bullet">
         <span></span>
       </div>
 
-      <CourseTitle learningLine={course.learningLine.color}>
-        {course.name}
-      </CourseTitle>
-      <FlexContainer>
-        <ImageContainer>
-          <Image src={test} layout="fill" objectFit="cover" />
-        </ImageContainer>
-        <Description>
-          <ul>
-            {course.tags?.map((tag) => (
-              <Tag key={tag}>{tag}</Tag>
-            ))}
-          </ul>
+      <motion.div
+        ref={ref}
+        animate={animation}
+        initial="hidden"
+        variants={Variants}
+      >
+        <CourseTitle learningLine={course.learningLine.color}>
+          {course.name}
+        </CourseTitle>
+        <FlexContainer>
+          <ImageContainer>
+            <Image src={test} layout="fill" objectFit="cover" />
+          </ImageContainer>
+          <Description>
+            <ul>
+              {course.tags?.map((tag) => (
+                <Tag key={tag}>{tag}</Tag>
+              ))}
+            </ul>
 
-          <p>{course.description}</p>
+            <p>{course.description}</p>
 
-          <div className="cta-container">
-            <CTALink href={`/vakken/${course.id}`}>
-              Meer over {course.name}
-            </CTALink>
-          </div>
-        </Description>
-      </FlexContainer>
+            <div className="cta-container">
+              <CTALink href={`/vakken/${course.id}`}>
+                Meer over {course.name}
+              </CTALink>
+            </div>
+          </Description>
+        </FlexContainer>
+      </motion.div>
     </CourseListItem>
   );
 };

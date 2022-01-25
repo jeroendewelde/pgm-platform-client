@@ -292,8 +292,6 @@ const LeerlijnPage = ({ courses }: LeerlijnProps) => {
     }
   });
 
-  console.log(term_1_with_spec);
-
   return (
     <SuperContainer>
       <motion.div

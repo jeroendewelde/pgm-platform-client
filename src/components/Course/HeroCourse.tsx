@@ -78,7 +78,7 @@ const HeroCourse = ({ course }: HeroCourseProps) => {
         animate={{ opacity: 1, x: 0 }}
         exit={{ opacity: 0, x: -100 }}
         transition={{
-          delay: 0.3,
+          delay: 0.1,
           duration: 0.65,
         }}
       >

@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+
 import client from "../../../apollo-client";
 import {
   GET_ALL_COURSES,

@@ -8,8 +8,11 @@ import { Testimonial } from "../../../interfaces";
 import { Quote } from "../Quote";
 import { H2 } from "../Titles/H2";
 import { lighten, transparentize } from "polished";
+import { motion } from "framer-motion";
+import { useInView } from "react-intersection-observer";
+import useInViewObserver from "../../hooks/useInView";
 
-const SwiperContainer = styled.div`
+const SwiperContainer = styled(motion.div)`
   margin: 0 auto;
   background-color: ${(props) =>
     lighten(0.05, props.theme.colors.bg_gradient_color_1)};
@@ -66,9 +69,11 @@ interface TestimonialProps {
 
 const TestimonialsCarousel = ({ testimonials }: TestimonialProps) => {
   SwiperCore.use([Navigation, Autoplay]);
+  const { ref, inView } = useInView();
+  const animation = useInViewObserver(inView);
 
   return (
-    <SwiperContainer>
+    <SwiperContainer ref={ref} animate={animation}>
       <div className="container">
         <div className="h2_padding">
           <H2>Testimonials</H2>
