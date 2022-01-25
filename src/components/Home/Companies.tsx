@@ -15,8 +15,7 @@ const SwiperContainer = styled.div`
   border-bottom: 1px dashed ${(props) => props.theme.colors.turquoise};
 
   @media (min-width: ${(props) => props.theme.width.medium}) {
-    margin-top: 15rem;
-    margin-bottom: 10rem;
+    margin: 10rem auto;
     border: none;
   }
 
@@ -65,7 +64,13 @@ const SwiperContainer = styled.div`
   }
 
   .section-title {
-    margin-bottom: -2.5rem;
+    p {
+      margin-top: 1rem;
+
+      p {
+        margin-top: 2rem;
+      }
+    }
   }
 `;
 
@@ -80,6 +85,16 @@ const Companies = ({ companies }: CompaniesProps) => {
     <SwiperContainer>
       <div className="section-title">
         <H2>Leerbedrijven</H2>
+        <p>
+          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Illum
+          assumenda delectus accusantium debitis. Labore voluptate nemo sed
+          corporis, voluptatem, soluta culpa, incidunt porro voluptatum nesciunt
+          atque vitae impedit qui consequatur? Lorem ipsum dolor sit amet
+          consectetur adipisicing elit. Illum assumenda delectus accusantium
+          debitis. Labore voluptate nemo sed corporis, voluptatem, soluta culpa,
+          incidunt porro voluptatum nesciunt atque vitae impedit qui
+          consequatur?
+        </p>
       </div>
       <Swiper
         navigation={true}

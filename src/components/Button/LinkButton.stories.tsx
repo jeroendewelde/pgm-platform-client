@@ -22,6 +22,14 @@ const meta: Meta = {
       description: "The href of the button",
       control: "text",
     },
+    variant: {
+      type: "string",
+      description: "The variant of the button",
+      control: {
+        type: "select",
+        options: ["primary", "secondary"],
+      },
+    },
   },
 };
 

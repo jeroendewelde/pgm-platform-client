@@ -92,7 +92,10 @@ const Hero = () => {
             Je wordt een programmeur gespecialiseerd in JavaScript, maar ook in
             HTML, CSS, UI/UX, software engineering …
           </p>
-          <LinkButton href="https://www.arteveldehogeschool.be/inschrijven/inschrijven-voor-een-bachelor-graduaat-bachelor-na-bachelor/je-inschrijving/inschrijven-als-nieuwe-student">
+          <LinkButton
+            variant="primary"
+            href="https://www.arteveldehogeschool.be/inschrijven/inschrijven-voor-een-bachelor-graduaat-bachelor-na-bachelor/je-inschrijving/inschrijven-als-nieuwe-student"
+          >
             <a>Schrijf je online in</a>
           </LinkButton>
         </div>

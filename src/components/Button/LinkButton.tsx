@@ -4,7 +4,8 @@ import styled from "styled-components";
 import { MdOutlineKeyboardBackspace } from "react-icons/md";
 import { transparentize } from "polished";
 
-const LinkStyle = styled.div`
+const LinkStyle = styled.div<LinkStyleProps>`
+  max-width: 250px;
   width: fit-content;
   width: max-content;
   font-size: ${(props) => props.theme.fontSizes.small_btn};
@@ -12,17 +13,43 @@ const LinkStyle = styled.div`
   backdrop-filter: blur(30px);
   -webkit-backdrop-filter: blur(30px);
   border-radius: ${(props) => props.theme.borderRadius.small};
-  background-color: ${(props) =>
-    transparentize(0.6, props.theme.colors.purple)};
-  border: 1px solid ${(props) => props.theme.colors.purple};
+  background-color: ${({ variant }) =>
+    variant === "primary"
+      ? (props) => transparentize(0.6, props.theme.colors.purple)
+      : (props) => props.theme.colors.bg_gradient_color_1};
+  border: ${({ variant }) =>
+    variant === "primary"
+      ? (props) => `2px solid ${props.theme.colors.purple}`
+      : (props) => `1px solid ${props.theme.colors.white}`};
+
+  color: ${(props) => props.theme.colors.white};
+  box-shadow: ${({ variant }) =>
+    variant === "primary"
+      ? (props) => `0 0 10px ${props.theme.colors.purple}`
+      : "none"};
   transition: ${(props) => props.theme.transition.normal};
 
+  @media (min-width: ${(props) => props.theme.width.esmall}) {
+    max-width: none;
+  }
+
   &:hover {
-    background-color: ${(props) =>
-      transparentize(0, props.theme.colors.purple)};
-    box-shadow: 0 0 20px ${(props) => props.theme.colors.purple},
-      0 0 40px ${(props) => props.theme.colors.purple},
-      0 0 80px ${(props) => props.theme.colors.purple};
+    background-color: ${({ variant }) =>
+      variant === "primary"
+        ? (props) => transparentize(0, props.theme.colors.purple)
+        : (props) => props.theme.colors.white};
+    box-shadow: ${({ variant }) =>
+      variant === "primary"
+        ? (props) =>
+            `0 0 20px ${props.theme.colors.purple}, 0 0 40px ${props.theme.colors.purple}, 0 0 80px ${props.theme.colors.purple}`
+        : (props) => `0 0 20px ${props.theme.colors.white}`};
+
+    a {
+      color: ${({ variant }) =>
+        variant === "primary"
+          ? (props) => props.theme.colors.white
+          : (props) => props.theme.colors.black};
+    }
 
     .icon {
       transform: translateX(-0.5rem);
@@ -34,6 +61,7 @@ const LinkStyle = styled.div`
     display: flex;
     align-items: center;
     color: ${(props) => props.theme.colors.white};
+    word-break: break-word;
 
     .icon {
       margin-left: 0.5rem;
@@ -63,11 +91,17 @@ const LinkStyle = styled.div`
 export interface LinkButtonProps {
   href: string;
   children: React.ReactNode;
+  variant: "primary" | "secondary";
 }
 
-const LinkButton = ({ href, children }: LinkButtonProps) => {
+interface LinkStyleProps {
+  variant: "primary" | "secondary";
+}
+
+const LinkButton = ({ href, children, variant }: LinkButtonProps) => {
+  console.log(variant);
   return (
-    <LinkStyle>
+    <LinkStyle variant={variant}>
       <Link href={href}>
         <a>
           <span className="cta">{children}</span>

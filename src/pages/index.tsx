@@ -7,6 +7,7 @@ import { GET_ALL_TESTIMONIALS } from "../../graphql/testimonials";
 import styled from "styled-components";
 import { GET_ALL_COMPANIES_CLIENT } from "../../graphql/companies";
 import { H2 } from "../components/Titles/H2";
+import { LinkButton } from "../components/Button";
 
 const VideoPlayerContainer = styled.div`
   margin: 5rem 0;
@@ -15,8 +16,18 @@ const VideoPlayerContainer = styled.div`
     margin: 8rem auto;
   }
 
-  @media (min-width: ${(props) => props.theme.width.elarge}) {
+  /* @media (min-width: ${(props) => props.theme.width.elarge}) {
     padding: 0 10rem;
+  } */
+
+  .text {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+
+    @media (min-width: ${(props) => props.theme.width.medium}) {
+      margin-bottom: 2rem;
+      margin-top: 2rem;
+    }
   }
 `;
 
@@ -47,7 +58,26 @@ export default function Home({ testimonials, companies }: HomeProps) {
 
       <VideoPlayerContainer>
         <H2>Praktische info</H2>
-
+        <div>
+          <p className="text">
+            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Illum
+            assumenda delectus accusantium debitis. Labore voluptate nemo sed
+            corporis, voluptatem, soluta culpa, incidunt porro voluptatum
+            nesciunt atque vitae impedit qui consequatur? Lorem ipsum dolor sit
+            amet consectetur adipisicing elit. Illum assumenda delectus
+            accusantium debitis. Labore voluptate nemo sed corporis, voluptatem,
+            soluta culpa, incidunt porro voluptatum nesciunt atque vitae impedit
+            qui consequatur?
+          </p>
+          <LinkButton
+            variant="secondary"
+            href={
+              "https://www.arteveldehogeschool.be/opleidingen/graduaat/programmeren/vragen-stel-ze"
+            }
+          >
+            Meer info over studiemateriaal vind je hier
+          </LinkButton>
+        </div>
         <VideoPlayerWrapper>
           <ReactPlayer
             className="react-player"
@@ -64,7 +94,27 @@ export default function Home({ testimonials, companies }: HomeProps) {
       {/* MSS toch zetten op contact pagina */}
 
       <VideoPlayerContainer>
-        <H2>Praktische info</H2>
+        <H2>Veelgestelde vragen</H2>
+        <div>
+          <p className="text">
+            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Illum
+            assumenda delectus accusantium debitis. Labore voluptate nemo sed
+            corporis, voluptatem, soluta culpa, incidunt porro voluptatum
+            nesciunt atque vitae impedit qui consequatur? Lorem ipsum dolor sit
+            amet consectetur adipisicing elit. Illum assumenda delectus
+            accusantium debitis. Labore voluptate nemo sed corporis, voluptatem,
+            soluta culpa, incidunt porro voluptatum nesciunt atque vitae impedit
+            qui consequatur?
+          </p>
+          <LinkButton
+            variant="secondary"
+            href={
+              "https://www.arteveldehogeschool.be/opleidingen/graduaat/programmeren/vragen-stel-ze"
+            }
+          >
+            Zit je met vragen? stel ze hier
+          </LinkButton>
+        </div>
         <VideoPlayerWrapper>
           <ReactPlayer
             className="react-player"
