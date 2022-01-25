@@ -42,6 +42,10 @@ const CompanyName = styled.div`
     color: ${(props) => props.theme.colors.white};
     font-family: ${(props) => props.theme.fontFamilies.secondary};
     font-weight: ${(props) => props.theme.fontWeights.light};
+
+    @media (min-width: ${(props) => props.theme.width.medium}) {
+      font-size: ${(props) => props.theme.fontSizes.small};
+    }
   }
 `;
 
@@ -97,9 +101,18 @@ const Container = styled.div`
       margin-bottom: 0.5rem;
       //border: 2px solid ${(props) => props.theme.colors.pink};
       border-radius: ${(props) => props.theme.borderRadius.circle};
+      border: 1px solid ${(props) => props.theme.colors.white};
+      display: flex;
+      align-items: center;
+      justify-content: center;
 
       img {
         border-radius: ${(props) => props.theme.borderRadius.circle};
+      }
+
+      @media (min-width: ${(props) => props.theme.width.medium}) {
+        width: 3rem;
+        height: 3rem;
       }
     }
   }
@@ -124,6 +137,13 @@ const CardImage = styled.div`
     width: 15rem;
     height: 17rem;
     margin-right: 2rem;
+  }
+  @media (min-width: ${(props) => props.theme.width.medium}) {
+    min-width: 20rem;
+    max-width: 20rem;
+    width: 20rem;
+    height: 20rem;
+    margin-right: 4rem;
   }
 `;
 
@@ -173,6 +193,10 @@ const CardContent = styled.div`
   p {
     margin-top: 1rem;
     font-size: ${(props) => props.theme.fontSizes.normal};
+
+    @media (min-width: ${(props) => props.theme.width.large}) {
+      font-size: ${(props) => props.theme.fontSizes.medium};
+    }
   }
 `;
 

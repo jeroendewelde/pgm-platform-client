@@ -110,14 +110,14 @@ const Hero = () => {
           height={1500}
         />
       </GlowSpot>
-      <Grid>
+      {/* <Grid>
         <Image
           src="/glow-spots-and-grid/grid-purple.svg"
           alt="grid"
           width={150}
           height={150}
         />
-      </Grid>
+      </Grid> */}
     </Container>
   );
 };

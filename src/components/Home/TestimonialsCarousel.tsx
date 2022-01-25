@@ -7,16 +7,28 @@ import "swiper/swiper.min.css";
 import { Testimonial } from "../../../interfaces";
 import { Quote } from "../Quote";
 import { H2 } from "../Titles/H2";
+import { lighten, transparentize } from "polished";
 
 const SwiperContainer = styled.div`
-  margin: 5rem auto;
+  margin: 0 auto;
+  background-color: ${(props) =>
+    lighten(0.05, props.theme.colors.bg_gradient_color_1)};
+  width: 100%;
+  padding: 5rem 2rem;
+  border-radius: ${(props) => props.theme.borderRadius.small};
+  border: 1px solid ${(props) => transparentize(0.8, props.theme.colors.white)};
 
   @media (min-width: ${(props) => props.theme.width.medium}) {
     margin: 8rem auto;
+    padding: 10rem 2rem;
   }
 
-  max-width: 50rem;
   width: 100%;
+
+  .container {
+    max-width: 50rem;
+    margin: 0 auto;
+  }
 
   .swiper-button-next,
   .swiper-button-prev {
@@ -57,29 +69,31 @@ const TestimonialsCarousel = ({ testimonials }: TestimonialProps) => {
 
   return (
     <SwiperContainer>
-      <div className="h2_padding">
-        <H2>Testimonials</H2>
+      <div className="container">
+        <div className="h2_padding">
+          <H2>Testimonials</H2>
+        </div>
+        <Swiper
+          autoplay={{
+            delay: 10000,
+            disableOnInteraction: false,
+          }}
+          navigation={true}
+          spaceBetween={50}
+          slidesPerView={1}
+        >
+          {testimonials.map((testimonial) => (
+            <SwiperSlide key={testimonial.id}>
+              <Quote
+                source={`${testimonial.name} ${
+                  testimonial.company ? "[" + testimonial.company + "]" : ""
+                }`}
+                content={testimonial.quote}
+              />
+            </SwiperSlide>
+          ))}
+        </Swiper>
       </div>
-      <Swiper
-        autoplay={{
-          delay: 10000,
-          disableOnInteraction: false,
-        }}
-        navigation={true}
-        spaceBetween={50}
-        slidesPerView={1}
-      >
-        {testimonials.map((testimonial) => (
-          <SwiperSlide key={testimonial.id}>
-            <Quote
-              source={`${testimonial.name} ${
-                testimonial.company ? "[" + testimonial.company + "]" : ""
-              }`}
-              content={testimonial.quote}
-            />
-          </SwiperSlide>
-        ))}
-      </Swiper>
     </SwiperContainer>
   );
 };

@@ -20,7 +20,7 @@ const SwiperContainer = styled.div`
     border: none;
   }
 
-  max-width: 70rem;
+  //max-width: 70rem;
   width: 100%;
 
   .swiper-button-next,

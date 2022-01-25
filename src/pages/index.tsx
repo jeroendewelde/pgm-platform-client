@@ -44,7 +44,6 @@ export default function Home({ testimonials, companies }: HomeProps) {
     <>
       <Hero />
       <Companies companies={companies} />
-      <TestimonialsCarousel testimonials={testimonials} />
 
       <VideoPlayerContainer>
         <H2>Praktische info</H2>
@@ -60,9 +59,11 @@ export default function Home({ testimonials, companies }: HomeProps) {
         </VideoPlayerWrapper>
       </VideoPlayerContainer>
 
+      <TestimonialsCarousel testimonials={testimonials} />
+
       {/* MSS toch zetten op contact pagina */}
 
-      {/* <VideoPlayerContainer>
+      <VideoPlayerContainer>
         <H2>Praktische info</H2>
         <VideoPlayerWrapper>
           <ReactPlayer
@@ -73,7 +74,7 @@ export default function Home({ testimonials, companies }: HomeProps) {
             url="https://www.youtube.com/watch?v=DG1jVe9l1FM&t=99s"
           />
         </VideoPlayerWrapper>
-      </VideoPlayerContainer> */}
+      </VideoPlayerContainer>
     </>
   );
 }
