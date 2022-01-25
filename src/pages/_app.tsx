@@ -14,6 +14,7 @@ import { adminTheme } from "../theme/themeAdmin";
 // Apollo
 import { ApolloProvider } from "@apollo/client";
 import client from "../../apollo-client";
+import { AnimatePresence } from "framer-motion";
 
 function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter();
@@ -30,10 +31,12 @@ function MyApp({ Component, pageProps }: AppProps) {
         </Head>
 
         {!isAdmin ? (
-          <BaseLayout>
-            <GlobalStyle />
-            <Component {...pageProps} />
-          </BaseLayout>
+          <AnimatePresence exitBeforeEnter>
+            <BaseLayout>
+              <GlobalStyle />
+              <Component {...pageProps} />
+            </BaseLayout>
+          </AnimatePresence>
         ) : (
           <MuiThemeProvider theme={adminTheme}>
             <Component {...pageProps} />

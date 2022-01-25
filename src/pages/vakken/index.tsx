@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import client from "../../../apollo-client";
@@ -6,16 +7,21 @@ import {
   GET_COURSESBY_LEARNINGLINE_ID,
 } from "../../../graphql/courses";
 import { GET_ALL_LEARNING_LINES } from "../../../graphql/learningLines";
-import {
-  Course,
-  CourseByLearningLineId,
-  LearningLine,
-} from "../../../interfaces";
+import { Course, LearningLine } from "../../../interfaces";
 import { Card } from "../../components/Course";
 import Filter from "../../components/Course/Filter";
 import { GlitchTitle } from "../../components/Titles/GlitchTitle";
 
-const FilterContainer = styled.div`
+const stagger = {
+  animate: {
+    transition: {
+      staggerChildren: 0.1,
+      delayChildren: 0.8,
+    },
+  },
+};
+
+const FilterContainer = styled(motion.div)`
   margin-top: 3rem;
   display: flex;
   flex-direction: column;
@@ -172,16 +178,21 @@ const CoursesPage = ({ courses, learningLines }: CoursesPageProps) => {
   }, [selected]);
 
   return (
-    <>
+    <motion.div initial="initial" animate="animate" exit={{ opacity: 0 }}>
       <GlitchTitle>{selected || "Alle"}</GlitchTitle>
-      <FilterContainer>
+      <FilterContainer
+        initial={{ opacity: 0, x: -100 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.3, delay: 0.5 }}
+        exit={{ opacity: 0, x: -100 }}
+      >
         <span className="text">Filteren op </span>
         <Filter learningLines={learningLines} onChange={handleLeerlijnChange} />
       </FilterContainer>
       <CoursesContainer>
         <span className="bg"></span>
 
-        <ul className="courses-list">
+        <motion.ul variants={stagger} className="courses-list">
           {!selected &&
             courses.map((course) => (
               <Card
@@ -192,10 +203,10 @@ const CoursesPage = ({ courses, learningLines }: CoursesPageProps) => {
                 tags={course.tags}
               />
             ))}
-        </ul>
+        </motion.ul>
 
         {selected && (
-          <ul className="courses-list">
+          <motion.ul variants={stagger} className="courses-list">
             {coursesByLearningLineId.map((course: Course) => (
               <Card
                 id={course.id}
@@ -205,10 +216,10 @@ const CoursesPage = ({ courses, learningLines }: CoursesPageProps) => {
                 tags={course.tags}
               />
             ))}
-          </ul>
+          </motion.ul>
         )}
       </CoursesContainer>
-    </>
+    </motion.div>
   );
 };
 

@@ -4,8 +4,18 @@ import { GetOneTeacherClient } from "../../../interfaces";
 import { SocialMediaListItem, TeacherImage } from "../Teacher";
 import { GlitchTitle } from "../Titles/GlitchTitle";
 import { Quote } from "../Quote";
+import { motion } from "framer-motion";
 
-const Container = styled.div`
+const stagger = {
+  animate: {
+    transition: {
+      staggerChildren: 0.1,
+      delayChildren: 0.8,
+    },
+  },
+};
+
+const Container = styled(motion.div)`
   .mobile {
     margin-top: 3rem;
     @media (min-width: ${(props) => props.theme.width.small}) {
@@ -117,7 +127,7 @@ interface HeroDetailProps {
 
 const HeroDetail = ({ teacher }: HeroDetailProps) => {
   return (
-    <Container>
+    <Container initial="initial" animate="animate" exit={{ opacity: 0 }}>
       <div className="mobile">
         <div className="mobileImage">
           <TeacherImage />
@@ -142,14 +152,14 @@ const HeroDetail = ({ teacher }: HeroDetailProps) => {
           </div>
 
           <div className="content">
-            <ul className="socials">
+            <motion.ul className="socials" variants={stagger}>
               {teacher.personInformation.socialMedias.map((socialMedia) => (
                 <SocialMediaListItem
                   key={socialMedia.id}
                   socialMedia={socialMedia}
                 />
               ))}
-            </ul>
+            </motion.ul>
             <div className="quote">
               <Quote content={teacher.personInformation.quote} />
             </div>

@@ -151,11 +151,11 @@ const Navigation = ({
           <>
             <Container
               initial={{ visibility: "hidden" }}
-              animate={{ visibility: "visible", transition: { delay: 1 } }}
+              animate={{ visibility: "visible", transition: { delay: 0.2 } }}
               exit={{
                 visibility: "hidden",
                 transition: {
-                  delay: 1,
+                  delay: 0.4,
                 },
               }}
             >

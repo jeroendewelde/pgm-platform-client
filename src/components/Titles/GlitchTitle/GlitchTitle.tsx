@@ -1,8 +1,9 @@
+import { motion } from "framer-motion";
 import { transparentize } from "polished";
 import React from "react";
 import styled from "styled-components";
 
-const GlitchTitleStyle = styled.h1`
+const GlitchTitleStyle = styled(motion.h1)`
   margin: 0;
   text-shadow: 0.05em 0 0
       ${(props) => transparentize(0.3, props.theme.colors.pink)},
@@ -92,7 +93,15 @@ export interface GlitchTitleProps {
 
 const GlitchTitle = ({ children }: GlitchTitleProps) => {
   return (
-    <GlitchTitleStyle>
+    <GlitchTitleStyle
+      initial={{ opacity: 0, x: -100 }}
+      animate={{ opacity: 1, x: 0 }}
+      exit={{ opacity: 0, x: -100 }}
+      transition={{
+        delay: 0.3,
+        duration: 0.65,
+      }}
+    >
       <span className="GlitchTitle" aria-hidden="true">
         {children}
       </span>

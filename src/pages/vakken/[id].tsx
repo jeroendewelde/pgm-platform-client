@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import { GetStaticPaths } from "next";
 import React from "react";
 import styled from "styled-components";
@@ -13,7 +14,7 @@ import {
   HeroCourse,
 } from "../../components/Course";
 
-const Container = styled.div`
+const Container = styled(motion.div)`
   padding-bottom: 5rem;
 `;
 

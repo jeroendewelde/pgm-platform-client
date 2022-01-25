@@ -8,6 +8,7 @@ import { GlitchTitle } from "../Titles/GlitchTitle";
 import profileImage from "../../assets/test/profile.jpg";
 import test from "../../assets/test/test.jpg";
 import Terminal from "./Terminal";
+import { motion } from "framer-motion";
 
 const Container = styled.section`
   .students {
@@ -103,7 +104,16 @@ const HeroDetail = ({ project }: HeroDetailProps) => {
   return (
     <Container>
       <GlitchTitle>{project.name}</GlitchTitle>
-      <div className="students">
+      <motion.div
+        className="students"
+        initial={{ opacity: 0, y: 10, zIndex: -1 }}
+        animate={{ opacity: 1, y: 0, zIndex: 1 }}
+        exit={{ opacity: 0, y: 10 }}
+        transition={{
+          delay: 0.7,
+          duration: 0.45,
+        }}
+      >
         {project.students.map((student) => (
           <div className="student" key={student.id}>
             <div className="image-container">
@@ -117,12 +127,21 @@ const HeroDetail = ({ project }: HeroDetailProps) => {
             </div>
           </div>
         ))}
-      </div>
+      </motion.div>
 
       <FlexContainer>
-        <div className="image-container">
+        <motion.div
+          className="image-container"
+          initial={{ opacity: 0, x: -100 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: -100 }}
+          transition={{
+            delay: 0.5,
+            duration: 0.65,
+          }}
+        >
           <Image src={test} layout="fill" objectFit="cover" />
-        </div>
+        </motion.div>
 
         <Terminal project={project} />
       </FlexContainer>

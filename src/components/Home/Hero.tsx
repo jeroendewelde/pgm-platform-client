@@ -5,8 +5,9 @@ import Image from "next/image";
 import { GlitchTitle } from "../Titles/GlitchTitle";
 import heroImage from "../../assets/hero-image.png";
 import { LinkButton } from "../Button";
+import { motion } from "framer-motion";
 
-const Container = styled.div`
+const Container = styled(motion.div)`
   margin-top: 2rem;
   display: flex;
   flex-direction: column;
@@ -65,21 +66,24 @@ const GlowSpot = styled.div`
   }
 `;
 
-const Grid = styled.div`
-  position: absolute;
-  z-index: -2;
-  right: 0;
-  top: 20%;
-
-  @media (min-width: ${(props) => props.theme.width.medium}) {
-    right: 20%;
-    top: 100%;
-  }
-`;
-
 const Hero = () => {
   return (
-    <Container>
+    <Container
+      initial={{
+        opacity: 0,
+        y: -50,
+        scale: 0.9,
+      }}
+      animate={{
+        opacity: 1,
+        y: 0,
+        scale: 1,
+      }}
+      transition={{
+        type: "spring",
+        delay: 0.5,
+      }}
+    >
       <Content>
         <div className="h1_padding">
           <GlitchTitle>Graduaat programmeren </GlitchTitle>
@@ -113,14 +117,6 @@ const Hero = () => {
           height={1500}
         />
       </GlowSpot>
-      {/* <Grid>
-        <Image
-          src="/glow-spots-and-grid/grid-purple.svg"
-          alt="grid"
-          width={150}
-          height={150}
-        />
-      </Grid> */}
     </Container>
   );
 };

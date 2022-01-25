@@ -79,8 +79,6 @@ interface DetailTeacherProps {
   teacher: GetOneTeacherClient;
 }
 
-const tags = ["react", "javascript", "typescript"];
-
 const TeacherDetail = ({ teacher }: DetailTeacherProps) => {
   console.log(teacher.courses);
 
