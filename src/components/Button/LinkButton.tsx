@@ -1,8 +1,9 @@
 import Link from "next/link";
-import React from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
 import { MdOutlineKeyboardBackspace } from "react-icons/md";
 import { transparentize } from "polished";
+import { CursorContext } from "../../context/CursorContext";
 
 const LinkStyle = styled.div<LinkStyleProps>`
   max-width: 250px;
@@ -99,9 +100,35 @@ interface LinkStyleProps {
 }
 
 const LinkButton = ({ href, children, variant }: LinkButtonProps) => {
-  console.log(variant);
+  const { setCursorHover } = useContext(CursorContext);
+
+  const handleMouseEnter = () => {
+    setCursorHover(true);
+    //change z-index of the card to be on top of the other cursor
+
+    const element = document.querySelector(".cursor") as HTMLElement;
+    if (element !== null) {
+      element.style.zIndex = "0";
+    }
+  };
+
+  const handleMouseLeave = () => {
+    setCursorHover(false);
+    //change z-index of the card to be on top of the other cursor
+
+    const element = document.querySelector(".cursor") as HTMLElement;
+
+    if (element !== null) {
+      element.style.zIndex = "11";
+    }
+  };
+
   return (
-    <LinkStyle variant={variant}>
+    <LinkStyle
+      variant={variant}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    >
       <Link href={href}>
         <a>
           <span className="cta">{children}</span>

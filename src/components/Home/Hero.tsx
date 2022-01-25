@@ -96,7 +96,7 @@ const Hero = () => {
             variant="primary"
             href="https://www.arteveldehogeschool.be/inschrijven/inschrijven-voor-een-bachelor-graduaat-bachelor-na-bachelor/je-inschrijving/inschrijven-als-nieuwe-student"
           >
-            <a>Schrijf je online in</a>
+            Schrijf je online in
           </LinkButton>
         </div>
       </Content>

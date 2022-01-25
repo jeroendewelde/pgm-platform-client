@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { lighten, transparentize } from "polished";
-import React from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
+import { CursorContext } from "../../context/CursorContext";
 
 const Container = styled.a`
   min-height: 10rem;
@@ -21,8 +22,8 @@ const Container = styled.a`
   &:hover {
     background-color: ${(props) =>
       transparentize(0.5, props.theme.colors.bg_gradient_color_1)};
-    -webkit-backdrop-filter: blur(50px);
-    backdrop-filter: blur(50px);
+    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(20px);
   }
 
   @media (min-width: ${(props) => props.theme.width.small}) {
@@ -47,8 +48,32 @@ interface CardProps {
 }
 
 const Card = ({ title, text, url }: CardProps) => {
+  const { setCursorHover } = useContext(CursorContext);
+
+  const handleMouseEnter = () => {
+    setCursorHover(true);
+    //change z-index of the card to be on top of the other cursor
+    const element = document.querySelector(".cursor") as HTMLElement;
+    if (element !== null) {
+      element.style.zIndex = "0";
+    }
+  };
+
+  const handleMouseLeave = () => {
+    setCursorHover(false);
+    const element = document.querySelector(".cursor") as HTMLElement;
+
+    if (element !== null) {
+      element.style.zIndex = "11";
+    }
+  };
   return (
-    <Container href={url} target="blank">
+    <Container
+      href={url}
+      target="blank"
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    >
       <li>
         <span className="title">{title}</span>
         <span className="text">{text}</span>

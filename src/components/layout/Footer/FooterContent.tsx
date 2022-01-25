@@ -138,7 +138,7 @@ const FooterContent = () => {
   };
 
   return (
-    <Container>
+    <Container onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
       <Info>
         <span>
           © www.pgm.gent is een website van de opleiding Graduaat Programmeren

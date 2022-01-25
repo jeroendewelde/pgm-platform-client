@@ -1,5 +1,5 @@
 import Image from "next/image";
-import React from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
 import { transparentize } from "polished";
 
@@ -7,6 +7,7 @@ import Tag from "./Tag";
 import test from "../../assets/test/test.jpg";
 import { Project } from "../../../interfaces";
 import Link from "next/link";
+import { CursorContext } from "../../context/CursorContext";
 
 const Container = styled.li`
   list-style: none;
@@ -136,10 +137,34 @@ export interface CardProps {
 }
 
 const Card = ({ key, project }: CardProps) => {
-  console.log(project);
+  const { setCursorHover } = useContext(CursorContext);
+
+  const handleMouseEnter = () => {
+    setCursorHover(true);
+
+    const element = document.querySelector(".cursor") as HTMLElement;
+    if (element !== null) {
+      element.style.opacity = "0.5";
+    }
+  };
+
+  const handleMouseLeave = () => {
+    setCursorHover(false);
+
+    const element = document.querySelector(".cursor") as HTMLElement;
+
+    if (element !== null) {
+      element.style.opacity = "1";
+    }
+  };
+
   return (
     <Link href={`/projecten/${project.id}`} key={key}>
-      <Container>
+      <Container
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+        onClick={handleMouseLeave}
+      >
         <CardImage>
           <Image src={test} layout="fill" alt="project-1" objectFit="cover" />
           <ul>

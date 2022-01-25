@@ -1,12 +1,14 @@
 import Image from "next/image";
 import Link from "next/link";
 import { transparentize } from "polished";
-import React from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
 import { CgChevronRightO } from "react-icons/cg";
 
 import teacher from "../../assets/test/teacher.png";
 import { SocialMedia } from "../../../interfaces";
+import { CursorContext } from "../../context/CursorContext";
+import { SocialMediaListItem } from ".";
 
 const SuperContainer = styled.div`
   max-width: 50rem;
@@ -188,6 +190,26 @@ const TeacherCard = ({
   bio,
   id,
 }: TeacherCardProps) => {
+  const { setCursorHover } = useContext(CursorContext);
+
+  const handleMouseEnter = () => {
+    setCursorHover(true);
+    //change z-index of the card to be on top of the other cursor
+    const element = document.querySelector(".cursor") as HTMLElement;
+    if (element !== null) {
+      element.style.zIndex = "0";
+    }
+  };
+
+  const handleMouseLeave = () => {
+    setCursorHover(false);
+    const element = document.querySelector(".cursor") as HTMLElement;
+
+    if (element !== null) {
+      element.style.zIndex = "11";
+    }
+  };
+
   return (
     <Link href={`pgm-team/${id}`}>
       <SuperContainer>
@@ -197,18 +219,15 @@ const TeacherCard = ({
               <span className="name">{firstName + " " + lastName}</span>
               <ul>
                 {socialMedia.map((media) => (
-                  <li
-                    key={media.id}
-                    onClick={() => {
-                      window.open(media.url, "_blank");
-                    }}
-                  >
-                    <span>{media.platform}</span>
-                  </li>
+                  <SocialMediaListItem socialMedia={media} />
                 ))}
               </ul>
 
-              <div className="hidden">
+              <div
+                className="hidden"
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}
+              >
                 <span>Ontdek meer over {firstName}</span>
                 <span className="icon">
                   <CgChevronRightO />

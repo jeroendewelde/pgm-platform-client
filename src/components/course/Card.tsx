@@ -24,8 +24,8 @@ const Container = styled.li<Props>`
   padding: 0.5rem;
   overflow: hidden;
   background-color: rgba(0, 0, 0, 0.279);
-  -webkit-backdrop-filter: blur(50px);
-  backdrop-filter: blur(50px);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
   width: 100%;
   height: 4rem;
   margin-bottom: 1rem;
@@ -102,13 +102,13 @@ const Container = styled.li<Props>`
 
   @media (min-width: ${(props) => props.theme.width.medium}) {
     &:hover .Dot {
-      transform: scale(36.5);
+      transform: scale(30);
     }
   }
 
   @media (min-width: ${(props) => props.theme.width.large}) {
     &:hover .Dot {
-      transform: scale(56.5);
+      transform: scale(36.5);
     }
   }
 `;
@@ -231,17 +231,19 @@ const Card = ({ tags, learningLine, title, id, key }: CardProps) => {
   const handleMouseEnter = () => {
     setCursorHover(true);
     //change z-index of the card to be on top of the other cursor
-    // if (document.querySelector(".cursor")) {
-    //   document.querySelector(".cursor").style.zIndex = "0";
-    // }
+    const element = document.querySelector(".cursor") as HTMLElement;
+    if (element !== null) {
+      element.style.zIndex = "0";
+    }
   };
 
   const handleMouseLeave = () => {
     setCursorHover(false);
-    //change z-index of the card to be on top of the other cursor
-    // if (document.querySelector(".cursor")) {
-    //   document.querySelector(".cursor").style.zIndex = "11";
-    // }
+    const element = document.querySelector(".cursor") as HTMLElement;
+
+    if (element !== null) {
+      element.style.zIndex = "11";
+    }
   };
 
   return (
@@ -251,9 +253,7 @@ const Card = ({ tags, learningLine, title, id, key }: CardProps) => {
         learningLine={learningLine}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
-        onClick={() => {
-          setCursorHover(false);
-        }}
+        onClick={handleMouseLeave}
       >
         <Title>
           <Icon learningLine={learningLine} />

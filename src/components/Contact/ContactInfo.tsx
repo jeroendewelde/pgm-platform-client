@@ -1,7 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
+import { CursorContext } from "../../context/CursorContext";
 import { GlitchTitle } from "../Titles/GlitchTitle";
 import { H2 } from "../Titles/H2";
 
@@ -124,6 +125,16 @@ const ImageContainer = styled.div`
 `;
 
 const ContactInfo = () => {
+  const { setCursorHover } = useContext(CursorContext);
+
+  const handleMouseEnter = () => {
+    setCursorHover(true);
+  };
+
+  const handleMouseLeave = () => {
+    setCursorHover(false);
+  };
+
   return (
     <Container>
       <div className="h1_padding">
@@ -152,7 +163,12 @@ const ContactInfo = () => {
           <div className="Contact">
             <span className="Contact__title">Contact</span>
             <Link href="tel:092348600">
-              <a>09 234 86 00</a>
+              <a
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}
+              >
+                09 234 86 00
+              </a>
             </Link>
           </div>
         </AddressInfo>

@@ -94,7 +94,7 @@ export default function Home({ testimonials, companies }: HomeProps) {
       id: 3,
       title: "Begeleiding op maat",
       text: "Wil je extra advies over studiekeuze, studiefinanciering, trajecten op maat,...",
-      url: "https://www.pgm.gent/info/",
+      url: "https://www.arteveldehogeschool.be/bij-ons-studeren/begeleiding-op-maat",
     },
   ];
 

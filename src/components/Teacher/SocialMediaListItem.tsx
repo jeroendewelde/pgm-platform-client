@@ -1,8 +1,9 @@
 import Link from "next/link";
-import React from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
 
 import { SocialMedia } from "../../../interfaces";
+import { CursorContext } from "../../context/CursorContext";
 
 const ListItem = styled.li`
   a {
@@ -34,8 +35,32 @@ interface Props {
 }
 
 const SocialMediaListItem = ({ socialMedia }: Props) => {
+  const { setCursorHover } = useContext(CursorContext);
+
+  const handleMouseEnter = () => {
+    setCursorHover(true);
+    //change z-index of the card to be on top of the other cursor
+    const element = document.querySelector(".cursor") as HTMLElement;
+    if (element !== null) {
+      element.style.zIndex = "0";
+    }
+  };
+
+  const handleMouseLeave = () => {
+    setCursorHover(false);
+    const element = document.querySelector(".cursor") as HTMLElement;
+
+    if (element !== null) {
+      element.style.zIndex = "11";
+    }
+  };
+
   return (
-    <ListItem key={socialMedia.id}>
+    <ListItem
+      key={socialMedia.id}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    >
       <Link href={socialMedia.url}>
         <a>{socialMedia.platform}</a>
       </Link>
