@@ -16,8 +16,27 @@ const stagger = {
   animate: {
     transition: {
       staggerChildren: 0.1,
-      delayChildren: 0.8,
+      delayChildren: 0.9,
     },
+  },
+};
+
+const fadeUp = {
+  initial: {
+    y: 400,
+    opacity: 0,
+  },
+  animate: {
+    y: 0,
+    opacity: 1,
+    transition: {
+      duration: 1,
+      ease: [0.6, 0.05, -0.01, 0.99],
+    },
+  },
+  exit: {
+    y: 200,
+    opacity: 0,
   },
 };
 
@@ -110,6 +129,18 @@ const CoursesContainer = styled.div`
     @media (min-width: ${(props) => props.theme.width.medium}) {
       margin-top: 3rem;
     }
+
+    .motionlistitem {
+      width: 100%;
+
+      @media (min-width: ${(props) => props.theme.width.medium}) {
+        width: calc(50% - 2rem);
+
+        .Card {
+          width: 100%;
+        }
+      }
+    }
   }
 `;
 
@@ -179,11 +210,21 @@ const CoursesPage = ({ courses, learningLines }: CoursesPageProps) => {
 
   return (
     <motion.div initial="initial" animate="animate" exit={{ opacity: 0 }}>
-      <GlitchTitle>{selected || "Alle"}</GlitchTitle>
+      <motion.div
+        initial={{ opacity: 0, x: -100 }}
+        animate={{ opacity: 1, x: 0 }}
+        exit={{ opacity: 0, x: -100 }}
+        transition={{
+          delay: 0.3,
+          duration: 0.65,
+        }}
+      >
+        <GlitchTitle>{selected || "Alle"}</GlitchTitle>
+      </motion.div>
       <FilterContainer
         initial={{ opacity: 0, x: -100 }}
         animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.3, delay: 0.5 }}
+        transition={{ duration: 0.3, delay: 0.7 }}
         exit={{ opacity: 0, x: -100 }}
       >
         <span className="text">Filteren op </span>
@@ -195,26 +236,30 @@ const CoursesPage = ({ courses, learningLines }: CoursesPageProps) => {
         <motion.ul variants={stagger} className="courses-list">
           {!selected &&
             courses.map((course) => (
-              <Card
-                id={course.id}
-                key={course.id}
-                learningLine={course.learningLine.color}
-                title={course.name}
-                tags={course.tags}
-              />
+              <motion.div className="motionlistitem" variants={fadeUp}>
+                <Card
+                  id={course.id}
+                  key={course.id}
+                  learningLine={course.learningLine.color}
+                  title={course.name}
+                  tags={course.tags}
+                />
+              </motion.div>
             ))}
         </motion.ul>
 
         {selected && (
           <motion.ul variants={stagger} className="courses-list">
             {coursesByLearningLineId.map((course: Course) => (
-              <Card
-                id={course.id}
-                key={course.id}
-                learningLine={course.learningLine.color}
-                title={course.name}
-                tags={course.tags}
-              />
+              <motion.div variants={fadeUp} className="motionlistitem">
+                <Card
+                  id={course.id}
+                  key={course.id}
+                  learningLine={course.learningLine.color}
+                  title={course.name}
+                  tags={course.tags}
+                />
+              </motion.div>
             ))}
           </motion.ul>
         )}

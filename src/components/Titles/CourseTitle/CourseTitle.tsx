@@ -1,7 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 import Image from "next/image";
-import { motion } from "framer-motion";
 
 import blueIcon from "../../../assets/learning-line/blue.svg";
 import greenIcon from "../../../assets/learning-line/green.svg";
@@ -9,7 +8,7 @@ import orangeIcon from "../../../assets/learning-line/orange.svg";
 import redIcon from "../../../assets/learning-line/red.svg";
 import pinkIcon from "../../../assets/learning-line/pink.svg";
 
-const Container = styled(motion.div)`
+const Container = styled.div`
   display: flex;
   align-items: center;
 `;
@@ -83,15 +82,7 @@ const Icon = ({ learningLine = "blue" }: CourseTitleProps) => {
 
 const CourseTitle = ({ children, learningLine = "blue" }: CourseTitleProps) => {
   return (
-    <Container
-      initial={{ opacity: 0, x: -100 }}
-      animate={{ opacity: 1, x: 0 }}
-      exit={{ opacity: 0, x: -100 }}
-      transition={{
-        delay: 0.3,
-        duration: 0.65,
-      }}
-    >
+    <Container>
       <CourseTitleStyle learningLine={learningLine}>
         {children}
       </CourseTitleStyle>

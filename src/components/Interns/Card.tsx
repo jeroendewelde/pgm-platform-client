@@ -206,9 +206,8 @@ export interface CardProps {
 
 const Card = ({ company }: CardProps) => {
   const [activeStudent, setActiveStudent] = useState(0);
-  console.log(company.interns[activeStudent].student.firstName);
 
-  const handleClick = () => {};
+  console.log(company);
 
   return (
     <>

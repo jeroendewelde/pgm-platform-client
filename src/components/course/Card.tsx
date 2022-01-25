@@ -11,32 +11,12 @@ import blueIcon from "../../assets/learning-line/blue.svg";
 import orangeIcon from "../../assets/learning-line/orange.svg";
 import redIcon from "../../assets/learning-line/red.svg";
 import pinkIcon from "../../assets/learning-line/pink.svg";
-import { motion } from "framer-motion";
-
-const fadeUp = {
-  initial: {
-    y: 500,
-    opacity: 0,
-  },
-  animate: {
-    y: 0,
-    opacity: 1,
-    transition: {
-      duration: 1,
-      ease: [0.6, 0.05, -0.01, 0.99],
-    },
-  },
-  exit: {
-    y: 200,
-    opacity: 0,
-  },
-};
 
 interface Props {
   learningLine: string;
 }
 
-const Container = styled(motion.li)<Props>`
+const Container = styled.li<Props>`
   cursor: pointer;
   display: flex;
   flex-direction: column;
@@ -274,7 +254,6 @@ const Card = ({ tags, learningLine, title, id, key }: CardProps) => {
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
         onClick={handleMouseLeave}
-        variants={fadeUp}
       >
         <Title>
           <Icon learningLine={learningLine} />

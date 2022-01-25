@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import React from "react";
 import styled from "styled-components";
 import client from "../../../apollo-client";
@@ -26,7 +27,17 @@ interface Props {
 const ProjectsPage = ({ projects }: Props) => {
   return (
     <Container>
-      <GlitchTitle>Projecten</GlitchTitle>
+      <motion.div
+        initial={{ opacity: 0, x: -100 }}
+        animate={{ opacity: 1, x: 0 }}
+        exit={{ opacity: 0, x: -100 }}
+        transition={{
+          delay: 0.3,
+          duration: 0.65,
+        }}
+      >
+        <GlitchTitle>Projecten</GlitchTitle>
+      </motion.div>
       <ul className="flex">
         {projects.map((project) => (
           <Card key={project.id} project={project} />

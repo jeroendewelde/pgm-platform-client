@@ -103,7 +103,17 @@ interface HeroDetailProps {
 const HeroDetail = ({ project }: HeroDetailProps) => {
   return (
     <Container>
-      <GlitchTitle>{project.name}</GlitchTitle>
+      <motion.div
+        initial={{ opacity: 0, x: -100 }}
+        animate={{ opacity: 1, x: 0 }}
+        exit={{ opacity: 0, x: -100 }}
+        transition={{
+          delay: 0,
+          duration: 0.65,
+        }}
+      >
+        <GlitchTitle>{project.name}</GlitchTitle>
+      </motion.div>
       <motion.div
         className="students"
         initial={{ opacity: 0, y: 10, zIndex: -1 }}

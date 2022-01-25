@@ -8,7 +8,7 @@ import { CgChevronRightO } from "react-icons/cg";
 import teacher from "../../assets/test/teacher.png";
 import { SocialMedia } from "../../../interfaces";
 import { CursorContext } from "../../context/CursorContext";
-import { SocialMediaListItem } from ".";
+import SocialMediaListItem from "./SocialMediaListItem";
 
 const SuperContainer = styled.div`
   max-width: 50rem;

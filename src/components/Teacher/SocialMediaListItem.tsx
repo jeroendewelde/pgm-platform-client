@@ -1,4 +1,3 @@
-import { motion } from "framer-motion";
 import Link from "next/link";
 import React, { useContext } from "react";
 import styled from "styled-components";
@@ -6,26 +5,7 @@ import styled from "styled-components";
 import { SocialMedia } from "../../../interfaces";
 import { CursorContext } from "../../context/CursorContext";
 
-const fadeUp = {
-  initial: {
-    y: 40,
-    opacity: 0,
-  },
-  animate: {
-    y: 0,
-    opacity: 1,
-    transition: {
-      duration: 1,
-      ease: [0.6, 0.05, -0.01, 0.99],
-    },
-  },
-  exit: {
-    y: 20,
-    opacity: 0,
-  },
-};
-
-const ListItem = styled(motion.li)`
+const ListItem = styled.li`
   a {
     margin-right: 1rem;
     padding: 0.3rem 0.5rem;
@@ -76,12 +56,7 @@ const SocialMediaListItem = ({ socialMedia }: Props) => {
   };
 
   return (
-    <ListItem
-      key={socialMedia.id}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-      variants={fadeUp}
-    >
+    <ListItem onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
       <Link href={socialMedia.url}>
         <a>{socialMedia.platform}</a>
       </Link>

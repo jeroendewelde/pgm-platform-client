@@ -1,11 +1,10 @@
-import { motion } from "framer-motion";
 import Image from "next/image";
 import React from "react";
 import styled from "styled-components";
 
 import teacher from "../../assets/test/teacher.png";
 
-const Container = styled(motion.div)`
+const Container = styled.div`
   position: relative;
 
   svg {
@@ -31,27 +30,7 @@ export interface TeacherImageProps {}
 
 const TeacherImage = () => {
   return (
-    <Container
-      initial={{
-        opacity: 0,
-        y: -20,
-        scale: 0.9,
-      }}
-      animate={{
-        opacity: 1,
-        y: 0,
-        scale: 1,
-      }}
-      transition={{
-        type: "spring",
-        delay: 0.7,
-      }}
-      exit={{
-        opacity: 0,
-        y: -20,
-        scale: 0.9,
-      }}
-    >
+    <Container>
       <ImageContainer>
         <Image src={teacher} layout="fill" alt="teacher" objectFit="contain" />
       </ImageContainer>
