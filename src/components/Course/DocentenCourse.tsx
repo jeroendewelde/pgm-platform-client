@@ -1,15 +1,18 @@
+import { motion } from "framer-motion";
 import { lighten, transparentize } from "polished";
 import React from "react";
+import { useInView } from "react-intersection-observer";
 import styled from "styled-components";
 
 import { CourseClient } from "../../../interfaces";
+import useInViewObserver from "../../hooks/useInView";
 import { Quote } from "../Quote";
 import { SocialMediaListItem, TeacherImage } from "../Teacher";
 import { GlitchTitle } from "../Titles/GlitchTitle";
 import { H2 } from "../Titles/H2";
 import CTALink from "./CTALink";
 
-const Container = styled.section`
+const Container = styled(motion.section)`
   padding-top: 5rem;
 
   .mobile {
@@ -133,6 +136,15 @@ const Container = styled.section`
   }
 `;
 
+const Variants = {
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 1, type: "spring", bounce: 0.3 },
+  },
+  hidden: { opacity: 0, y: 100, type: "spring", bounce: 0.3 },
+};
+
 interface DocentenCourseProps {
   course: CourseClient;
 }
@@ -148,10 +160,18 @@ const DocentenCourse = ({ course }: DocentenCourseProps) => {
     }
   };
 
+  const { ref, inView } = useInView();
+  const animation = useInViewObserver(inView);
+
   return (
     <>
       {course.teachers.length > 0 && (
-        <Container>
+        <Container
+          ref={ref}
+          animate={animation}
+          initial="hidden"
+          variants={Variants}
+        >
           <Title />
 
           <ul>

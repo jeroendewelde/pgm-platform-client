@@ -45,6 +45,29 @@ export const GET_PROJECT_BY_ID = gql`
   }
 `;
 
+export const GET_ALL_PROJECTS_CLIENT = gql`
+  {
+    projects {
+      id
+      name
+      teaserText
+      body
+      academicYear
+      tags
+      courseId
+      course {
+        name
+      }
+      students {
+        id
+        firstName
+        lastName
+        academicYear
+      }
+    }
+  }
+`;
+
 /**
  * Mutations
  */

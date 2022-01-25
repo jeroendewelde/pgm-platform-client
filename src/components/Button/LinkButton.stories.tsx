@@ -1,22 +1,25 @@
 import React from "react";
 import { Meta, Story } from "@storybook/react";
 
-import Button from "./Button";
-import { ButtonProps } from "./Button";
+import LinkButton from "./LinkButton";
+import { LinkButtonProps } from "./LinkButton";
 
 const meta: Meta = {
-  title: "components/CTA/Button",
-  component: Button,
+  title: "components/CTA/LinkButton",
+  component: LinkButton,
   argTypes: {
-    onClick: {
-      action: "clicked",
-      description: "The button's onClick handler",
-    },
     children: {
       name: "Label",
       defaultValue: "Button",
       type: "string",
       description: "The text to display inside the button",
+      control: "text",
+    },
+    href: {
+      name: "Href",
+      defaultValue: "https://www.arteveldehogeschool.be/",
+      type: "string",
+      description: "The href of the button",
       control: "text",
     },
     variant: {
@@ -32,6 +35,6 @@ const meta: Meta = {
 
 export default meta;
 
-const Template: Story<ButtonProps> = (args) => <Button {...args} />;
+const Template: Story<LinkButtonProps> = (args) => <LinkButton {...args} />;
 
 export const Default = Template.bind({});

@@ -4,8 +4,59 @@ import { GetOneTeacherClient } from "../../../interfaces";
 import { SocialMediaListItem, TeacherImage } from "../Teacher";
 import { GlitchTitle } from "../Titles/GlitchTitle";
 import { Quote } from "../Quote";
+import { motion } from "framer-motion";
 
-const Container = styled.div`
+const stagger = {
+  animate: {
+    transition: {
+      staggerChildren: 0.1,
+      delayChildren: 0.8,
+    },
+  },
+};
+
+const fadeUp = {
+  initial: {
+    y: 40,
+    opacity: 0,
+  },
+  animate: {
+    y: 0,
+    opacity: 1,
+    transition: {
+      duration: 1,
+      ease: [0.6, 0.05, -0.01, 0.99],
+    },
+  },
+  exit: {
+    y: 20,
+    opacity: 0,
+  },
+};
+
+const imageFadeIn = {
+  initial: {
+    opacity: 0,
+    y: -20,
+    scale: 0.9,
+  },
+  animate: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: {
+      type: "spring",
+      delay: 0.7,
+    },
+  },
+  exit: {
+    opacity: 0,
+    y: -20,
+    scale: 0.9,
+  },
+};
+
+const Container = styled(motion.div)`
   .mobile {
     margin-top: 3rem;
     @media (min-width: ${(props) => props.theme.width.small}) {
@@ -117,15 +168,29 @@ interface HeroDetailProps {
 
 const HeroDetail = ({ teacher }: HeroDetailProps) => {
   return (
-    <Container>
+    <Container initial="initial" animate="animate" exit={{ opacity: 0 }}>
       <div className="mobile">
-        <div className="mobileImage">
+        <motion.div className="mobileImage" variants={imageFadeIn}>
           <TeacherImage />
-        </div>
-        <GlitchTitle>{teacher.firstName + " " + teacher.lastName}</GlitchTitle>
+        </motion.div>
+        <motion.div
+          initial={{ opacity: 0, x: -100 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: -100 }}
+          transition={{
+            delay: 0.3,
+            duration: 0.65,
+          }}
+        >
+          <GlitchTitle>
+            {teacher.firstName + " " + teacher.lastName}
+          </GlitchTitle>
+        </motion.div>
         <ul className="socials">
           {teacher.personInformation.socialMedias.map((socialMedia) => (
-            <SocialMediaListItem socialMedia={socialMedia} />
+            <motion.div key={socialMedia.id} variants={fadeUp}>
+              <SocialMediaListItem socialMedia={socialMedia} />
+            </motion.div>
           ))}
         </ul>
         <div className="quote">
@@ -134,22 +199,33 @@ const HeroDetail = ({ teacher }: HeroDetailProps) => {
       </div>
 
       <div className="desktop">
-        <GlitchTitle>{teacher.firstName + " " + teacher.lastName}</GlitchTitle>
+        <motion.div
+          initial={{ opacity: 0, x: -100 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: -100 }}
+          transition={{
+            delay: 0.3,
+            duration: 0.65,
+          }}
+        >
+          <GlitchTitle>
+            {teacher.firstName + " " + teacher.lastName}
+          </GlitchTitle>
+        </motion.div>
 
         <div className="flex">
-          <div className="desktopImage">
+          <motion.div className="desktopImage" variants={imageFadeIn}>
             <TeacherImage />
-          </div>
+          </motion.div>
 
           <div className="content">
-            <ul className="socials">
+            <motion.ul className="socials" variants={stagger}>
               {teacher.personInformation.socialMedias.map((socialMedia) => (
-                <SocialMediaListItem
-                  key={socialMedia.id}
-                  socialMedia={socialMedia}
-                />
+                <motion.div key={socialMedia.id} variants={fadeUp}>
+                  <SocialMediaListItem socialMedia={socialMedia} />
+                </motion.div>
               ))}
-            </ul>
+            </motion.ul>
             <div className="quote">
               <Quote content={teacher.personInformation.quote} />
             </div>

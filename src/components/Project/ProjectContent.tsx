@@ -1,12 +1,15 @@
+import { motion } from "framer-motion";
 import Image from "next/image";
 import React from "react";
+import { useInView } from "react-intersection-observer";
 import styled from "styled-components";
 
 import { Project } from "../../../interfaces";
 import test from "../../assets/test/test.jpg";
+import useInViewObserver from "../../hooks/useInView";
 import { H2 } from "../Titles/H2";
 
-const Container = styled.div`
+const Container = styled(motion.section)`
   padding-top: 2rem;
   padding-bottom: 2rem;
 
@@ -69,8 +72,10 @@ interface ProjectContentProps {
 }
 
 const ProjectContent = ({ project }: ProjectContentProps) => {
+  const { ref, inView } = useInView();
+  const animation = useInViewObserver(inView);
   return (
-    <Container>
+    <Container ref={ref} animate={animation}>
       <H2>Beschrijving</H2>
       <div className="flex">
         <div className="body">

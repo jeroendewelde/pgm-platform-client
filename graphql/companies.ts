@@ -35,6 +35,28 @@ export const GET_COMPANY_BY_ID = gql`
   }
 `;
 
+export const GET_ALL_COMPANIES_CLIENT = gql`
+  {
+    companies {
+      id
+      name
+      teaserImage
+      interns {
+        id
+        function
+        description
+        year
+        studentId
+        student {
+          id
+          firstName
+          lastName
+        }
+      }
+    }
+  }
+`;
+
 /**
  * Mutations
  */

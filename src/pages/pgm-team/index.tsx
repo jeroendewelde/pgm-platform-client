@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import React from "react";
 import styled from "styled-components";
 import client from "../../../apollo-client";
@@ -25,9 +26,18 @@ const PgmTeam = ({ teachers, students, generations }: PgmTeamProps) => {
 
   return (
     <Container>
-      <div className="h1_padding">
+      <motion.div
+        className="h1_padding"
+        initial={{ opacity: 0, x: -100 }}
+        animate={{ opacity: 1, x: 0 }}
+        exit={{ opacity: 0, x: -100 }}
+        transition={{
+          delay: 0.3,
+          duration: 0.65,
+        }}
+      >
         <GlitchTitle>Docenten</GlitchTitle>
-      </div>
+      </motion.div>
       <TeachersCarousel teachers={teachers} />
       <div className="h1_padding">
         <GlitchTitle>Studenten</GlitchTitle>

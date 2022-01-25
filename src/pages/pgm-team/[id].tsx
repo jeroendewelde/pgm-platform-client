@@ -1,5 +1,7 @@
+import { motion } from "framer-motion";
 import { GetStaticPaths } from "next";
 import React from "react";
+import { useInView } from "react-intersection-observer";
 import styled from "styled-components";
 import client from "../../../apollo-client";
 import {
@@ -11,6 +13,7 @@ import { Card } from "../../components/Course";
 import { HeroDetail } from "../../components/PGM-Team";
 import { Bio, FieldExperiences } from "../../components/Teacher";
 import { H2 } from "../../components/Titles/H2";
+import useInViewObserver from "../../hooks/useInView";
 
 const Container = styled.div`
   padding-bottom: 5rem;
@@ -26,7 +29,7 @@ const FlexContainer = styled.div`
   }
 `;
 
-const CoursesContainer = styled.div`
+const CoursesContainer = styled(motion.div)`
   margin-top: 5rem;
   position: relative;
 
@@ -79,10 +82,9 @@ interface DetailTeacherProps {
   teacher: GetOneTeacherClient;
 }
 
-const tags = ["react", "javascript", "typescript"];
-
 const TeacherDetail = ({ teacher }: DetailTeacherProps) => {
-  console.log(teacher.courses);
+  const { ref, inView } = useInView();
+  const animation = useInViewObserver(inView);
 
   return (
     <Container>
@@ -94,8 +96,7 @@ const TeacherDetail = ({ teacher }: DetailTeacherProps) => {
         />
       </FlexContainer>
 
-      {/* tijdelijk hard coded */}
-      <CoursesContainer>
+      <CoursesContainer ref={ref} animate={animation}>
         <span className="bg"></span>
         <H2>Teaches following courses</H2>
         <ul className="course-card-list">

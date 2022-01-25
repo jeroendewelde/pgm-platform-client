@@ -1,10 +1,12 @@
+import { motion, useAnimation } from "framer-motion";
 import { darken } from "polished";
-import React from "react";
+import React, { useEffect } from "react";
+import { useInView } from "react-intersection-observer";
 import styled from "styled-components";
 import { FieldExperience } from "../../../interfaces";
 import { H2 } from "../Titles/H2";
 
-const Container = styled.div`
+const Container = styled(motion.section)`
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -124,8 +126,36 @@ interface FieldExperienceProps {
 }
 
 const FieldExperiences = ({ fieldExperiences }: FieldExperienceProps) => {
+  const { ref, inView } = useInView();
+  const animation = useAnimation();
+
+  useEffect(() => {
+    if (inView) {
+      animation.start({
+        opacity: 1,
+        x: 0,
+        transition: {
+          duration: 1,
+          type: "spring",
+          bounce: 0.3,
+        },
+      });
+    }
+
+    if (!inView) {
+      animation.start({
+        opacity: 0,
+        x: 100,
+        transition: {
+          duration: 1,
+          type: "spring",
+          bounce: 0.3,
+        },
+      });
+    }
+  }, [animation, inView]);
   return (
-    <Container>
+    <Container ref={ref} animate={animation}>
       <H2>Field Experience</H2>
       <ul>
         {fieldExperiences?.map((fieldExperience: FieldExperience) => (

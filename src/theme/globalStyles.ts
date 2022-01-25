@@ -83,6 +83,13 @@ const GlobalStyle = createGlobalStyle`
     }
   }
 
+  
+
+  .show {
+      transform: translate(0, 0);
+      opacity: 1;
+  }
+
   @media (prefers-reduced-motion: reduce) {
   *,
   ::before,

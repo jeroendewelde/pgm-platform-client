@@ -9,9 +9,13 @@ import { StudentCard } from ".";
 import { transparentize } from "polished";
 import { Person } from "../../../interfaces";
 
+import useInViewObserver from "../../hooks/useInView";
+import { useInView } from "react-intersection-observer";
+import { motion } from "framer-motion";
+
 SwiperCore.use([Navigation, Autoplay]);
 
-const SwiperContainer = styled.div`
+const SwiperContainer = styled(motion.div)`
   border-right: 2px solid ${(props) => props.theme.colors.turquoise};
   border-left: 2px solid ${(props) => props.theme.colors.turquoise};
   margin: 0 auto;
@@ -61,9 +65,10 @@ interface Props {
 }
 
 const StudentCarousel = ({ students }: Props) => {
-  console.log(students);
+  const { ref, inView } = useInView();
+  const animation = useInViewObserver(inView);
   return (
-    <SwiperContainer>
+    <SwiperContainer ref={ref} animate={animation}>
       {students.length > 0 && (
         <Swiper
           autoplay={{

@@ -1,8 +1,9 @@
+import { motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 const mapboxgl = require("mapbox-gl/dist/mapbox-gl.js");
 
-const Map = styled.div`
+const Map = styled(motion.div)`
   top: 4rem;
   left: 0;
   width: 100%;
@@ -56,7 +57,15 @@ const MapBox = () => {
 
     map.scrollZoom.disable();
   }, []);
-  return <Map id="my-map" />;
+  return (
+    <Map
+      id="my-map"
+      initial={{ y: -600, opacity: 0, zIndex: -1 }}
+      animate={{ y: 0, opacity: 1, zIndex: 1 }}
+      transition={{ duration: 0.5, delay: 1.2 }}
+      exit={{ height: 0, opacity: 0 }}
+    />
+  );
 };
 
 export default MapBox;

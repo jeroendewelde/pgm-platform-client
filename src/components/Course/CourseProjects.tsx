@@ -1,10 +1,13 @@
+import { motion } from "framer-motion";
 import React from "react";
+import { useInView } from "react-intersection-observer";
 import styled from "styled-components";
 import { CourseClient } from "../../../interfaces";
+import useInViewObserver from "../../hooks/useInView";
 import { Card } from "../Project";
 import { GlitchTitle } from "../Titles/GlitchTitle";
 
-const Container = styled.section`
+const Container = styled(motion.section)`
   padding-top: 5rem;
 `;
 
@@ -23,12 +26,13 @@ interface CourseProjectsProps {
 }
 
 const CourseProjects = ({ course }: CourseProjectsProps) => {
-  console.log(course.projects);
+  const { ref, inView } = useInView();
+  const animation = useInViewObserver(inView);
 
   return (
     <>
       {course.projects && course.projects.length > 0 ? (
-        <Container>
+        <Container ref={ref} animate={animation}>
           <>
             <GlitchTitle>Projecten</GlitchTitle>
             <ProjectsList>

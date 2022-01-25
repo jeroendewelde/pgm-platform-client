@@ -10,6 +10,7 @@ import { transparentize } from "polished";
 import client from "../../apollo-client";
 import { GET_ALL_COURSES } from "../../graphql/courses";
 import { Course } from "../../interfaces";
+import { motion } from "framer-motion";
 
 const SuperContainer = styled.div`
   max-width: 80rem;
@@ -291,14 +292,21 @@ const LeerlijnPage = ({ courses }: LeerlijnProps) => {
     }
   });
 
-  console.log(term_1_with_spec);
-
   return (
     <SuperContainer>
-      <div className="titles">
+      <motion.div
+        className="titles"
+        initial={{ opacity: 0, y: -30, zIndex: -1 }}
+        animate={{ opacity: 1, y: 0, zIndex: 1 }}
+        exit={{ opacity: 0, y: -30 }}
+        transition={{
+          delay: 1.2,
+          duration: 0.45,
+        }}
+      >
         <GlitchTitle>Eerst jaar</GlitchTitle>
         <h2>Semester 1</h2>
-      </div>
+      </motion.div>
       <Container>
         <ul className="courseList">
           {term_1_without_spec &&
