@@ -15,7 +15,8 @@ const SwiperContainer = styled.div`
   border-bottom: 1px dashed ${(props) => props.theme.colors.turquoise};
 
   @media (min-width: ${(props) => props.theme.width.medium}) {
-    margin: 10rem auto;
+    margin: 5rem auto;
+
     border: none;
   }
 

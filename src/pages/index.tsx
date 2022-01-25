@@ -1,13 +1,39 @@
 import ReactPlayer from "react-player/youtube";
 
 import client from "../../apollo-client";
-import { Companies, Hero, TestimonialsCarousel } from "../components/Home";
+import {
+  Card,
+  Companies,
+  Hero,
+  TestimonialsCarousel,
+} from "../components/Home";
 import { Company, Testimonial } from "../../interfaces";
 import { GET_ALL_TESTIMONIALS } from "../../graphql/testimonials";
 import styled from "styled-components";
 import { GET_ALL_COMPANIES_CLIENT } from "../../graphql/companies";
 import { H2 } from "../components/Titles/H2";
 import { LinkButton } from "../components/Button";
+
+const CTACards = styled.div`
+  margin-top: 5rem;
+
+  @media (min-width: ${(props) => props.theme.width.medium}) {
+    margin-top: 10rem;
+  }
+
+  .cards-list {
+    width: 100%;
+
+    @media (min-width: ${(props) => props.theme.width.small}) {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 2rem;
+      flex-wrap: wrap;
+    }
+  }
+`;
 
 const VideoPlayerContainer = styled.div`
   margin: 5rem 0;
@@ -51,10 +77,43 @@ interface HomeProps {
 }
 
 export default function Home({ testimonials, companies }: HomeProps) {
+  const data = [
+    {
+      id: 1,
+      title: "Opleidingsprogramma",
+      text: "Ontdek hier het studieprogramma voor academiejaar 2022-2023",
+      url: "https://www.pgm.gent/info/",
+    },
+    {
+      id: 2,
+      title: "Opleidingsbrochure",
+      text: "Ontvang je opleidingsbrochure via mail - Academiejaar 2022-2023",
+      url: "https://forms.summit.nl/Artevelde/BrochureAanvraagDigitaal/1b5d2211-96fc-4f2e-999b-9414b617413d/started#/Page/0",
+    },
+    {
+      id: 3,
+      title: "Begeleiding op maat",
+      text: "Wil je extra advies over studiekeuze, studiefinanciering, trajecten op maat,...",
+      url: "https://www.pgm.gent/info/",
+    },
+  ];
+
   return (
     <>
       <Hero />
-      <Companies companies={companies} />
+
+      <CTACards>
+        <ul className="cards-list">
+          {data.map((item) => (
+            <Card
+              key={item.id}
+              title={item.title}
+              text={item.text}
+              url={item.url}
+            />
+          ))}
+        </ul>
+      </CTACards>
 
       <VideoPlayerContainer>
         <H2>Praktische info</H2>
@@ -88,10 +147,9 @@ export default function Home({ testimonials, companies }: HomeProps) {
           />
         </VideoPlayerWrapper>
       </VideoPlayerContainer>
+      <Companies companies={companies} />
 
       <TestimonialsCarousel testimonials={testimonials} />
-
-      {/* MSS toch zetten op contact pagina */}
 
       <VideoPlayerContainer>
         <H2>Veelgestelde vragen</H2>
