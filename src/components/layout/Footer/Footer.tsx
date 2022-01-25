@@ -1,7 +1,6 @@
 import Image from "next/image";
-import React, { useContext } from "react";
+import React from "react";
 import styled from "styled-components";
-import { CursorContext } from "../../../context/CursorContext";
 
 import FooterContent from "./FooterContent";
 import FooterCopyrightYear from "./FooterCopyrightYear";
@@ -20,31 +19,8 @@ const GlowSpot = styled.div`
 export interface FooterProps {}
 
 const Footer = () => {
-  const { setCursorHover } = useContext(CursorContext);
-
-  const handleMouseEnter = () => {
-    setCursorHover(true);
-    //change z-index of the card to be on top of the other cursor
-    const element = document.querySelector(".cursor") as HTMLElement;
-    if (element !== null) {
-      element.style.zIndex = "0";
-    }
-  };
-
-  const handleMouseLeave = () => {
-    setCursorHover(false);
-    const element = document.querySelector(".cursor") as HTMLElement;
-
-    if (element !== null) {
-      element.style.zIndex = "11";
-    }
-  };
-
   return (
-    <FooterStyle
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-    >
+    <FooterStyle>
       <FooterContent />
       <FooterCopyrightYear />
       <GlowSpot>

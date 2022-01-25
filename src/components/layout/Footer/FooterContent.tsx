@@ -7,9 +7,10 @@ import { CursorContext } from "../../../context/CursorContext";
 
 const Container = styled.div`
   padding: 2rem 1rem;
-  background-color: ${(props) => transparentize(0.9, props.theme.colors.white)};
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  background-color: ${(props) =>
+    transparentize(0.97, props.theme.colors.white)};
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
   z-index: 16;
   position: relative;
 `;
@@ -96,11 +97,11 @@ const SocialMedia = styled.ul`
   }
 
   a {
-    color: ${(props) => props.theme.colors.turquoise};
+    color: ${(props) => props.theme.colors.white};
     transition: ${(props) => props.theme.transition.normal};
 
     &:hover {
-      color: ${(props) => props.theme.colors.pink};
+      color: ${(props) => props.theme.colors.turquoise};
     }
   }
 `;
@@ -131,14 +132,35 @@ const FooterContent = () => {
 
   const handleMouseEnter = () => {
     setCursorHover(true);
+    //change z-index of the card to be on top of the other cursor
+    const element = document.querySelector(".cursor") as HTMLElement;
+    if (element !== null) {
+      element.style.zIndex = "0";
+      element.style.width = "15rem";
+      element.style.height = "15rem";
+      element.style.top = "-6.5rem";
+      element.style.left = "-6rem";
+      element.style.borderWidth = "1rem";
+      element.style.transition = "all 0.2s ease-in-out";
+    }
   };
 
   const handleMouseLeave = () => {
     setCursorHover(false);
+    const element = document.querySelector(".cursor") as HTMLElement;
+
+    if (element !== null) {
+      element.style.zIndex = "11";
+      element.style.width = "2.5rem";
+      element.style.height = "2.5rem";
+      element.style.top = "auto";
+      element.style.left = "auto";
+      element.style.borderWidth = "3px";
+    }
   };
 
   return (
-    <Container onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+    <Container>
       <Info>
         <span>
           © www.pgm.gent is een website van de opleiding Graduaat Programmeren
@@ -165,17 +187,17 @@ const FooterContent = () => {
               Facebook
             </Link>
           </li>
-          <li>
+          <li onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
             <Link href="https://www.instagram.com/arteveldehogeschool/">
               Instagram
             </Link>
           </li>
-          <li>
+          <li onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
             <Link href="https://www.linkedin.com/company/graduaat-programmeren/">
               LinkedIn
             </Link>
           </li>
-          <li>
+          <li onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
             <Link href="https://www.youtube.com/channel/UCHly8VZULSMWEmvbPJNVtFA/videos">
               YouTube
             </Link>
