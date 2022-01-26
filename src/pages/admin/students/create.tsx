@@ -1,13 +1,15 @@
-import React, { ReactElement } from "react";
+import React, { ChangeEvent, ReactElement, useState } from "react";
 import { useRouter } from "next/router";
+import Image from "next/image";
 
 // Formik & Yup
 import * as yup from "yup";
 import { Field, Form, Formik } from "formik";
 
 // Material UI Components
-import { Button, Grid } from "@mui/material";
+import { Button, Paper, Grid } from "@mui/material";
 import { TextField } from "formik-mui";
+import LandscapeIcon from "@mui/icons-material/Landscape";
 
 // Queries
 import { useMutation } from "@apollo/client";
@@ -30,9 +32,39 @@ const validationSchema = yup.object({
 
 export default function CreateStudentPage(): ReactElement {
   const router = useRouter();
+  const [imageSrc, setImageSrc] = useState<string>();
+  const [uploadData, setUploadData] = useState<File>();
   const [addStudent, { data, loading, error }] = useMutation(CREATE_PERSON, {
     notifyOnNetworkStatusChange: true,
   });
+
+  const handleOnChangeImage = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target?.files && e.target?.files.length > 0) {
+      const file = e.target.files[0];
+      setUploadData(file);
+      setImageSrc(URL.createObjectURL(file));
+    }
+  };
+
+  const handleUpload = async () => {
+    const formData: any = new FormData();
+    try {
+      formData.append("file", uploadData);
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND}photos/upload`,
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
+      if (!response.ok) {
+        throw new Error(response.statusText);
+      }
+      return await response.json();
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   return (
     <BasicContainer title="Nieuwe Student">
@@ -41,10 +73,14 @@ export default function CreateStudentPage(): ReactElement {
           firstName: "",
           lastName: "",
           academicYear: "",
+          avatarUrl: "",
         }}
         validationSchema={validationSchema}
-        onSubmit={(values, { setSubmitting }) => {
+        onSubmit={async (values, { setSubmitting }) => {
           setSubmitting(true);
+
+          const imageUpload = uploadData ? await handleUpload() : null;
+
           addStudent({
             variables: {
               input: {
@@ -52,12 +88,13 @@ export default function CreateStudentPage(): ReactElement {
                 lastName: values.lastName,
                 academicYear: values.academicYear,
                 type: "STUDENT",
+                avatarUrl: imageUpload && imageUpload.imagePath,
               },
             },
           });
           if (!error && !loading) {
             setSubmitting(false);
-            window.location.href = "/admin/students";
+            // window.location.href = "/admin/students";
           }
         }}
       >
@@ -107,6 +144,63 @@ export default function CreateStudentPage(): ReactElement {
                   helperText="Academiejaar in formaat 2019-2020"
                   fullWidth
                 />
+              </Grid>
+
+              <Grid item xs={12}>
+                <Grid item xs={8}>
+                  <Paper
+                    sx={{
+                      mb: 2,
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      backgroundColor: "#E5E5E5",
+                      overflow: "hidden",
+                      maxWidth: 240,
+                    }}
+                    style={{
+                      aspectRatio: "3 / 4",
+                      position: "relative",
+                    }}
+                  >
+                    {imageSrc ? (
+                      <Image
+                        src={imageSrc}
+                        alt="avatar student"
+                        layout="fill"
+                        objectFit="cover"
+                      />
+                    ) : (
+                      <LandscapeIcon
+                        sx={{
+                          color: "#FFF",
+                          fontSize: 64,
+                        }}
+                      />
+                    )}
+                  </Paper>
+                  <label htmlFor="contained-button-file">
+                    <input
+                      accept="image/*"
+                      id="contained-button-file"
+                      multiple
+                      type="file"
+                      onChange={handleOnChangeImage}
+                      style={{
+                        display: "none",
+                      }}
+                    />
+                    <Button
+                      variant="outlined"
+                      component="span"
+                      color={imageSrc ? "warning" : "primary"}
+                    >
+                      {imageSrc
+                        ? "Avatar Image aanpassen"
+                        : "Avatar Image toevoegen"}
+                    </Button>
+                  </label>
+                </Grid>
               </Grid>
 
               <Grid item xs={12}>

@@ -1,14 +1,16 @@
-import React, { ReactElement, useEffect, useState } from "react";
+import React, { ChangeEvent, ReactElement, useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import Image from "next/image";
 
 // Formik & Yup
 import * as yup from "yup";
 import { Field, FieldArray, Form, Formik } from "formik";
 
 // Material UI Components
-import { Button, Grid, Typography } from "@mui/material";
+import { Button, Grid, Typography, Paper, Divider } from "@mui/material";
 import { TextField } from "formik-mui";
 import { Remove, Add } from "@material-ui/icons";
+import LandscapeIcon from "@mui/icons-material/Landscape";
 
 // Queries
 import {
@@ -45,6 +47,8 @@ const validationSchema = yup.object({
 export default function EditProjectPage(): ReactElement {
   const router = useRouter();
   const { id } = router.query;
+  const [imageSrc, setImageSrc] = useState<string>();
+  const [uploadData, setUploadData] = useState<File>();
 
   const {
     data: dataGet,
@@ -99,6 +103,40 @@ export default function EditProjectPage(): ReactElement {
     }
   };
 
+  const handleOnChangeImage = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target?.files && e.target?.files.length > 0) {
+      const file = e.target.files[0];
+      setUploadData(file);
+      setImageSrc(URL.createObjectURL(file));
+    }
+  };
+
+  useEffect(() => {
+    if (dataGet?.project?.teaserImage) {
+      setImageSrc(dataGet.project.teaserImage);
+    }
+  }, [dataGet]);
+
+  const handleUpload = async () => {
+    const formData: any = new FormData();
+    try {
+      formData.append("file", uploadData);
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND}photos/upload`,
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
+      if (!response.ok) {
+        throw new Error(response.statusText);
+      }
+      return await response.json();
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <BasicContainer title="Bewerk Project">
       {loadingGet || loadingCourses || loadingStudents ? (
@@ -115,8 +153,14 @@ export default function EditProjectPage(): ReactElement {
             students: dataGet?.project?.students || [],
           }}
           validationSchema={validationSchema}
-          onSubmit={(values, { setSubmitting }) => {
+          onSubmit={async (values, { setSubmitting }) => {
             setSubmitting(true);
+
+            let imageUpload;
+
+            if (imageSrc && imageSrc.split("http").length <= 1) {
+              imageUpload = await handleUpload();
+            }
 
             updateProject({
               variables: {
@@ -125,6 +169,7 @@ export default function EditProjectPage(): ReactElement {
                   teaserText: values.teaserText,
                   body: values.body,
                   academicYear: values.academicYear,
+                  teaserImage: imageUpload && imageUpload.imagePath,
                   tags: values.tags,
                   courseId: values.courseId,
                   studentIds: values.students?.map((s: Person) => s.id),
@@ -215,6 +260,63 @@ export default function EditProjectPage(): ReactElement {
                     }}
                   />
                 </Grid>
+
+                <Grid item xs={12}>
+                  <Grid item xs={12} md={6} lg={4}>
+                    <Paper
+                      sx={{
+                        mb: 2,
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        backgroundColor: "#E5E5E5",
+                        overflow: "hidden",
+                      }}
+                      style={{
+                        aspectRatio: "16 / 9",
+                        position: "relative",
+                      }}
+                    >
+                      {imageSrc ? (
+                        <Image
+                          src={imageSrc}
+                          alt="teaser image bedrijf"
+                          layout="fill"
+                          objectFit="cover"
+                        />
+                      ) : (
+                        <LandscapeIcon
+                          sx={{
+                            color: "#FFF",
+                            fontSize: 64,
+                          }}
+                        />
+                      )}
+                    </Paper>
+                    <label htmlFor="contained-button-file">
+                      <input
+                        accept="image/*"
+                        id="contained-button-file"
+                        multiple
+                        type="file"
+                        onChange={handleOnChangeImage}
+                        style={{
+                          display: "none",
+                        }}
+                      />
+                      <Button
+                        variant="outlined"
+                        component="span"
+                        color={imageSrc ? "warning" : "primary"}
+                      >
+                        {imageSrc
+                          ? "Teaser Image aanpassen"
+                          : "Teaser Image toevoegen"}
+                      </Button>
+                    </label>
+                  </Grid>
+                </Grid>
+
                 <Grid item xs={12}>
                   <Typography variant="h2" component="h2">
                     Studenten

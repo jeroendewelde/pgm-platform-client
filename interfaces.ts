@@ -80,6 +80,7 @@ export interface Person {
   firstName: string;
   lastName: string;
   // enum student, person?
+  avatarUrl: string;
   type: string;
   academicYear: string;
   // Relations
@@ -103,6 +104,7 @@ export interface Project {
   teaserText: string;
   body: string;
   academicYear: string;
+  teaserImage: string;
   tags: string[];
   // Relations
   courseId: number;
@@ -196,6 +198,7 @@ export interface AllTeachersClient {
   id: number;
   firstName: string;
   lastName: string;
+  avatarUrl: string;
 
   personInformation: {
     bio: string;
@@ -208,6 +211,7 @@ export interface GetOneTeacherClient {
   id: number;
   firstName: string;
   lastName: string;
+  avatarUrl: string;
 
   courses: Course[];
 
@@ -239,6 +243,7 @@ export interface CourseClient {
   description: string;
   term: number;
   academicYear: string;
+  teaserImage: string;
   tags: string[];
   projects: Project[];
   teachers: AllTeachersClient[];

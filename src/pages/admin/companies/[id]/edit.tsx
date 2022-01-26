@@ -1,4 +1,6 @@
 import React, { ChangeEvent, ReactElement, useEffect, useState } from "react";
+import { useRouter } from "next/router";
+import Image from "next/image";
 
 // Formik & Yup
 import * as yup from "yup";
@@ -8,7 +10,6 @@ import { Field, FieldArray, Form, Formik } from "formik";
 import { Button, Grid, Typography, Paper, Divider } from "@mui/material";
 import { TextField } from "formik-mui";
 import { Remove, Add } from "@material-ui/icons";
-import { styled } from "@mui/material/styles";
 import LandscapeIcon from "@mui/icons-material/Landscape";
 
 // Queries
@@ -25,9 +26,7 @@ import { useMutation, useQuery } from "@apollo/client";
 import BasicContainer from "../../../../components/Admin/style/BasicContainer";
 import CustomLoading from "../../../../components/Admin/style/CustomLoading";
 import CustomSingleSelect from "../../../../components/Admin/Form/CustomSingleSelect";
-import { useRouter } from "next/router";
 import { Intern } from "../../../../../interfaces";
-import Image from "next/image";
 
 const validationSchema = yup.object({
   name: yup.string().required("Naam van het leerbedrijf is verplicht"),
@@ -82,10 +81,6 @@ export default function EditCompanyPage(): ReactElement {
     notifyOnNetworkStatusChange: true,
   });
 
-  const Input = styled("input")({
-    display: "none",
-  });
-
   const handleDelete = () => {
     deleteCourse({
       variables: {
@@ -116,14 +111,16 @@ export default function EditCompanyPage(): ReactElement {
     const formData: any = new FormData();
     try {
       formData.append("file", uploadData);
-      const response = await fetch("http://localhost:3000/photos/upload", {
-        method: "POST",
-        body: formData,
-      });
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND}photos/upload`,
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
       if (!response.ok) {
         throw new Error(response.statusText);
       }
-      //   console.log(await response.json());
       return await response.json();
     } catch (err) {
       console.log(err);
@@ -196,55 +193,58 @@ export default function EditCompanyPage(): ReactElement {
                   />
                 </Grid>
 
-                <Grid item xs={12} md={4}>
-                  <Paper
-                    sx={{
-                      height: 180,
-                      width: 320,
-                      mt: 2,
-                      mb: 2,
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      backgroundColor: "#E5E5E5",
-                      overflow: "hidden",
-                    }}
-                  >
-                    {imageSrc ? (
-                      <Image
-                        src={imageSrc}
-                        alt="teaser image"
-                        width={320}
-                        height={180}
-                        objectFit="cover"
-                      />
-                    ) : (
-                      <LandscapeIcon
-                        sx={{
-                          color: "#FFF",
-                          fontSize: 64,
-                        }}
-                      />
-                    )}
-                  </Paper>
-                  <label htmlFor="contained-button-file">
-                    <Input
-                      accept="image/*"
-                      id="contained-button-file"
-                      multiple
-                      type="file"
-                      onChange={handleOnChangeImage}
-                    />
-                    <Button
-                      variant="outlined"
-                      component="span"
-                      color={imageSrc ? "warning" : "primary"}
+                <Grid item xs={12}>
+                  <Grid item xs={12} md={6} lg={4}>
+                    <Paper
+                      sx={{
+                        mb: 2,
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        backgroundColor: "#E5E5E5",
+                        overflow: "hidden",
+                      }}
+                      style={{
+                        aspectRatio: "16 / 9",
+                        position: "relative",
+                      }}
                     >
-                      {imageSrc
-                        ? "Teaser Image aanpassen"
-                        : "Teaser Image toevoegen"}
-                    </Button>
-                  </label>
+                      {imageSrc ? (
+                        <Image
+                          src={imageSrc}
+                          alt="teaser image bedrijf"
+                          layout="fill"
+                          objectFit="cover"
+                        />
+                      ) : (
+                        <LandscapeIcon
+                          sx={{
+                            color: "#FFF",
+                            fontSize: 64,
+                          }}
+                        />
+                      )}
+                    </Paper>
+                    <label htmlFor="contained-button-file">
+                      <input
+                        accept="image/*"
+                        id="contained-button-file"
+                        multiple
+                        type="file"
+                        onChange={handleOnChangeImage}
+                        style={{ display: "none" }}
+                      />
+                      <Button
+                        variant="outlined"
+                        component="span"
+                        color={imageSrc ? "warning" : "primary"}
+                      >
+                        {imageSrc
+                          ? "Teaser Image aanpassen"
+                          : "Teaser Image toevoegen"}
+                      </Button>
+                    </label>
+                  </Grid>
                 </Grid>
 
                 <Grid item xs={12}>

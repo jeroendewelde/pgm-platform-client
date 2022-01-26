@@ -1,15 +1,22 @@
-import React, { ReactElement } from "react";
-import { useRouter } from "next/router";
+import React, { ChangeEvent, ReactElement, useState } from "react";
+import Image from "next/image";
 
 // Formik & Yup
 import * as yup from "yup";
 import { Field, FieldArray, Form, Formik } from "formik";
 
 // Material UI Components
-import { Button, Grid, TextField as TextMUI, Typography } from "@mui/material";
+import {
+  Button,
+  Grid,
+  Paper,
+  TextField as TextMUI,
+  Typography,
+} from "@mui/material";
 import { Remove, Add } from "@material-ui/icons";
 import { TextField } from "formik-mui";
 import { CheckBoxOutlineBlank, CheckBox } from "@mui/icons-material";
+import LandscapeIcon from "@mui/icons-material/Landscape";
 
 // Queries
 import { useMutation, useQuery } from "@apollo/client";
@@ -41,12 +48,11 @@ const validationSchema = yup.object({
 });
 
 export default function CreateCoursePage(): ReactElement {
-  const router = useRouter();
+  const [imageSrc, setImageSrc] = useState<string>();
+  const [uploadData, setUploadData] = useState<File>();
   const [addCourse, { data, loading, error }] = useMutation(CREATE_COURSE, {
     notifyOnNetworkStatusChange: true,
   });
-  const checkBoxIcon = <CheckBoxOutlineBlank fontSize="small" />;
-  const checkedIconChecked = <CheckBox fontSize="small" />;
 
   const {
     data: dataLearningLines,
@@ -73,6 +79,34 @@ export default function CreateCoursePage(): ReactElement {
     errorPolicy: "all",
   });
 
+  const handleOnChangeImage = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target?.files && e.target?.files.length > 0) {
+      const file = e.target.files[0];
+      setUploadData(file);
+      setImageSrc(URL.createObjectURL(file));
+    }
+  };
+
+  const handleUpload = async () => {
+    const formData: any = new FormData();
+    try {
+      formData.append("file", uploadData);
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND}photos/upload`,
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
+      if (!response.ok) {
+        throw new Error(response.statusText);
+      }
+      return await response.json();
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <BasicContainer title="Nieuw Vak">
       {loadingLearningLines || loadingSpecialisations || loadingTeachers ? (
@@ -91,8 +125,15 @@ export default function CreateCoursePage(): ReactElement {
             teachers: [],
           }}
           validationSchema={validationSchema}
-          onSubmit={(values, { setSubmitting }) => {
+          onSubmit={async (values, { setSubmitting }) => {
             setSubmitting(true);
+
+            const imageUpload = uploadData ? await handleUpload() : null;
+
+            console.log("imageUpload", imageUpload);
+            console.log("uploadData", uploadData);
+
+            console.log("...values...", values);
             addCourse({
               variables: {
                 input: {
@@ -100,6 +141,7 @@ export default function CreateCoursePage(): ReactElement {
                   description: values.description,
                   term: values.term,
                   academicYear: values.academicYear,
+                  teaserImage: imageUpload && imageUpload.imagePath,
                   tags: values.tags,
                   learningLineId: values.learningLineId,
                   specialisationId: values.specialisationId,
@@ -112,7 +154,7 @@ export default function CreateCoursePage(): ReactElement {
             });
             if (!error && !loading) {
               setSubmitting(false);
-              window.location.href = "/admin/courses";
+              //   window.location.href = "/admin/courses";
             }
           }}
         >
@@ -177,6 +219,60 @@ export default function CreateCoursePage(): ReactElement {
                     multiline
                   />
                 </Grid>
+                <Grid item xs={12}>
+                  <Grid item xs={12} md={6} lg={4}>
+                    <Paper
+                      sx={{
+                        mb: 2,
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        backgroundColor: "#E5E5E5",
+                        overflow: "hidden",
+                      }}
+                      style={{
+                        aspectRatio: "16 / 9",
+                        position: "relative",
+                      }}
+                    >
+                      {imageSrc ? (
+                        <Image
+                          src={imageSrc}
+                          alt="teaser image vak"
+                          layout="fill"
+                          objectFit="cover"
+                        />
+                      ) : (
+                        <LandscapeIcon
+                          sx={{
+                            color: "#FFF",
+                            fontSize: 64,
+                          }}
+                        />
+                      )}
+                    </Paper>
+                    <label htmlFor="contained-button-file">
+                      <input
+                        accept="image/*"
+                        id="contained-button-file"
+                        multiple
+                        type="file"
+                        onChange={handleOnChangeImage}
+                        style={{ display: "none" }}
+                      />
+                      <Button
+                        variant="outlined"
+                        component="span"
+                        color={imageSrc ? "warning" : "primary"}
+                      >
+                        {imageSrc
+                          ? "Teaser Image aanpassen"
+                          : "Teaser Image toevoegen"}
+                      </Button>
+                    </label>
+                  </Grid>
+                </Grid>
+
                 <Grid item xs={12} md={6}>
                   <Field
                     required

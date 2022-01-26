@@ -1,13 +1,15 @@
-import React, { ReactElement } from "react";
+import React, { ChangeEvent, ReactElement, useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import Image from "next/image";
 
 // Formik & Yup
 import * as yup from "yup";
 import { Field, Form, Formik } from "formik";
 
 // Material UI Components
-import { Button, Grid } from "@mui/material";
+import { Button, Grid, Paper } from "@mui/material";
 import { TextField } from "formik-mui";
+import LandscapeIcon from "@mui/icons-material/Landscape";
 
 // Queries
 import {
@@ -36,6 +38,8 @@ const validationSchema = yup.object({
 export default function EditStudentPage(): ReactElement {
   const router = useRouter();
   const { id } = router.query;
+  const [imageSrc, setImageSrc] = useState<string>();
+  const [uploadData, setUploadData] = useState<File>();
 
   const {
     data: dataGet,
@@ -75,6 +79,40 @@ export default function EditStudentPage(): ReactElement {
     }
   };
 
+  const handleOnChangeImage = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target?.files && e.target?.files.length > 0) {
+      const file = e.target.files[0];
+      setUploadData(file);
+      setImageSrc(URL.createObjectURL(file));
+    }
+  };
+
+  useEffect(() => {
+    if (dataGet?.person) {
+      setImageSrc(dataGet.person.avatarUrl);
+    }
+  }, [dataGet]);
+
+  const handleUpload = async () => {
+    const formData: any = new FormData();
+    try {
+      formData.append("file", uploadData);
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND}photos/upload`,
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
+      if (!response.ok) {
+        throw new Error(response.statusText);
+      }
+      return await response.json();
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <BasicContainer title="Bewerk Student">
       {loadingGet ? (
@@ -87,14 +125,22 @@ export default function EditStudentPage(): ReactElement {
             academicYear: dataGet.person.academicYear || "",
           }}
           validationSchema={validationSchema}
-          onSubmit={(values, { setSubmitting }) => {
+          onSubmit={async (values, { setSubmitting }) => {
             setSubmitting(true);
+
+            let imageUpload;
+
+            if (imageSrc && imageSrc.split("http").length <= 1) {
+              imageUpload = await handleUpload();
+            }
+
             updateStudent({
               variables: {
                 input: {
                   firstName: values.firstName,
                   lastName: values.lastName,
                   type: "STUDENT",
+                  avatarUrl: imageUpload && imageUpload.imagePath,
                   academicYear: values.academicYear,
                 },
                 id: Number(id),
@@ -153,6 +199,64 @@ export default function EditStudentPage(): ReactElement {
                     fullWidth
                   />
                 </Grid>
+
+                <Grid item xs={12}>
+                  <Grid item xs={8}>
+                    <Paper
+                      sx={{
+                        mb: 2,
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        backgroundColor: "#E5E5E5",
+                        overflow: "hidden",
+                        maxWidth: 240,
+                      }}
+                      style={{
+                        aspectRatio: "3 / 4",
+                        position: "relative",
+                      }}
+                    >
+                      {imageSrc ? (
+                        <Image
+                          src={imageSrc}
+                          alt="avatar student"
+                          layout="fill"
+                          objectFit="cover"
+                        />
+                      ) : (
+                        <LandscapeIcon
+                          sx={{
+                            color: "#FFF",
+                            fontSize: 64,
+                          }}
+                        />
+                      )}
+                    </Paper>
+                    <label htmlFor="contained-button-file">
+                      <input
+                        accept="image/*"
+                        id="contained-button-file"
+                        multiple
+                        type="file"
+                        onChange={handleOnChangeImage}
+                        style={{
+                          display: "none",
+                        }}
+                      />
+                      <Button
+                        variant="outlined"
+                        component="span"
+                        color={imageSrc ? "warning" : "primary"}
+                      >
+                        {imageSrc
+                          ? "Avatar Image aanpassen"
+                          : "Avatar Image toevoegen"}
+                      </Button>
+                    </label>
+                  </Grid>
+                </Grid>
+
                 <Grid
                   item
                   xs={12}
