@@ -30,7 +30,10 @@ const validationSchema = yup.object({
 export default function createLearningLine(): ReactElement {
   const router = useRouter();
   const [addSpecialisation, { data, loading, error }] = useMutation(
-    CREATE_SPECIALISATION
+    CREATE_SPECIALISATION,
+    {
+      notifyOnNetworkStatusChange: true,
+    }
   );
 
   return (

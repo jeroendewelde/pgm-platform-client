@@ -51,7 +51,9 @@ export default function editLearningLine(): ReactElement {
   const [
     deleteLearningLine,
     { data: dataDelete, loading: loadingDelete, error: errorDelete },
-  ] = useMutation(DELETE_LEARNING_LINE);
+  ] = useMutation(DELETE_LEARNING_LINE, {
+    notifyOnNetworkStatusChange: true,
+  });
 
   const handleDelete = () => {
     deleteLearningLine({
@@ -66,7 +68,7 @@ export default function editLearningLine(): ReactElement {
   };
 
   return (
-    <BasicContainer title="Bewerk Afstudeerrichting">
+    <BasicContainer title="Bewerk Leerlijn">
       {loadingGet ? (
         <CustomLoading />
       ) : (

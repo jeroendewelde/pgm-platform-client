@@ -85,10 +85,12 @@ const tableColumns = {
     {
       field: "id",
       headerName: "id",
+      width: 20,
     },
     {
       field: "name",
       headerName: "naam",
+      width: 300,
     },
     {
       field: "color",
@@ -143,18 +145,22 @@ const tableColumns = {
     {
       field: "id",
       headerName: "id",
+      width: 20,
     },
     {
       field: "firstName",
       headerName: "voornaam",
+      width: 200,
     },
     {
       field: "lastName",
       headerName: "familienaam",
+      width: 200,
     },
     {
       field: "academicYear",
       headerName: "academiejaar",
+      width: 150,
     },
     // {
     //   field: "type",
@@ -173,10 +179,12 @@ const tableColumns = {
     {
       field: "firstName",
       headerName: "voornaam",
+      width: 200,
     },
     {
       field: "lastName",
       headerName: "familienaam",
+      width: 200,
     },
     // {
     //   field: "type",
@@ -205,14 +213,17 @@ const tableColumns = {
     {
       field: "id",
       headerName: "id",
+      width: 20,
     },
     {
       field: "name",
       headerName: "naam",
+      width: 300,
     },
     {
       field: "academicYear",
       headerName: "academiejaren",
+      width: 150,
     },
   ],
 };

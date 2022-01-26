@@ -59,7 +59,9 @@ export default function editStudent(): ReactElement {
   const [
     deletePerson,
     { data: dataDelete, loading: loadingDelete, error: errorDelete },
-  ] = useMutation(DELETE_PERSON);
+  ] = useMutation(DELETE_PERSON, {
+    notifyOnNetworkStatusChange: true,
+  });
 
   const handleDelete = () => {
     deletePerson({

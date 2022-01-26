@@ -100,11 +100,11 @@ export default function createCourse(): ReactElement {
                   tags: values.tags,
                   learningLineId: values.learningLineId,
                   specialisationId: values.specialisationId,
-                  // attachments: values.attachments,
                   teacherIds: values.teachers.map(
                     (teacher: Person) => teacher.id
                   ),
                 },
+                // attachments: values.attachments,
               },
             });
             if (!error && !loading) {

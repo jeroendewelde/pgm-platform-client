@@ -57,14 +57,15 @@ export default function editSpecialisation(): ReactElement {
   const [
     deleteSpecialisation,
     { data: dataDelete, loading: loadingDelete, error: errorDelete },
-  ] = useMutation(DELETE_SPECIALISATION);
+  ] = useMutation(DELETE_SPECIALISATION, {
+    notifyOnNetworkStatusChange: true,
+  });
 
   const handleDelete = () => {
     deleteSpecialisation({
       variables: {
         id: Number(id),
       },
-      notifyOnNetworkStatusChange: true,
     });
     if (!errorDelete && !loadingDelete) {
       window.location.href = "/admin/specialisations";

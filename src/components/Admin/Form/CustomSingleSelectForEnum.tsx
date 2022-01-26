@@ -32,7 +32,7 @@ export default function CustomSingleSelectForEnum(
     value: valueFromData,
   } = props;
   //   const [value, setValue] = useState("");
-  const [value, setValue] = useState();
+  const [value, setValue] = useState("");
 
   useEffect(() => {
     if (valueFromData) {
@@ -63,6 +63,8 @@ export default function CustomSingleSelectForEnum(
         <InputLabel>{label}</InputLabel>
         <Select
           value={value}
+          //   value="GITHUB"
+          //   defaultValue={value}
           onChange={onChange}
           autoWidth
           label={label}
@@ -78,11 +80,20 @@ export default function CustomSingleSelectForEnum(
           {data.map((item: any) => (
             <MenuItem
               key={item.name}
-              //   selected={item.name == value ? true : false}
+              //   {item.name == "GITHUB" ? selected : ''}
+
               value={item.name}
             >
-              {"...." + value + "...."}
-              {item.name}
+              {/* {"...." + value + "...."} */}
+              <span
+                style={{
+                  textTransform: "lowercase",
+                }}
+              >
+                {item.name}
+              </span>
+
+              {/* {item.name === value ? "TRUE" : "FALSE"} */}
             </MenuItem>
           ))}
 

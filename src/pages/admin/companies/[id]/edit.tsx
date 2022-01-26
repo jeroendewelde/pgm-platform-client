@@ -117,324 +117,364 @@ export default function editCompany(): ReactElement {
     }
   };
 
+  useEffect(() => {
+    if (dataGet?.company?.teaserImage) {
+      setImageSrc(dataGet.company.teaserImage);
+    }
+  }, [dataGet]);
+
+  const handleUpload = async () => {
+    const formData: any = new FormData();
+    try {
+      formData.append("file", uploadData);
+      const response = await fetch("http://localhost:3000/photos/upload", {
+        method: "POST",
+        body: formData,
+      });
+      if (!response.ok) {
+        throw new Error(response.statusText);
+      }
+      //   console.log(await response.json());
+      return await response.json();
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <BasicContainer title="Bewerk Leerbedrijf">
       {loadingGet || loadingStudents ? (
         <CustomLoading />
       ) : (
-        <Formik
-          initialValues={{
-            name: dataGet?.company.name || "",
-            teaserImage: dataGet?.company.teaserImage || "",
-            interns: dataGet?.company.interns || [],
-          }}
-          validationSchema={validationSchema}
-          onSubmit={(values, { setSubmitting }) => {
-            setSubmitting(true);
+        <>
+          {/* {console.log("dataGET.....", dataGet)} */}
+          {/* {dataGet.company?.teaserImage &&
+            setImageSrc(dataGet.company.teaserImage)} */}
+          <Formik
+            initialValues={{
+              name: dataGet?.company.name || "",
+              teaserImage: dataGet?.company.teaserImage || "",
+              interns: dataGet?.company.interns || [],
+            }}
+            validationSchema={validationSchema}
+            onSubmit={async (values, { setSubmitting }) => {
+              setSubmitting(true);
 
-            updateCompany({
-              variables: {
-                input: {
-                  name: values.name,
-                  teaserImage: values.teaserImage,
-                  //   interns: values.interns,
-                  interns: values.interns.map((intern) => {
-                    const { __typename, ...rest } = intern;
-                    return rest;
-                  }),
-                  //   internIds: values.interns.map(
-                  //     (intern: Intern) => intern.studentId
-                  //   ),
-                  //   interns: values.interns.map((intern: Intern) => {
-                  //     const { __typename, ...rest } = intern;
-                  //     return rest;
-                  //   }),
+              let imageUpload;
+
+              if (imageSrc && imageSrc.split("http").length <= 1) {
+                imageUpload = await handleUpload();
+              }
+
+              updateCompany({
+                variables: {
+                  input: {
+                    name: values.name,
+                    // teaserImage: values.teaserImage,
+                    teaserImage: imageUpload && imageUpload.imagePath,
+
+                    //   interns: values.interns,
+                    interns: values.interns.map((intern) => {
+                      const { __typename, ...rest } = intern;
+                      return rest;
+                    }),
+                    //   internIds: values.interns.map(
+                    //     (intern: Intern) => intern.studentId
+                    //   ),
+                    //   interns: values.interns.map((intern: Intern) => {
+                    //     const { __typename, ...rest } = intern;
+                    //     return rest;
+                    //   }),
+                  },
+                  id: Number(id),
                 },
-                id: Number(id),
-              },
-            });
-            if (!errorUpdate && !loadingUpdate) {
-              window.location.href = `/admin/${adminPath}`;
-            }
-          }}
-        >
-          {({ values, submitForm, isSubmitting }) => (
-            <Form
-              style={{
-                width: "100%",
-              }}
-            >
-              <Grid
-                container
-                spacing={{ xs: 2 }}
-                sx={{
-                  maxWidth: "xl",
-                  mb: 4,
+              });
+              if (!errorUpdate && !loadingUpdate) {
+                window.location.href = `/admin/${adminPath}`;
+              }
+            }}
+          >
+            {({ values, submitForm, isSubmitting }) => (
+              <Form
+                style={{
+                  width: "100%",
                 }}
               >
-                <Grid item xs={12}>
-                  <Field
-                    required
-                    component={TextField}
-                    name="name"
-                    type="text"
-                    label="Naam"
-                    fullWidth
-                    multiline
-                    maxRows={2}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <Field
-                    component={TextField}
-                    name="teaserImage"
-                    type="text"
-                    label="Teaser Image"
-                    helperText="link naar de teaser image"
-                    fullWidth
-                  />
-                </Grid>
-
-                <Grid item xs={12} md={4}>
-                  <label htmlFor="contained-button-file">
-                    <Input
-                      accept="image/*"
-                      id="contained-button-file"
-                      multiple
-                      type="file"
-                      onChange={handleOnChangeImage}
-                    />
-                    <Button
-                      variant="outlined"
-                      component="span"
-                      color={imageSrc && "warning"}
-                    >
-                      {imageSrc
-                        ? "Teaser Image aanpassen"
-                        : "Teaser Image toevoegen"}
-                    </Button>
-                  </label>
-                  <Paper
-                    sx={{
-                      width: "100%",
-                      height: 180,
-                      width: 320,
-                      mt: 2,
-                      mb: 2,
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      backgroundColor: "#E5E5E5",
-                      overflow: "hidden",
-                    }}
-                  >
-                    {imageSrc ? (
-                      <img
-                        src={imageSrc}
-                        alt="teaser image"
-                        style={{
-                          height: 180,
-                          width: 320,
-                          objectFit: "cover",
-                        }}
-                      />
-                    ) : (
-                      <LandscapeIcon
-                        sx={{
-                          color: "#FFF",
-                          fontSize: 64,
-                        }}
-                      />
-                    )}
-                  </Paper>
-                </Grid>
-
-                <Grid item xs={12}>
-                  <Typography variant="h2" component="h2">
-                    Studenten
-                  </Typography>
-                  <Typography variant="subtitle1">
-                    Studenten die bij dit leerbedrijf hun werkplekleren hebben
-                    beoefend
-                  </Typography>
-                </Grid>
-                <Grid item xs={12}>
-                  <FieldArray
-                    name="interns"
-                    render={(arrayHelpers) => (
-                      <div>
-                        {values.interns && values.interns.length > 0 ? (
-                          values.interns.map((tag, index) => (
-                            // <Grid
-                            //   item
-                            //   xs={12}
-                            //   key={index}
-                            //   sx={
-                            //     {
-                            //       // mb: "1rem",
-                            //     }
-                            //   }
-                            //   container
-                            //   // CHECK SPACING
-                            //   //   spacing={{ xs: 2 }}
-                            // >
-
-                            <Grid
-                              container
-                              spacing={{ xs: 2 }}
-                              key={index}
-                              sx={{
-                                maxWidth: "xl",
-                              }}
-                            >
-                              <Grid item xs={12} lg={5} xl={4}>
-                                <Field
-                                  required
-                                  component={CustomSingleSelect}
-                                  name={`interns.${index}.studentId`}
-                                  label="Student"
-                                  helperText="Naam van de Student"
-                                  fullWidth
-                                  data={dataStudents.students}
-                                  value={values.interns[index].studentId}
-                                  otherId="studentId"
-                                  //   value={75}
-                                  labelProps={[
-                                    "firstName",
-                                    "lastName",
-                                    "academicYear",
-                                  ]}
-                                  sx={{
-                                    width: "100%",
-                                  }}
-                                />
-                              </Grid>
-                              <Grid item xs={12} lg={5}>
-                                <Field
-                                  required
-                                  component={TextField}
-                                  name={`interns.${index}.function`}
-                                  type="text"
-                                  label="Functie"
-                                  helperText=" "
-                                  fullWidth
-                                />
-                              </Grid>
-                              <Grid item xs={12} lg={2} xl={3}>
-                                <Field
-                                  required
-                                  component={TextField}
-                                  name={`interns.${index}.year`}
-                                  type="text"
-                                  label="Jaar"
-                                  helperText="Jaar wanneer de student stage heeft gelopen"
-                                  fullWidth
-                                />
-                              </Grid>
-                              <Grid item xs={12} md={9} lg={10}>
-                                <Field
-                                  required
-                                  component={TextField}
-                                  name={`interns.${index}.description`}
-                                  type="text"
-                                  label="Beschrijving"
-                                  helperText=" "
-                                  fullWidth
-                                  multiline
-                                  maxRows={2}
-                                />
-                              </Grid>
-                              <Grid item xs={12} md={3} lg={2}>
-                                <Button
-                                  sx={{ margin: 1 }}
-                                  variant="outlined"
-                                  disabled={isSubmitting}
-                                  onClick={() => arrayHelpers.remove(index)}
-                                >
-                                  <Remove />
-                                </Button>
-
-                                <Button
-                                  sx={{ margin: 1 }}
-                                  variant="outlined"
-                                  disabled={isSubmitting}
-                                  onClick={() =>
-                                    arrayHelpers.insert(index + 1, {
-                                      function: "",
-                                      description: "",
-                                      year: "",
-                                      studentId: "",
-                                    })
-                                  }
-                                >
-                                  <Add />
-                                </Button>
-                              </Grid>
-                              {index < values.interns.length - 1 && (
-                                <Grid
-                                  item
-                                  xs={12}
-                                  sx={{
-                                    mb: 5,
-                                  }}
-                                >
-                                  <Divider orientation="horizontal" flexItem />
-                                </Grid>
-                              )}
-                            </Grid>
-                          ))
-                        ) : (
-                          <Grid item xs={12}>
-                            <Button
-                              variant="outlined"
-                              disabled={isSubmitting}
-                              onClick={() =>
-                                arrayHelpers.push({
-                                  function: "",
-                                  description: "",
-                                  year: "",
-                                  studentId: "",
-                                })
-                              }
-                            >
-                              studenten toevoegen
-                            </Button>
-                          </Grid>
-                        )}
-                      </div>
-                    )}
-                  />
-                </Grid>
                 <Grid
-                  item
-                  xs={12}
+                  container
+                  spacing={{ xs: 2 }}
                   sx={{
-                    display: "flex",
+                    maxWidth: "xl",
+                    mb: 4,
                   }}
                 >
-                  <Button
-                    variant="contained"
-                    disabled={isSubmitting || loadingDelete}
-                    onClick={submitForm}
-                  >
-                    Pas aan
-                  </Button>
-                  <Button
-                    variant="outlined"
-                    color="error"
+                  <Grid item xs={12}>
+                    <Field
+                      required
+                      component={TextField}
+                      name="name"
+                      type="text"
+                      label="Naam"
+                      fullWidth
+                      multiline
+                      maxRows={2}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Field
+                      component={TextField}
+                      name="teaserImage"
+                      type="text"
+                      label="Teaser Image"
+                      helperText="link naar de teaser image"
+                      fullWidth
+                    />
+                  </Grid>
+
+                  <Grid item xs={12} md={4}>
+                    <label htmlFor="contained-button-file">
+                      <Input
+                        accept="image/*"
+                        id="contained-button-file"
+                        multiple
+                        type="file"
+                        onChange={handleOnChangeImage}
+                      />
+                      <Button
+                        variant="outlined"
+                        component="span"
+                        color={imageSrc && "warning"}
+                      >
+                        {imageSrc
+                          ? "Teaser Image aanpassen"
+                          : "Teaser Image toevoegen"}
+                      </Button>
+                    </label>
+                    <Paper
+                      sx={{
+                        width: "100%",
+                        height: 180,
+                        width: 320,
+                        mt: 2,
+                        mb: 2,
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        backgroundColor: "#E5E5E5",
+                        overflow: "hidden",
+                      }}
+                    >
+                      {imageSrc ? (
+                        <img
+                          src={imageSrc}
+                          alt="teaser image"
+                          style={{
+                            height: 180,
+                            width: 320,
+                            objectFit: "cover",
+                          }}
+                        />
+                      ) : (
+                        <LandscapeIcon
+                          sx={{
+                            color: "#FFF",
+                            fontSize: 64,
+                          }}
+                        />
+                      )}
+                    </Paper>
+                  </Grid>
+
+                  <Grid item xs={12}>
+                    <Typography variant="h2" component="h2">
+                      Studenten
+                    </Typography>
+                    <Typography variant="subtitle1">
+                      Studenten die bij dit leerbedrijf hun werkplekleren hebben
+                      beoefend
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <FieldArray
+                      name="interns"
+                      render={(arrayHelpers) => (
+                        <div>
+                          {values.interns && values.interns.length > 0 ? (
+                            values.interns.map((tag, index) => (
+                              // <Grid
+                              //   item
+                              //   xs={12}
+                              //   key={index}
+                              //   sx={
+                              //     {
+                              //       // mb: "1rem",
+                              //     }
+                              //   }
+                              //   container
+                              //   // CHECK SPACING
+                              //   //   spacing={{ xs: 2 }}
+                              // >
+
+                              <Grid
+                                container
+                                spacing={{ xs: 2 }}
+                                key={index}
+                                sx={{
+                                  maxWidth: "xl",
+                                }}
+                              >
+                                <Grid item xs={12} lg={5} xl={4}>
+                                  <Field
+                                    required
+                                    component={CustomSingleSelect}
+                                    name={`interns.${index}.studentId`}
+                                    label="Student"
+                                    helperText="Naam van de Student"
+                                    fullWidth
+                                    data={dataStudents.students}
+                                    value={values.interns[index].studentId}
+                                    otherId="studentId"
+                                    //   value={75}
+                                    labelProps={[
+                                      "firstName",
+                                      "lastName",
+                                      "academicYear",
+                                    ]}
+                                    sx={{
+                                      width: "100%",
+                                    }}
+                                  />
+                                </Grid>
+                                <Grid item xs={12} lg={5}>
+                                  <Field
+                                    required
+                                    component={TextField}
+                                    name={`interns.${index}.function`}
+                                    type="text"
+                                    label="Functie"
+                                    helperText=" "
+                                    fullWidth
+                                  />
+                                </Grid>
+                                <Grid item xs={12} lg={2} xl={3}>
+                                  <Field
+                                    required
+                                    component={TextField}
+                                    name={`interns.${index}.year`}
+                                    type="text"
+                                    label="Jaar"
+                                    helperText="Jaar wanneer de student stage heeft gelopen"
+                                    fullWidth
+                                  />
+                                </Grid>
+                                <Grid item xs={12} md={9} lg={10}>
+                                  <Field
+                                    required
+                                    component={TextField}
+                                    name={`interns.${index}.description`}
+                                    type="text"
+                                    label="Beschrijving"
+                                    helperText=" "
+                                    fullWidth
+                                    multiline
+                                    maxRows={2}
+                                  />
+                                </Grid>
+                                <Grid item xs={12} md={3} lg={2}>
+                                  <Button
+                                    sx={{ margin: 1 }}
+                                    variant="outlined"
+                                    disabled={isSubmitting}
+                                    onClick={() => arrayHelpers.remove(index)}
+                                  >
+                                    <Remove />
+                                  </Button>
+
+                                  <Button
+                                    sx={{ margin: 1 }}
+                                    variant="outlined"
+                                    disabled={isSubmitting}
+                                    onClick={() =>
+                                      arrayHelpers.insert(index + 1, {
+                                        function: "",
+                                        description: "",
+                                        year: "",
+                                        studentId: "",
+                                      })
+                                    }
+                                  >
+                                    <Add />
+                                  </Button>
+                                </Grid>
+                                {index < values.interns.length - 1 && (
+                                  <Grid
+                                    item
+                                    xs={12}
+                                    sx={{
+                                      mb: 5,
+                                    }}
+                                  >
+                                    <Divider
+                                      orientation="horizontal"
+                                      flexItem
+                                    />
+                                  </Grid>
+                                )}
+                              </Grid>
+                            ))
+                          ) : (
+                            <Grid item xs={12}>
+                              <Button
+                                variant="outlined"
+                                disabled={isSubmitting}
+                                onClick={() =>
+                                  arrayHelpers.push({
+                                    function: "",
+                                    description: "",
+                                    year: "",
+                                    studentId: "",
+                                  })
+                                }
+                              >
+                                studenten toevoegen
+                              </Button>
+                            </Grid>
+                          )}
+                        </div>
+                      )}
+                    />
+                  </Grid>
+                  <Grid
+                    item
+                    xs={12}
                     sx={{
-                      marginLeft: "auto",
+                      display: "flex",
                     }}
-                    disabled={isSubmitting || loadingDelete}
-                    onClick={(e) => handleDelete()}
                   >
-                    Verwijder
-                  </Button>
+                    <Button
+                      variant="contained"
+                      disabled={isSubmitting || loadingDelete}
+                      onClick={submitForm}
+                    >
+                      Pas aan
+                    </Button>
+                    <Button
+                      variant="outlined"
+                      color="error"
+                      sx={{
+                        marginLeft: "auto",
+                      }}
+                      disabled={isSubmitting || loadingDelete}
+                      onClick={(e) => handleDelete()}
+                    >
+                      Verwijder
+                    </Button>
+                  </Grid>
                 </Grid>
-              </Grid>
-            </Form>
-          )}
-        </Formik>
+              </Form>
+            )}
+          </Formik>
+        </>
       )}
     </BasicContainer>
   );

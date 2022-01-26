@@ -1,4 +1,4 @@
-import React, { ReactElement, useState } from "react";
+import React, { ChangeEvent, ReactElement, useState } from "react";
 
 // Formik & Yup
 import * as yup from "yup";
@@ -36,8 +36,8 @@ const validationSchema = yup.object({
 });
 
 export default function createCompany(): ReactElement {
-  const [imageSrc, setImageSrc] = useState();
-  const [uploadData, setUploadData] = useState();
+  const [imageSrc, setImageSrc] = useState<string>();
+  const [uploadData, setUploadData] = useState<File>();
 
   const [addCompany, { data, loading, error }] = useMutation(CREATE_COMPANY);
 
@@ -53,12 +53,30 @@ export default function createCompany(): ReactElement {
     display: "none",
   });
 
-  const handleOnChangeImage = ({ target: { files } }) => {
-    const file = files[0];
-    console.log("...file", file);
-    if (files.length > 0) {
+  const handleOnChangeImage = (e: ChangeEvent<HTMLInputElement>) => {
+    // console.log("...file", file);
+    if (e.target?.files && e.target?.files.length > 0) {
+      const file = e.target.files[0];
       setUploadData(file);
       setImageSrc(URL.createObjectURL(file));
+    }
+  };
+
+  const handleUpload = async () => {
+    const formData: any = new FormData();
+    try {
+      formData.append("file", uploadData);
+      const response = await fetch("http://localhost:3000/photos/upload", {
+        method: "POST",
+        body: formData,
+      });
+      if (!response.ok) {
+        throw new Error(response.statusText);
+      }
+      //   console.log(await response.json());
+      return await response.json();
+    } catch (err) {
+      console.log(err);
     }
   };
 
@@ -74,20 +92,25 @@ export default function createCompany(): ReactElement {
             interns: [],
           }}
           validationSchema={validationSchema}
-          onSubmit={(values, { setSubmitting }) => {
+          onSubmit={async (values, { setSubmitting }) => {
             setSubmitting(true);
+            console.log("....UPLOAD", uploadData);
+
+            const imageUpload = await handleUpload();
+            // console.log("....res", await res);
+
             addCompany({
               variables: {
                 input: {
                   name: values.name,
-                  teaserImage: values.teaserImage,
+                  teaserImage: imageUpload && imageUpload.imagePath,
                   interns: values.interns,
                   // file: uploadData || null,
                 },
               },
             });
             if (!error && !loading) {
-              window.location.href = "/admin/companies";
+              //   window.location.href = "/admin/companies";
             }
           }}
         >
@@ -99,7 +122,7 @@ export default function createCompany(): ReactElement {
             >
               <Grid
                 container
-                spacing={{ xs: 2 }}
+                spacing={2}
                 sx={{
                   maxWidth: "xl",
                   mb: 4,
@@ -117,39 +140,11 @@ export default function createCompany(): ReactElement {
                     maxRows={2}
                   />
                 </Grid>
-                <Grid item xs={12}>
-                  <Field
-                    component={TextField}
-                    name="teaserImage"
-                    type="text"
-                    label="Teaser Image"
-                    helperText="link naar de teaser image"
-                    fullWidth
-                  />
-                </Grid>
 
                 <Grid item xs={12} md={4}>
-                  <label htmlFor="contained-button-file">
-                    <Input
-                      accept="image/*"
-                      id="contained-button-file"
-                      multiple
-                      type="file"
-                      onChange={handleOnChangeImage}
-                    />
-                    <Button
-                      variant="outlined"
-                      component="span"
-                      color={imageSrc && "warning"}
-                    >
-                      {imageSrc
-                        ? "Teaser Image aanpassen"
-                        : "Teaser Image toevoegen"}
-                    </Button>
-                  </label>
                   <Paper
                     sx={{
-                      width: "100%",
+                      //   width: "100%",
                       height: 180,
                       width: 320,
                       mt: 2,
@@ -180,6 +175,24 @@ export default function createCompany(): ReactElement {
                       />
                     )}
                   </Paper>
+                  <label htmlFor="contained-button-file">
+                    <Input
+                      accept="image/*"
+                      id="contained-button-file"
+                      multiple
+                      type="file"
+                      onChange={handleOnChangeImage}
+                    />
+                    <Button
+                      variant="outlined"
+                      component="span"
+                      color={imageSrc ? "warning" : "primary"}
+                    >
+                      {imageSrc
+                        ? "Teaser Image aanpassen"
+                        : "Teaser Image toevoegen"}
+                    </Button>
+                  </label>
                 </Grid>
 
                 <Grid item xs={12}>
@@ -206,7 +219,7 @@ export default function createCompany(): ReactElement {
                                 mb: "1rem",
                               }}
                               container
-                              spacing={{ xs: 2 }}
+                              spacing={2}
                             >
                               <Grid item xs={12} lg={5} xl={4}>
                                 <Field
@@ -277,7 +290,7 @@ export default function createCompany(): ReactElement {
                                   variant="outlined"
                                   disabled={isSubmitting}
                                   onClick={() =>
-                                    arrayHelpers.insert(index + 1, {
+                                    arrayHelpers.push({
                                       function: "",
                                       description: "",
                                       year: "",
