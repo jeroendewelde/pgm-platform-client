@@ -28,6 +28,7 @@ export const GET_PERSON_BY_ID = gql`
       lastName
       type
       academicYear
+      avatarUrl
       personInformation {
         id
         quote

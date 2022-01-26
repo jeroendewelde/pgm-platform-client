@@ -1,5 +1,6 @@
-import React, { ReactElement, useEffect, useState } from "react";
+import React, { ChangeEvent, ReactElement, useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import Image from "next/image";
 
 // Formik & Yup
 import * as yup from "yup";
@@ -9,12 +10,14 @@ import { Field, FieldArray, Form, Formik } from "formik";
 import {
   Button,
   Grid,
+  Paper,
   Typography,
   Switch,
   FormControlLabel,
 } from "@mui/material";
 import { Remove, Add } from "@material-ui/icons";
 import { TextField } from "formik-mui";
+import LandscapeIcon from "@mui/icons-material/Landscape";
 
 // Queries
 import { useMutation, useQuery } from "@apollo/client";
@@ -51,6 +54,8 @@ export default function EditTeacherPage(): ReactElement {
   const router = useRouter();
   const { id } = router.query;
   const [showExtraInfo, setShowExtraInfo] = useState(false);
+  const [imageSrc, setImageSrc] = useState<string>();
+  const [uploadData, setUploadData] = useState<File>();
 
   const handleChangeSwitchExtraInfo = () => {
     setShowExtraInfo(!showExtraInfo);
@@ -120,6 +125,40 @@ export default function EditTeacherPage(): ReactElement {
     }
   };
 
+  const handleOnChangeImage = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target?.files && e.target?.files.length > 0) {
+      const file = e.target.files[0];
+      setUploadData(file);
+      setImageSrc(URL.createObjectURL(file));
+    }
+  };
+
+  useEffect(() => {
+    if (dataGet?.person) {
+      setImageSrc(dataGet.person.avatarUrl);
+    }
+  }, [dataGet]);
+
+  const handleUpload = async () => {
+    const formData: any = new FormData();
+    try {
+      formData.append("file", uploadData);
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND}photos/upload`,
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
+      if (!response.ok) {
+        throw new Error(response.statusText);
+      }
+      return await response.json();
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <BasicContainer title="Bewerk Docent">
       {loadingGet || loadingCourses || loadingSocialMediaPlatforms ? (
@@ -132,6 +171,7 @@ export default function EditTeacherPage(): ReactElement {
             dob: dataGet.person?.personInformation?.dob || null,
             quote: dataGet.person?.personInformation?.quote || "",
             bio: dataGet.person?.personInformation?.bio || "",
+            avatarUrl: dataGet?.person.avatarUrl || "",
             courses: dataGet.person?.courses.map((courseFromDb: Course) =>
               dataCourses.courses.find((t: Course) => t.id === courseFromDb.id)
             ),
@@ -155,14 +195,22 @@ export default function EditTeacherPage(): ReactElement {
               ) || [],
           }}
           validationSchema={validationSchema}
-          onSubmit={(values, { setSubmitting }) => {
+          onSubmit={async (values, { setSubmitting }) => {
             setSubmitting(true);
+
+            let imageUpload;
+
+            if (imageSrc && imageSrc.split("http").length <= 1) {
+              imageUpload = await handleUpload();
+            }
+
             updateTeacher({
               variables: {
                 input: {
                   firstName: values.firstName,
                   lastName: values.lastName,
                   type: "TEACHER",
+                  avatarUrl: imageUpload && imageUpload.imagePath,
                   courseIds: values.courses.map((course: Course) => course.id),
                   personInformation: {
                     dob: values.dob,
@@ -297,6 +345,63 @@ export default function EditTeacherPage(): ReactElement {
                           width: "100%",
                         }}
                       />
+                    </Grid>
+
+                    <Grid item xs={12}>
+                      <Grid item xs={8}>
+                        <Paper
+                          sx={{
+                            mb: 2,
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            backgroundColor: "#E5E5E5",
+                            overflow: "hidden",
+                            maxWidth: 240,
+                          }}
+                          style={{
+                            aspectRatio: "3 / 4",
+                            position: "relative",
+                          }}
+                        >
+                          {imageSrc ? (
+                            <Image
+                              src={imageSrc}
+                              alt="avatar docent"
+                              layout="fill"
+                              objectFit="cover"
+                            />
+                          ) : (
+                            <LandscapeIcon
+                              sx={{
+                                color: "#FFF",
+                                fontSize: 64,
+                              }}
+                            />
+                          )}
+                        </Paper>
+                        <label htmlFor="contained-button-file">
+                          <input
+                            accept="image/*"
+                            id="contained-button-file"
+                            multiple
+                            type="file"
+                            onChange={handleOnChangeImage}
+                            style={{
+                              display: "none",
+                            }}
+                          />
+                          <Button
+                            variant="outlined"
+                            component="span"
+                            color={imageSrc ? "warning" : "primary"}
+                          >
+                            {imageSrc
+                              ? "Avatar Image aanpassen"
+                              : "Avatar Image toevoegen"}
+                          </Button>
+                        </label>
+                      </Grid>
                     </Grid>
 
                     <Grid item xs={12}>

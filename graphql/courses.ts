@@ -61,6 +61,7 @@ export const GET_COURSE_BY_ID = gql`
       term
       academicYear
       tags
+      teaserImage
       learningLineId
       specialisationId
       learningLine {
