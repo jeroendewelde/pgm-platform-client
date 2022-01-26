@@ -5,7 +5,7 @@ import styled from "styled-components";
 import test from "../../assets/test/test.jpg";
 
 import { CourseClient } from "../../../interfaces";
-// import Tag from "./Tag";
+import Tag from "./Tag";
 import { CourseTitle } from "../Titles/CourseTitle";
 import CTALink from "./CTALink";
 import { motion } from "framer-motion";
@@ -100,8 +100,7 @@ const HeroCourse = ({ course }: HeroCourseProps) => {
         {course.tags && course.tags.length > 0 && (
           <div className="tags">
             {course.tags.map((tag) => (
-              //   <Tag key={tag}>{tag}</Tag>
-              <div>{tag}</div>
+              <Tag key={tag}>{tag}</Tag>
             ))}
           </div>
         )}
