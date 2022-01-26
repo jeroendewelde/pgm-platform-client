@@ -1,3 +1,4 @@
+import { useQuery } from "@apollo/client";
 import { motion } from "framer-motion";
 import { GetStaticPaths } from "next";
 import React from "react";
@@ -118,22 +119,26 @@ const TeacherDetail = ({ teacher }: DetailTeacherProps) => {
 export default TeacherDetail;
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const { data, error } = await client.query({
-    query: GET_ALL_TEACHERS_CLIENT,
-  });
+  //   const { data, error } = await client.query({
+  //     query: GET_ALL_TEACHERS_CLIENT,
+  //   });
 
-  if (error) {
-    console.log(error);
-  }
+  //   if (error) {
+  //     console.log(error);
+  //   }
 
+  //   return {
+  //     paths: data.teachers.map((teacher: { id: any }) => ({
+  //       params: {
+  //         id: teacher.id.toString(),
+  //       },
+  //     })),
+  //     fallback: false,
+  //     // fallback: "blocking",
+  //   };
   return {
-    paths: data.teachers.map((teacher: { id: any }) => ({
-      params: {
-        id: teacher.id.toString(),
-      },
-    })),
-    fallback: false,
-    // fallback: "blocking",
+    paths: [], //indicates that no page needs be created at build time
+    fallback: "blocking", //indicates the type of fallback
   };
 };
 

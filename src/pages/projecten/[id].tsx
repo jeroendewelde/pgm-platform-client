@@ -23,22 +23,26 @@ const ProjectDetail = ({ project }: ProjectDetailProps) => {
 export default ProjectDetail;
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const { data, error } = await client.query({
-    query: GET_ALL_PROJECTS,
-  });
+  //   const { data, error } = await client.query({
+  //     query: GET_ALL_PROJECTS,
+  //   });
 
-  if (error) {
-    console.log(error);
-  }
+  //   if (error) {
+  //     console.log(error);
+  //   }
 
+  //   return {
+  //     paths: data.projects.map((project: { id: any }) => ({
+  //       params: {
+  //         id: project.id.toString(),
+  //       },
+  //     })),
+  //     fallback: false,
+  //     // fallback: "blocking",
+  //   };
   return {
-    paths: data.projects.map((project: { id: any }) => ({
-      params: {
-        id: project.id.toString(),
-      },
-    })),
-    fallback: false,
-    // fallback: "blocking",
+    paths: [], //indicates that no page needs be created at build time
+    fallback: "blocking", //indicates the type of fallback
   };
 };
 
