@@ -37,7 +37,7 @@ const validationSchema = yup.object({
   bio: yup.string(),
 });
 
-export default function createTeacher(): ReactElement {
+export default function CreateTeacherPage(): ReactElement {
   const [showExtraInfo, setShowExtraInfo] = useState(false);
   const router = useRouter();
   const [addTeacher, { data, loading, error }] = useMutation(CREATE_PERSON, {

@@ -42,7 +42,7 @@ const validationSchema = yup.object({
   courseId: yup.number().required("Vak is verplicht"),
 });
 
-export default function editProject(): ReactElement {
+export default function EditProjectPage(): ReactElement {
   const router = useRouter();
   const { id } = router.query;
 

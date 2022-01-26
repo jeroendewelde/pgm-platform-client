@@ -47,7 +47,7 @@ const validationSchema = yup.object({
   bio: yup.string(),
 });
 
-export default function editTeacher(): ReactElement {
+export default function EditTeacherPage(): ReactElement {
   const router = useRouter();
   const { id } = router.query;
   const [showExtraInfo, setShowExtraInfo] = useState(false);

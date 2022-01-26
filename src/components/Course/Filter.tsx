@@ -129,6 +129,7 @@ const Filter = ({ learningLines, onChange }: SelectItemProps) => {
               />
               {learningLines?.map((learningLine) => (
                 <Field
+                  key={`${learningLine.name}-${learningLine.id}`}
                   type="button"
                   name="leerlijn"
                   open={open}

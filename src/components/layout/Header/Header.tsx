@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { transparentize } from "polished";
+import { lighten, transparentize } from "polished";
 import React, { useState, useEffect, Dispatch, SetStateAction } from "react";
 import styled from "styled-components";
 import { useRouter } from "next/router";
@@ -14,8 +14,11 @@ const Container = styled.header`
   padding: 0 1rem;
   background-color: ${(props) =>
     transparentize(0.7, props.theme.colors.turquoise)};
-  -webkit-backdrop-filter: blur(2em);
-  backdrop-filter: blur(2em);
+  background-color: ${(props) =>
+    lighten(0.03, props.theme.colors.bg_gradient_color_1)};
+
+  border-bottom: 1px solid
+    ${(props) => transparentize(0.7, props.theme.colors.turquoise)};
 
   @media (min-width: ${(props) => props.theme.width.medium}) {
     padding: 0 2rem;
@@ -23,7 +26,7 @@ const Container = styled.header`
 `;
 
 const Wrapper = styled.div`
-  max-width: ${(props) => props.theme.width.large};
+  max-width: 100rem;
   margin: 0 auto;
 `;
 

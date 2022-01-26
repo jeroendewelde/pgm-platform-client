@@ -40,7 +40,7 @@ const validationSchema = yup.object({
   specialisationId: yup.number().required("Afstudeerrichting is verplicht"),
 });
 
-export default function createCourse(): ReactElement {
+export default function CreateCoursePage(): ReactElement {
   const router = useRouter();
   const [addCourse, { data, loading, error }] = useMutation(CREATE_COURSE, {
     notifyOnNetworkStatusChange: true,

@@ -10,6 +10,7 @@ import { transparentize } from "polished";
 import client from "../../apollo-client";
 import { GET_ALL_COURSES } from "../../graphql/courses";
 import { Course } from "../../interfaces";
+import { motion } from "framer-motion";
 
 const SuperContainer = styled.div`
   max-width: 80rem;
@@ -72,7 +73,7 @@ const Container = styled.div`
       path {
         fill: none;
         stroke: ${(props) => props.theme.colors.turquoise};
-        stroke-width: 2px;
+        strokewidth: 2px;
         /* vector-effect: non-scaling-stroke; */
       }
     }
@@ -235,8 +236,10 @@ const LeerlijnPage = ({ courses }: LeerlijnProps) => {
   let term_8_with_spec: Course[] = [];
   let term_8_without_spec: Course[] = [];
 
+  console.log(courses);
+
   const map = courses.map((course) => {
-    if (course.specialisationId) {
+    if (course.specialisationId === 1 || course.specialisationId === 2) {
       term_1_with_spec = [...term_1_with_spec, course];
       term_1_with_spec = term_1_with_spec.filter((course) => course.term === 1);
       term_2_with_spec = term_2_with_spec.filter((course) => course.term === 2);
@@ -253,7 +256,7 @@ const LeerlijnPage = ({ courses }: LeerlijnProps) => {
       term_7_with_spec = term_7_with_spec.filter((course) => course.term === 7);
       term_8_with_spec = [...term_8_with_spec, course];
       term_8_with_spec = term_8_with_spec.filter((course) => course.term === 8);
-    } else if (!course.specialisationId) {
+    } else if (course.specialisationId === 3) {
       term_1_without_spec = [...term_1_without_spec, course];
       term_1_without_spec = term_1_without_spec.filter(
         (course) => course.term === 1
@@ -291,38 +294,47 @@ const LeerlijnPage = ({ courses }: LeerlijnProps) => {
 
   return (
     <SuperContainer>
-      <div className="titles">
+      <motion.div
+        className="titles"
+        initial={{ opacity: 0, y: -30, zIndex: -1 }}
+        animate={{ opacity: 1, y: 0, zIndex: 1 }}
+        exit={{ opacity: 0, y: -30 }}
+        transition={{
+          delay: 1.2,
+          duration: 0.45,
+        }}
+      >
         <GlitchTitle>Eerst jaar</GlitchTitle>
         <h2>Semester 1</h2>
-      </div>
+      </motion.div>
       <Container>
         <ul className="courseList">
           {term_1_without_spec &&
             term_1_without_spec.map((course: Course) => (
-              <ListItem course={course} />
+              <ListItem key={`${course.name}-${course.id}`} course={course} />
             ))}
         </ul>
-        {term_1_with_spec && (
+        {term_1_with_spec.length > 0 && (
           <>
             <span className="beginLine">
               <svg viewBox="0 0 113 142">
                 <path
                   d="m1-8c0 75 108 75 108 150"
-                  stroke-width="2"
+                  strokeWidth="2"
                   vectorEffect="none-scaling-stroke"
                 ></path>
               </svg>
             </span>
             <ul className="courseList elective-course">
               {term_1_with_spec.map((course: Course) => (
-                <ListItem course={course} />
+                <ListItem key={`${course.name}-${course.id}`} course={course} />
               ))}
             </ul>
             <span className="beginLine endline">
               <svg viewBox="0 0 113 142">
                 <path
                   d="m1-8c0 75 108 75 108 150"
-                  stroke-width="2"
+                  strokeWidth="2"
                   vectorEffect="none-scaling-stroke"
                 ></path>
               </svg>
@@ -332,30 +344,30 @@ const LeerlijnPage = ({ courses }: LeerlijnProps) => {
         <ul className="courseList">
           {term_2_without_spec &&
             term_2_without_spec.map((course: Course) => (
-              <ListItem course={course} />
+              <ListItem key={`${course.name}-${course.id}`} course={course} />
             ))}
         </ul>
-        {term_2_with_spec && (
+        {term_2_with_spec.length > 0 && (
           <>
             <span className="beginLine">
               <svg viewBox="0 0 113 142">
                 <path
                   d="m1-8c0 75 108 75 108 150"
-                  stroke-width="2"
+                  strokeWidth="2"
                   vectorEffect="none-scaling-stroke"
                 ></path>
               </svg>
             </span>
             <ul className="courseList elective-course">
               {term_2_with_spec.map((course: Course) => (
-                <ListItem course={course} />
+                <ListItem key={`${course.name}-${course.id}`} course={course} />
               ))}
             </ul>
             <span className="beginLine endline">
               <svg viewBox="0 0 113 142">
                 <path
                   d="m1-8c0 75 108 75 108 150"
-                  stroke-width="2"
+                  strokeWidth="2"
                   vectorEffect="none-scaling-stroke"
                 ></path>
               </svg>
@@ -371,30 +383,30 @@ const LeerlijnPage = ({ courses }: LeerlijnProps) => {
         <ul className="courseList">
           {term_3_without_spec &&
             term_3_without_spec.map((course: Course) => (
-              <ListItem course={course} />
+              <ListItem key={`${course.name}-${course.id}`} course={course} />
             ))}
         </ul>
-        {term_3_with_spec && (
+        {term_3_with_spec.length > 0 && (
           <>
             <span className="beginLine">
               <svg viewBox="0 0 113 142">
                 <path
                   d="m1-8c0 75 108 75 108 150"
-                  stroke-width="2"
+                  strokeWidth="2"
                   vectorEffect="none-scaling-stroke"
                 ></path>
               </svg>
             </span>
             <ul className="courseList elective-course">
               {term_3_with_spec.map((course: Course) => (
-                <ListItem course={course} />
+                <ListItem key={`${course.name}-${course.id}`} course={course} />
               ))}
             </ul>
             <span className="beginLine endline">
               <svg viewBox="0 0 113 142">
                 <path
                   d="m1-8c0 75 108 75 108 150"
-                  stroke-width="2"
+                  strokeWidth="2"
                   vectorEffect="none-scaling-stroke"
                 ></path>
               </svg>
@@ -404,30 +416,30 @@ const LeerlijnPage = ({ courses }: LeerlijnProps) => {
         <ul className="courseList">
           {term_4_without_spec &&
             term_4_without_spec.map((course: Course) => (
-              <ListItem course={course} />
+              <ListItem key={`${course.name}-${course.id}`} course={course} />
             ))}
         </ul>
-        {term_4_with_spec && (
+        {term_4_with_spec.length > 0 && (
           <>
             <span className="beginLine">
               <svg viewBox="0 0 113 142">
                 <path
                   d="m1-8c0 75 108 75 108 150"
-                  stroke-width="2"
+                  strokeWidth="2"
                   vectorEffect="none-scaling-stroke"
                 ></path>
               </svg>
             </span>
             <ul className="courseList elective-course">
               {term_4_with_spec.map((course: Course) => (
-                <ListItem course={course} />
+                <ListItem key={`${course.name}-${course.id}`} course={course} />
               ))}
             </ul>
             <span className="beginLine endline">
               <svg viewBox="0 0 113 142">
                 <path
                   d="m1-8c0 75 108 75 108 150"
-                  stroke-width="2"
+                  strokeWidth="2"
                   vectorEffect="none-scaling-stroke"
                 ></path>
               </svg>
@@ -445,30 +457,30 @@ const LeerlijnPage = ({ courses }: LeerlijnProps) => {
         <ul className="courseList">
           {term_5_without_spec &&
             term_5_without_spec.map((course: Course) => (
-              <ListItem course={course} />
+              <ListItem key={`${course.name}-${course.id}`} course={course} />
             ))}
         </ul>
-        {term_5_with_spec && (
+        {term_5_with_spec.length > 0 && (
           <>
             <span className="beginLine">
               <svg viewBox="0 0 113 142">
                 <path
                   d="m1-8c0 75 108 75 108 150"
-                  stroke-width="2"
+                  strokeWidth="2"
                   vectorEffect="none-scaling-stroke"
                 ></path>
               </svg>
             </span>
             <ul className="courseList elective-course">
               {term_5_with_spec.map((course: Course) => (
-                <ListItem course={course} />
+                <ListItem key={`${course.name}-${course.id}`} course={course} />
               ))}
             </ul>
             <span className="beginLine endline">
               <svg viewBox="0 0 113 142">
                 <path
                   d="m1-8c0 75 108 75 108 150"
-                  stroke-width="2"
+                  strokeWidth="2"
                   vectorEffect="none-scaling-stroke"
                 ></path>
               </svg>
@@ -478,30 +490,30 @@ const LeerlijnPage = ({ courses }: LeerlijnProps) => {
         <ul className="courseList">
           {term_6_without_spec &&
             term_6_without_spec.map((course: Course) => (
-              <ListItem course={course} />
+              <ListItem key={`${course.name}-${course.id}`} course={course} />
             ))}
         </ul>
-        {term_6_with_spec && (
+        {term_6_with_spec.length > 0 && (
           <>
             <span className="beginLine">
               <svg viewBox="0 0 113 142">
                 <path
                   d="m1-8c0 75 108 75 108 150"
-                  stroke-width="2"
+                  strokeWidth="2"
                   vectorEffect="none-scaling-stroke"
                 ></path>
               </svg>
             </span>
             <ul className="courseList elective-course">
               {term_6_with_spec.map((course: Course) => (
-                <ListItem course={course} />
+                <ListItem key={`${course.name}-${course.id}`} course={course} />
               ))}
             </ul>
             <span className="beginLine endline">
               <svg viewBox="0 0 113 142">
                 <path
                   d="m1-8c0 75 108 75 108 150"
-                  stroke-width="2"
+                  strokeWidth="2"
                   vectorEffect="none-scaling-stroke"
                 ></path>
               </svg>
@@ -518,30 +530,30 @@ const LeerlijnPage = ({ courses }: LeerlijnProps) => {
         <ul className="courseList ">
           {term_7_without_spec &&
             term_7_without_spec.map((course: Course) => (
-              <ListItem course={course} />
+              <ListItem key={`${course.name}-${course.id}`} course={course} />
             ))}
         </ul>
-        {term_7_with_spec && (
+        {term_7_with_spec.length > 0 && (
           <>
             <span className="beginLine">
               <svg viewBox="0 0 113 142">
                 <path
                   d="m1-8c0 75 108 75 108 150"
-                  stroke-width="2"
+                  strokeWidth="2"
                   vectorEffect="none-scaling-stroke"
                 ></path>
               </svg>
             </span>
             <ul className="courseList elective-course">
               {term_7_with_spec.map((course: Course) => (
-                <ListItem course={course} />
+                <ListItem key={`${course.name}-${course.id}`} course={course} />
               ))}
             </ul>
             <span className="beginLine endline">
               <svg viewBox="0 0 113 142">
                 <path
                   d="m1-8c0 75 108 75 108 150"
-                  stroke-width="2"
+                  strokeWidth="2"
                   vectorEffect="none-scaling-stroke"
                 ></path>
               </svg>
@@ -551,34 +563,34 @@ const LeerlijnPage = ({ courses }: LeerlijnProps) => {
       </Container>
 
       <Container>
-        <ul className="courseList ">
+        <ul className="courseList last">
           {term_8_without_spec &&
             term_8_without_spec.map((course: Course) => (
-              <ListItem course={course} />
+              <ListItem key={`${course.name}-${course.id}`} course={course} />
             ))}
         </ul>
 
-        {term_8_with_spec && (
+        {term_8_with_spec.length > 0 && (
           <>
             <span className="beginLine">
               <svg viewBox="0 0 113 142">
                 <path
                   d="m1-8c0 75 108 75 108 150"
-                  stroke-width="2"
+                  strokeWidth="2"
                   vectorEffect="none-scaling-stroke"
                 ></path>
               </svg>
             </span>
             <ul className="courseList elective-course last">
               {term_8_with_spec.map((course: Course) => (
-                <ListItem course={course} />
+                <ListItem key={`${course.name}-${course.id}`} course={course} />
               ))}
             </ul>
             <span className="beginLine endline">
               <svg viewBox="0 0 113 142">
                 <path
                   d="m1-8c0 75 108 75 108 150"
-                  stroke-width="2"
+                  strokeWidth="2"
                   vectorEffect="none-scaling-stroke"
                 ></path>
               </svg>

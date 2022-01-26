@@ -38,7 +38,7 @@ const validationSchema = yup.object({
   courseId: yup.number().required("Vak is verplicht"),
 });
 
-export default function createProject(): ReactElement {
+export default function CreateProjectPage(): ReactElement {
   const [addProject, { data, loading, error }] = useMutation(CREATE_PROJECT, {
     notifyOnNetworkStatusChange: true,
   });

@@ -9,10 +9,11 @@ import "swiper/swiper.min.css";
 
 import { TeacherCard } from "../Teacher";
 import { AllTeachersClient } from "../../../interfaces";
+import { motion } from "framer-motion";
 
 SwiperCore.use([EffectCoverflow, Navigation, Autoplay]);
 
-const SwiperContainer = styled.div`
+const SwiperContainer = styled(motion.div)`
   margin: 0 auto;
   margin-bottom: 5rem;
 
@@ -75,12 +76,29 @@ interface TeachersCarouselProps {
 
 const TeachersCarousel = ({ teachers }: TeachersCarouselProps) => {
   return (
-    <SwiperContainer>
+    <SwiperContainer
+      initial={{
+        opacity: 0,
+
+        y: 100,
+        scale: 0.9,
+      }}
+      animate={{
+        opacity: 1,
+
+        y: 0,
+        scale: 1,
+      }}
+      transition={{
+        type: "spring",
+        delay: 1.2,
+      }}
+    >
       <Swiper
-        // autoplay={{
-        //   delay: 10000,
-        //   disableOnInteraction: true,
-        // }}
+        autoplay={{
+          delay: 10000,
+          disableOnInteraction: true,
+        }}
         effect={"coverflow"}
         grabCursor={true}
         centeredSlides={true}

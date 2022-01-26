@@ -51,7 +51,7 @@ const TeacherImage = () => {
             filterUnits="userSpaceOnUse"
           >
             <feGaussianBlur stdDeviation="3" result="blur" />
-            <feFlood flood-color="#00a5d9" />
+            <feFlood floodColor="#00a5d9" />
             <feComposite operator="in" in2="blur" />
             <feComposite in="SourceGraphic" />
           </filter>

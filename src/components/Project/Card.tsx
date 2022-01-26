@@ -1,14 +1,16 @@
 import Image from "next/image";
-import React from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
 import { transparentize } from "polished";
 
 import Tag from "./Tag";
 import test from "../../assets/test/test.jpg";
-import profile from "../../assets/test/profile.jpg";
 import { Project } from "../../../interfaces";
+import Link from "next/link";
+import { CursorContext } from "../../context/CursorContext";
 
 const Container = styled.li`
+  list-style: none;
   margin-bottom: 2rem;
   cursor: pointer;
   min-width: 15rem;
@@ -67,6 +69,7 @@ const Container = styled.li`
       li {
         margin: 0;
         margin-right: 0.5rem;
+        list-style: none;
 
         &:last-child ::after {
           content: "";
@@ -134,30 +137,56 @@ export interface CardProps {
 }
 
 const Card = ({ key, project }: CardProps) => {
-  console.log(project);
+  const { setCursorHover } = useContext(CursorContext);
+
+  const handleMouseEnter = () => {
+    setCursorHover(true);
+
+    const element = document.querySelector(".cursor") as HTMLElement;
+    if (element !== null) {
+      element.style.opacity = "0.5";
+    }
+  };
+
+  const handleMouseLeave = () => {
+    setCursorHover(false);
+
+    const element = document.querySelector(".cursor") as HTMLElement;
+
+    if (element !== null) {
+      element.style.opacity = "1";
+    }
+  };
+
   return (
-    <Container key={key}>
-      <CardImage>
-        <Image src={test} layout="fill" alt="project-1" objectFit="cover" />
-        <ul>
-          {project.tags.map((tag, index) => (
-            <Tag key={index} title={tag} />
-          ))}
-        </ul>
+    <Link href={`/projecten/${project.id}`} key={key}>
+      <Container
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+        onClick={handleMouseLeave}
+      >
+        <CardImage>
+          <Image src={test} layout="fill" alt="project-1" objectFit="cover" />
+          <ul>
+            {project.tags.map((tag, index) => (
+              <Tag key={index} title={tag} />
+            ))}
+          </ul>
 
-        <h3>{project.name}</h3>
-      </CardImage>
-      <div className="card-content">
-        <ul className="students">
-          <span>Made by </span>
-          {project.students.map((student, index) => (
-            <li key={index}>{student.firstName}</li>
-          ))}
-        </ul>
+          <h3>{project.name}</h3>
+        </CardImage>
+        <div className="card-content">
+          <ul className="students">
+            <span>Made by </span>
+            {project.students.map((student, index) => (
+              <li key={index}>{student.firstName}</li>
+            ))}
+          </ul>
 
-        <p className="teaser-text">{project.teaserText}</p>
-      </div>
-    </Container>
+          <p className="teaser-text">{project.teaserText}</p>
+        </div>
+      </Container>
+    </Link>
   );
 };
 

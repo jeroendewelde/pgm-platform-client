@@ -25,7 +25,7 @@ const validationSchema = yup.object({
   quote: yup.string().required("Quote is verplicht"),
 });
 
-export default function editTestimonial(): ReactElement {
+export default function EditTestimonialPage(): ReactElement {
   const router = useRouter();
   const { id } = router.query;
 

@@ -20,7 +20,7 @@ const validationSchema = yup.object({
   quote: yup.string().required("Quote is verplicht"),
 });
 
-export default function createTestimonial(): ReactElement {
+export default function CreateTestimonialPage(): ReactElement {
   const router = useRouter();
   const [addTestimonial, { data, loading, error }] =
     useMutation(CREATE_TESTIMONIAL);

@@ -1,5 +1,7 @@
+import { motion } from "framer-motion";
 import { GetStaticPaths } from "next";
 import React from "react";
+import { useInView } from "react-intersection-observer";
 import styled from "styled-components";
 import client from "../../../apollo-client";
 import {
@@ -11,6 +13,7 @@ import { Card } from "../../components/Course";
 import { HeroDetail } from "../../components/PGM-Team";
 import { Bio, FieldExperiences } from "../../components/Teacher";
 import { H2 } from "../../components/Titles/H2";
+import useInViewObserver from "../../hooks/useInView";
 
 const Container = styled.div`
   padding-bottom: 5rem;
@@ -26,7 +29,7 @@ const FlexContainer = styled.div`
   }
 `;
 
-const CoursesContainer = styled.div`
+const CoursesContainer = styled(motion.div)`
   margin-top: 5rem;
   position: relative;
 
@@ -62,7 +65,7 @@ const CoursesContainer = styled.div`
     }
   }
 
-  ul {
+  .course-card-list {
     margin-top: 1rem;
     display: flex;
     flex-direction: row;
@@ -79,9 +82,10 @@ interface DetailTeacherProps {
   teacher: GetOneTeacherClient;
 }
 
-const tags = ["react", "javascript", "typescript"];
-
 const TeacherDetail = ({ teacher }: DetailTeacherProps) => {
+  const { ref, inView } = useInView();
+  const animation = useInViewObserver(inView);
+
   return (
     <Container>
       <HeroDetail teacher={teacher} />
@@ -92,29 +96,19 @@ const TeacherDetail = ({ teacher }: DetailTeacherProps) => {
         />
       </FlexContainer>
 
-      {/* tijdelijk hard coded */}
-      <CoursesContainer>
+      <CoursesContainer ref={ref} animate={animation}>
         <span className="bg"></span>
         <H2>Teaches following courses</H2>
-        <ul>
-          <Card
-            id={1}
-            learningLine={"blue"}
-            title={"It-communication"}
-            tags={tags}
-          />
-          <Card
-            id={1}
-            learningLine={"green"}
-            title={"Content Management systems"}
-            tags={tags}
-          />
-          <Card
-            id={1}
-            learningLine={"pink"}
-            title={"Programmeren 1"}
-            tags={tags}
-          />
+        <ul className="course-card-list">
+          {teacher.courses.map((course) => (
+            <Card
+              key={`${course.name}-${course.id}`}
+              id={course.id}
+              title={course.name}
+              tags={course.tags}
+              learningLine={course.learningLine.color}
+            />
+          ))}
         </ul>
       </CoursesContainer>
     </Container>
@@ -139,6 +133,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
       },
     })),
     fallback: false,
+    // fallback: "blocking",
   };
 };
 

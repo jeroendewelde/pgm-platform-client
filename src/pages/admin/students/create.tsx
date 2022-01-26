@@ -28,7 +28,7 @@ const validationSchema = yup.object({
     .required("Academiejaren is verplicht"),
 });
 
-export default function createStudent(): ReactElement {
+export default function CreateStudentPage(): ReactElement {
   const router = useRouter();
   const [addStudent, { data, loading, error }] = useMutation(CREATE_PERSON, {
     notifyOnNetworkStatusChange: true,

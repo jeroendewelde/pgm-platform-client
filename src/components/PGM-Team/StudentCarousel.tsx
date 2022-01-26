@@ -7,10 +7,15 @@ import "swiper/swiper.min.css";
 import styled from "styled-components";
 import { StudentCard } from ".";
 import { transparentize } from "polished";
+import { Person } from "../../../interfaces";
+
+import useInViewObserver from "../../hooks/useInView";
+import { useInView } from "react-intersection-observer";
+import { motion } from "framer-motion";
 
 SwiperCore.use([Navigation, Autoplay]);
 
-const SwiperContainer = styled.div`
+const SwiperContainer = styled(motion.div)`
   border-right: 2px solid ${(props) => props.theme.colors.turquoise};
   border-left: 2px solid ${(props) => props.theme.colors.turquoise};
   margin: 0 auto;
@@ -55,34 +60,34 @@ const SwiperContainer = styled.div`
   }
 `;
 
-const StudentCarousel = () => {
+interface Props {
+  students: Person[];
+}
+
+const StudentCarousel = ({ students }: Props) => {
+  const { ref, inView } = useInView();
+  const animation = useInViewObserver(inView);
   return (
-    <SwiperContainer>
-      <Swiper
-        autoplay={{
-          delay: 10000,
-          disableOnInteraction: true,
-        }}
-        grabCursor={true}
-        centeredSlides={true}
-        slidesPerView={"auto"}
-        navigation={true}
-        loop={true}
-        className="mySwiper"
-      >
-        <SwiperSlide>
-          <StudentCard name="Valerie De Bruycker" />
-        </SwiperSlide>
-        <SwiperSlide>
-          <StudentCard name="Valerie De Bruycker" />
-        </SwiperSlide>
-        <SwiperSlide>
-          <StudentCard name="Valerie De Bruycker" />
-        </SwiperSlide>
-        <SwiperSlide>
-          <StudentCard name="Valerie De Bruycker" />
-        </SwiperSlide>
-      </Swiper>
+    <SwiperContainer ref={ref} animate={animation}>
+      {students.length > 0 && (
+        <Swiper
+          autoplay={{
+            delay: 10000,
+            disableOnInteraction: true,
+          }}
+          grabCursor={true}
+          centeredSlides={true}
+          slidesPerView={"auto"}
+          navigation={true}
+          loop={true}
+        >
+          {students.map((student) => (
+            <SwiperSlide key={student.id}>
+              <StudentCard name={`${student.firstName} ${student.lastName}`} />
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      )}
     </SwiperContainer>
   );
 };

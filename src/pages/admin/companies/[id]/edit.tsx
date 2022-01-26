@@ -27,6 +27,7 @@ import CustomLoading from "../../../../components/Admin/style/CustomLoading";
 import CustomSingleSelect from "../../../../components/Admin/Form/CustomSingleSelect";
 import { useRouter } from "next/router";
 import { Intern } from "../../../../../interfaces";
+import Image from "next/image";
 
 const validationSchema = yup.object({
   name: yup.string().required("Naam van het leerbedrijf is verplicht"),
@@ -42,7 +43,7 @@ const validationSchema = yup.object({
   ),
 });
 
-export default function editCompany(): ReactElement {
+export default function EditCompanyPage(): ReactElement {
   const router = useRouter();
   const { id } = router.query;
   const [imageSrc, setImageSrc] = useState<string>();
@@ -210,14 +211,12 @@ export default function editCompany(): ReactElement {
                     }}
                   >
                     {imageSrc ? (
-                      <img
+                      <Image
                         src={imageSrc}
                         alt="teaser image"
-                        style={{
-                          height: 180,
-                          width: 320,
-                          objectFit: "cover",
-                        }}
+                        width={320}
+                        height={180}
+                        objectFit="cover"
                       />
                     ) : (
                       <LandscapeIcon

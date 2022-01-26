@@ -21,7 +21,7 @@ const validationSchema = yup.object({
   color: yup.string().required("Kleur is verplicht"),
 });
 
-export default function createLearningLine(): ReactElement {
+export default function CreateLearningLinePage(): ReactElement {
   const router = useRouter();
   const [addLearningLine, { data, loading, error }] = useMutation(
     CREATE_LEARNING_LINE,

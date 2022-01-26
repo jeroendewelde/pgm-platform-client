@@ -41,7 +41,7 @@ const validationSchema = yup.object({
   learningLineId: yup.number().required("Leerlijn is verplicht"),
 });
 
-export default function editCourse(): ReactElement {
+export default function EditCoursePage(): ReactElement {
   const router = useRouter();
   const { id } = router.query;
 

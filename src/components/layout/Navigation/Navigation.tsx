@@ -29,17 +29,14 @@ const Container = styled(motion.div)`
   .header__container {
     width: 100%;
     padding: 0 1rem;
-    background-color: ${(props) =>
-      transparentize(0.7, props.theme.colors.turquoise)};
-    -webkit-backdrop-filter: blur(2em);
-    backdrop-filter: blur(2em);
 
     @media (min-width: ${(props) => props.theme.width.medium}) {
       padding: 0 2rem;
     }
 
     .wrapper {
-      max-width: ${(props) => props.theme.width.large};
+      max-width: 1244px;
+      padding: 0 2rem;
       margin: 0 auto;
 
       .flex__container {
@@ -154,11 +151,11 @@ const Navigation = ({
           <>
             <Container
               initial={{ visibility: "hidden" }}
-              animate={{ visibility: "visible", transition: { delay: 1 } }}
+              animate={{ visibility: "visible", transition: { delay: 0.2 } }}
               exit={{
                 visibility: "hidden",
                 transition: {
-                  delay: 1,
+                  delay: 0.4,
                 },
               }}
             >

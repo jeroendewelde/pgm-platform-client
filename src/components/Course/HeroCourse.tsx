@@ -4,12 +4,11 @@ import styled from "styled-components";
 
 import test from "../../assets/test/test.jpg";
 
-import { Course } from "../../../interfaces";
-import { GlitchTitle } from "../Titles/GlitchTitle";
-import Link from "next/link";
+import { CourseClient } from "../../../interfaces";
 import Tag from "./Tag";
 import { CourseTitle } from "../Titles/CourseTitle";
 import CTALink from "./CTALink";
+import { motion } from "framer-motion";
 
 const Container = styled.section`
   .flex-title {
@@ -68,16 +67,35 @@ const Container = styled.section`
 `;
 
 interface HeroCourseProps {
-  course: Course;
+  course: CourseClient;
 }
 
 const HeroCourse = ({ course }: HeroCourseProps) => {
   return (
     <Container>
-      <CourseTitle learningLine={course.learningLine.color}>
-        {course.name}
-      </CourseTitle>
-      <div className="flex-title">
+      <motion.div
+        initial={{ opacity: 0, x: -100 }}
+        animate={{ opacity: 1, x: 0 }}
+        exit={{ opacity: 0, x: -100 }}
+        transition={{
+          delay: 0.1,
+          duration: 0.65,
+        }}
+      >
+        <CourseTitle learningLine={course.learningLine.color}>
+          {course.name}
+        </CourseTitle>
+      </motion.div>
+      <motion.div
+        className="flex-title"
+        initial={{ opacity: 0, y: 10, zIndex: -1 }}
+        animate={{ opacity: 1, y: 0, zIndex: 1 }}
+        exit={{ opacity: 0, y: 10 }}
+        transition={{
+          delay: 0.7,
+          duration: 0.45,
+        }}
+      >
         <CTALink href="/vakken">Ga terug naar vakken</CTALink>
         {course.tags && course.tags.length > 0 && (
           <div className="tags">
@@ -86,14 +104,32 @@ const HeroCourse = ({ course }: HeroCourseProps) => {
             ))}
           </div>
         )}
-      </div>
+      </motion.div>
       <div className="flex">
-        <div className="image-container">
+        <motion.div
+          className="image-container"
+          initial={{ opacity: 0, x: -100 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: -100 }}
+          transition={{
+            delay: 0.5,
+            duration: 0.65,
+          }}
+        >
           <Image src={test} objectFit="cover" layout="fill" />
-        </div>
-        <div className="description">
+        </motion.div>
+        <motion.div
+          className="description"
+          initial={{ opacity: 0, x: 100 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: 100 }}
+          transition={{
+            delay: 0.5,
+            duration: 0.65,
+          }}
+        >
           <p>{course.description}</p>
-        </div>
+        </motion.div>
       </div>
     </Container>
   );

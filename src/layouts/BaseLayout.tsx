@@ -1,13 +1,13 @@
 import React, { ReactElement, useState } from "react";
-import styledComponent from "styled-components";
 import { motion } from "framer-motion";
 
 import { Footer } from "../components/layout/Footer";
 import { Header } from "../components/layout/Header";
 import { useMousePosition } from "../hooks/useMousePosition";
 import { CursorContext } from "../context/CursorContext";
+import styled from "styled-components";
 
-const Cursor = styledComponent(motion.div)`
+const Cursor = styled(motion.div)`
   display: none;
 
   @media (min-width: ${(props) => props.theme.width.medium}) {
@@ -28,7 +28,7 @@ const Cursor = styledComponent(motion.div)`
   }
 `;
 
-const MainLayout = styledComponent.main`
+const MainLayout = styled.main`
   max-width: ${(props) => props.theme.width.elarge};
   margin: 0 auto;
   padding: 2rem 1.5rem;

@@ -33,7 +33,7 @@ const validationSchema = yup.object({
     .required("Academiejaren is verplicht"),
 });
 
-export default function editStudent(): ReactElement {
+export default function EditStudentPage(): ReactElement {
   const router = useRouter();
   const { id } = router.query;
 

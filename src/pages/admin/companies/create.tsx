@@ -20,6 +20,7 @@ import { useMutation, useQuery } from "@apollo/client";
 import BasicContainer from "../../../components/Admin/style/BasicContainer";
 import CustomLoading from "../../../components/Admin/style/CustomLoading";
 import CustomSingleSelect from "../../../components/Admin/Form/CustomSingleSelect";
+import Image from "next/image";
 
 const validationSchema = yup.object({
   name: yup.string().required("Naam van het leerbedrijf is verplicht"),
@@ -35,7 +36,7 @@ const validationSchema = yup.object({
   ),
 });
 
-export default function createCompany(): ReactElement {
+export default function CreateCompanyPage(): ReactElement {
   const [imageSrc, setImageSrc] = useState<string>();
   const [uploadData, setUploadData] = useState<File>();
 
@@ -151,14 +152,12 @@ export default function createCompany(): ReactElement {
                     }}
                   >
                     {imageSrc ? (
-                      <img
+                      <Image
                         src={imageSrc}
                         alt="teaser image"
-                        style={{
-                          height: 180,
-                          width: 320,
-                          objectFit: "cover",
-                        }}
+                        width={320}
+                        height={180}
+                        objectFit="cover"
                       />
                     ) : (
                       <LandscapeIcon
