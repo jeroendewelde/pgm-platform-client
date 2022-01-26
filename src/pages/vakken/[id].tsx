@@ -36,22 +36,24 @@ const CourseDetail = ({ course }: CoursesPageProps) => {
 export default CourseDetail;
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const { data, error } = await client.query({
-    query: GET_ALL_COURSES,
-  });
-
-  if (error) {
-    console.log(error);
-  }
-
+  //   const { data, error } = await client.query({
+  //     query: GET_ALL_COURSES,
+  //   });
+  //   if (error) {
+  //     console.log(error);
+  //   }
+  //   return {
+  //     paths: data.courses.map((course: { id: any }) => ({
+  //       params: {
+  //         id: course.id.toString(),
+  //       },
+  //     })),
+  //     fallback: false,
+  //     // fallback: "blocking",
+  //   };
   return {
-    paths: data.courses.map((course: { id: any }) => ({
-      params: {
-        id: course.id.toString(),
-      },
-    })),
-    fallback: false,
-    // fallback: "blocking",
+    paths: [], //indicates that no page needs be created at build time
+    fallback: "blocking", //indicates the type of fallback
   };
 };
 
