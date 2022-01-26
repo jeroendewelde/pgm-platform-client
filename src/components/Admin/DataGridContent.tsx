@@ -28,10 +28,7 @@ export default function DataGridContent({
   const [
     deleteRecord,
     { data: dataDelete, loading: loadingDelete, error: errorDelete },
-  ] = useMutation(deleteQuery, {
-    refetchQueries: [{ query: fetchAllQuery }],
-    notifyOnNetworkStatusChange: true,
-  });
+  ] = useMutation(deleteQuery, {});
 
   // Add Edit & Delete button for each row
   info.push(
@@ -45,6 +42,7 @@ export default function DataGridContent({
     {
       field: "delete",
       headerName: "wis",
+      width: 25,
       renderCell: (params: GridRenderCellParams) => (
         <DeleteButton params={params} handleClick={handleClickDelete} />
       ),
@@ -60,6 +58,8 @@ export default function DataGridContent({
       variables: {
         id: id,
       },
+      refetchQueries: [{ query: fetchAllQuery }],
+      notifyOnNetworkStatusChange: true,
     });
   };
 

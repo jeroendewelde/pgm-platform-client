@@ -90,7 +90,9 @@ export default function editCourse(): ReactElement {
   const [
     deleteCourse,
     { data: dataDelete, loading: loadingDelete, error: errorDelete },
-  ] = useMutation(DELETE_COURSE);
+  ] = useMutation(DELETE_COURSE, {
+    notifyOnNetworkStatusChange: true,
+  });
 
   const handleDelete = () => {
     deleteCourse({

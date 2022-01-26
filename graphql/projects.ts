@@ -18,6 +18,10 @@ export const GET_ALL_PROJECTS = gql`
       academicYear
       tags
       courseId
+      course {
+        id
+        name
+      }
     }
   }
 `;

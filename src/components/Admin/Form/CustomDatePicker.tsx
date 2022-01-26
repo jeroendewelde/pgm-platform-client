@@ -1,25 +1,18 @@
 import React, { ReactElement, useState } from "react";
-import { fieldToTextField, TextFieldProps } from "formik-mui";
 import Badge from "@mui/material/Badge";
 
 import { TextField } from "@mui/material";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
-// import AdapterDateDayjs from '@mui/lab/AdapterDayjs';
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import DatePicker from "@mui/lab/DatePicker";
 import PickersDay from "@mui/lab/PickersDay";
 import CalendarPickerSkeleton from "@mui/lab/CalendarPickerSkeleton";
 import getDaysInMonth from "date-fns/getDaysInMonth";
-
-// import DateAdapter from '@mui/lab/AdapterDayjs';
+import beLocale from "date-fns/locale/nl-BE";
 
 // interface CustomDatePickerProps {
 // 	props:
 // }
-
-function getRandomNumber(min: number, max: number) {
-  return Math.round(Math.random() * (max - min) + min);
-}
 
 /**
  * Mimic fetch with abort controller https://developer.mozilla.org/en-US/docs/Web/API/AbortController/abort
@@ -29,11 +22,6 @@ function fakeFetch(date: Date, { signal }: { signal: AbortSignal }) {
   return new Promise<{ daysToHighlight: number[] }>((resolve, reject) => {
     const timeout = setTimeout(() => {
       const daysInMonth = getDaysInMonth(date);
-      const daysToHighlight = [1, 2, 3].map(() =>
-        getRandomNumber(1, daysInMonth)
-      );
-
-      resolve({ daysToHighlight });
     }, 500);
 
     signal.onabort = () => {
@@ -43,14 +31,14 @@ function fakeFetch(date: Date, { signal }: { signal: AbortSignal }) {
   });
 }
 
-const initialValue = new Date();
+// const initialValue = new Date();
 
 // export default function CustomDatePicker({  children, ...props}: TextFieldProps): ReactElement {
-export default function CustomDatePicker(props: TextFieldProps): ReactElement {
+export default function CustomDatePicker(props: any): ReactElement {
   const requestAbortController = React.useRef<AbortController | null>(null);
   const [isLoading, setIsLoading] = React.useState(false);
   const [highlightedDays, setHighlightedDays] = React.useState([1, 2, 15]);
-  const [value, setValue] = React.useState<Date | null>(initialValue);
+  const [value, setValue] = React.useState<Date | null>();
 
   // FOR FORMIK
   const {
@@ -59,22 +47,8 @@ export default function CustomDatePicker(props: TextFieldProps): ReactElement {
     children,
     helperText,
     label,
+    value: valueProp,
   } = props;
-
-  //   const onChange = React.useCallback(
-  // 	(event) => {
-  // 	//   const {value} = event.target;
-  // 	console.log('event.....', event);
-  // 	console.log('target.....', event.target);
-  // 	setValue(event.target.value);
-  // 	  setFieldValue(name, value ? value : '');
-  // 	},
-  // 	[setFieldValue, name]
-  //   );
-
-  //   onChange={(newValue) => {
-  // 	setValue(newValue);
-  //   }}
 
   const fetchHighlightedDays = (date: Date) => {
     const controller = new AbortController();
@@ -95,12 +69,6 @@ export default function CustomDatePicker(props: TextFieldProps): ReactElement {
     requestAbortController.current = controller;
   };
 
-  React.useEffect(() => {
-    fetchHighlightedDays(initialValue);
-    // abort request on unmount
-    return () => requestAbortController.current?.abort();
-  }, []);
-
   const handleMonthChange = (date: Date) => {
     if (requestAbortController.current) {
       // make sure that you are aborting useless requests
@@ -114,22 +82,19 @@ export default function CustomDatePicker(props: TextFieldProps): ReactElement {
   };
 
   return (
-    // <LocalizationProvider dateAdapter={DateAdapter}>{children}</LocalizationProvider>
-    // <TextField {...fieldToTextField(props)} onChange={onChange} />
-    <LocalizationProvider dateAdapter={AdapterDateFns}>
+    <LocalizationProvider dateAdapter={AdapterDateFns} locale={beLocale}>
       <DatePicker
-        helperText={helperText}
         label={label}
-        value={value}
+        value={valueProp ? valueProp : value}
         loading={isLoading}
-        // onChange={onChange}
         onChange={(newValue) => {
           setValue(newValue);
           setFieldValue(name, newValue ? newValue : "");
         }}
-        // onChange={(newValue) => onChange(newValue)}
         onMonthChange={handleMonthChange}
-        renderInput={(params) => <TextField {...params} />}
+        renderInput={(params) => (
+          <TextField helperText={helperText} {...params} />
+        )}
         renderLoading={() => <CalendarPickerSkeleton />}
         renderDay={(day, _value, DayComponentProps) => {
           const isSelected =
@@ -137,11 +102,7 @@ export default function CustomDatePicker(props: TextFieldProps): ReactElement {
             highlightedDays.indexOf(day.getDate()) > 0;
 
           return (
-            <Badge
-              key={day.toString()}
-              overlap="circular"
-              badgeContent={isSelected ? "🌚" : undefined}
-            >
+            <Badge key={day.toString()} overlap="circular">
               <PickersDay {...DayComponentProps} />
             </Badge>
           );

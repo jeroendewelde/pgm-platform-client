@@ -83,7 +83,9 @@ export default function editProject(): ReactElement {
   const [
     deleteProject,
     { data: dataDelete, loading: loadingDelete, error: errorDelete },
-  ] = useMutation(DELETE_PROJECT);
+  ] = useMutation(DELETE_PROJECT, {
+    notifyOnNetworkStatusChange: true,
+  });
 
   const handleDelete = () => {
     deleteProject({
@@ -250,7 +252,7 @@ export default function editProject(): ReactElement {
                     render={(arrayHelpers) => (
                       <div>
                         {values.tags && values.tags.length > 0 ? (
-                          values.tags.map((tag, index) => (
+                          values.tags.map((tag: string, index: number) => (
                             <div
                               key={index}
                               style={{

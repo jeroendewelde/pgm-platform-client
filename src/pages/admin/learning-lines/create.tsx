@@ -23,8 +23,12 @@ const validationSchema = yup.object({
 
 export default function createLearningLine(): ReactElement {
   const router = useRouter();
-  const [addLearningLine, { data, loading, error }] =
-    useMutation(CREATE_LEARNING_LINE);
+  const [addLearningLine, { data, loading, error }] = useMutation(
+    CREATE_LEARNING_LINE,
+    {
+      notifyOnNetworkStatusChange: true,
+    }
+  );
 
   return (
     <BasicContainer title="Nieuwe Leerlijn">

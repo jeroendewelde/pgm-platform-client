@@ -30,7 +30,9 @@ const validationSchema = yup.object({
 
 export default function createStudent(): ReactElement {
   const router = useRouter();
-  const [addStudent, { data, loading, error }] = useMutation(CREATE_PERSON);
+  const [addStudent, { data, loading, error }] = useMutation(CREATE_PERSON, {
+    notifyOnNetworkStatusChange: true,
+  });
 
   return (
     <BasicContainer title="Nieuwe Student">
