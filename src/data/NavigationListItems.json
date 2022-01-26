@@ -1,0 +1,50 @@
+[
+  {
+    "title": "Home",
+    "url": "/",
+    "leftLineFlex": 0,
+    "rightLineFlex": 1,
+    "image": "/nav-listitem-images/home.jpg",
+    "offset": 200
+  },
+  {
+    "title": "Leerlijn",
+    "url": "/leerlijn",
+    "leftLineFlex": 3,
+    "rightLineFlex": 1,
+    "image": "/nav-listitem-images/leerlijn.jpg",
+    "offset": -500
+  },
+  {
+    "title": "Vakken",
+    "url": "/vakken",
+    "leftLineFlex": 1,
+    "rightLineFlex": 3,
+    "image": "/nav-listitem-images/vakken.jpg",
+    "offset": 300
+  },
+  {
+    "title": "Projecten",
+    "url": "/projecten",
+    "leftLineFlex": 3,
+    "rightLineFlex": 2,
+    "image": "/nav-listitem-images/projecten.jpg",
+    "offset": -500
+  },
+  {
+    "title": "PGM-Team",
+    "url": "/pgm-team",
+    "leftLineFlex": 3,
+    "rightLineFlex": 0,
+    "image": "/nav-listitem-images/pgm-team.jpg",
+    "offset": -600
+  },
+  {
+    "title": "Contact",
+    "url": "/contact",
+    "leftLineFlex": 0,
+    "rightLineFlex": 1,
+    "image": "/nav-listitem-images/contact.jpg",
+    "offset": 200
+  }
+]

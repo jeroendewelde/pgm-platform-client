@@ -1,26 +1,50 @@
-import styled from "styled-components";
+import Head from "next/head";
+import { useRouter } from "next/router";
+import type { AppProps } from "next/app";
+
+// Styling
 import { ThemeProvider } from "styled-components";
 import theme from "../theme/theme";
+import GlobalStyle from "../theme/globalStyles";
+import "../styles/global.css";
+import { BaseLayout } from "../layouts";
+import { ThemeProvider as MuiThemeProvider } from "@mui/material/styles";
+import { adminTheme } from "../theme/themeAdmin";
 
-import type { AppProps } from "next/app";
-import CourseList from "../components/Course/CourseList";
-import { Button } from "../components/Button";
-
-const Text = styled.p`
-  color: red;
-`;
+// Apollo
+import { ApolloProvider } from "@apollo/client";
+import client from "../../apollo-client";
+import { AnimatePresence } from "framer-motion";
 
 function MyApp({ Component, pageProps }: AppProps) {
-  return (
-    <ThemeProvider theme={theme}>
-      <Text>Hello there!</Text>
-      {/* <CourseList {... pageProps } /> */}
-      <Button> Hello </Button>
+  const router = useRouter();
+  let isAdmin = false;
+  if (router.pathname.split("/admin").length >= 2) {
+    isAdmin = true;
+  }
 
-      <Component {...pageProps} />
-    </ThemeProvider>
+  return (
+    <ApolloProvider client={client}>
+      <ThemeProvider theme={theme}>
+        <Head>
+          <link rel="shortcut icon" href="/logo_purple.ico" />
+        </Head>
+
+        {!isAdmin ? (
+          <AnimatePresence exitBeforeEnter>
+            <BaseLayout>
+              <GlobalStyle />
+              <Component {...pageProps} />
+            </BaseLayout>
+          </AnimatePresence>
+        ) : (
+          <MuiThemeProvider theme={adminTheme}>
+            <Component {...pageProps} />
+          </MuiThemeProvider>
+        )}
+      </ThemeProvider>
+    </ApolloProvider>
   );
 }
-
 
 export default MyApp;

@@ -1,13 +1,11 @@
-import { 
-  ApolloClient,
-  InMemoryCache
- } from '@apollo/client';
+import { ApolloClient, InMemoryCache } from "@apollo/client";
 
 const client = new ApolloClient({
-  uri: process.env.HOST,
+  ssrMode: true,
+  uri: process.env.NEXT_PUBLIC_HOST_URL,
   cache: new InMemoryCache(),
-  
 });
+
 // const client = new ApolloClient({
 //   uri: 'https://pgm-platform-server.herokuapp.com/graphql',
 //   cache: new InMemoryCache(),
