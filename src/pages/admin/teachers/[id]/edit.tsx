@@ -63,11 +63,6 @@ export default function editTeacher(): ReactElement {
     notifyOnNetworkStatusChange: true,
   });
 
-  const [
-    deletePerson,
-    { data: dataDelete, loading: loadingDelete, error: errorDelete },
-  ] = useMutation(DELETE_PERSON);
-
   const {
     data: dataGet,
     error: errorGet,
@@ -96,6 +91,13 @@ export default function editTeacher(): ReactElement {
     ssr: true,
   });
 
+  const [
+    deletePerson,
+    { data: dataDelete, loading: loadingDelete, error: errorDelete },
+  ] = useMutation(DELETE_PERSON, {
+    notifyOnNetworkStatusChange: true,
+  });
+
   const labelSwitch = {
     inputProps: { "aria-label": "Extra informatie toevoegen" },
   };
@@ -105,6 +107,18 @@ export default function editTeacher(): ReactElement {
       setShowExtraInfo(true);
     }
   }, [dataGet]);
+
+  const handleDelete = () => {
+    deletePerson({
+      variables: {
+        id: Number(id),
+      },
+      notifyOnNetworkStatusChange: true,
+    });
+    if (!errorDelete && !loadingDelete) {
+      window.location.href = "/admin/teachers";
+    }
+  };
 
   return (
     <BasicContainer title="Bewerk Docent">
@@ -272,6 +286,7 @@ export default function editTeacher(): ReactElement {
                       <Field
                         component={CustomDatePicker}
                         name="dob"
+                        value={values.dob}
                         type="date"
                         label="Geboortedatum"
                         helperText=""
@@ -489,16 +504,34 @@ export default function editTeacher(): ReactElement {
                   </>
                 )}
 
-                <Grid item xs={12}>
+                <Grid
+                  item
+                  xs={12}
+                  sx={{
+                    display: "flex",
+                  }}
+                >
                   <Button
                     variant="contained"
-                    disabled={isSubmitting}
+                    disabled={isSubmitting || loadingDelete}
                     onClick={submitForm}
                   >
-                    Maak aan
+                    Pas aan
+                  </Button>
+                  <Button
+                    variant="outlined"
+                    color="error"
+                    sx={{
+                      marginLeft: "auto",
+                    }}
+                    disabled={isSubmitting || loadingDelete}
+                    onClick={(e) => handleDelete()}
+                  >
+                    Verwijder
                   </Button>
                 </Grid>
               </Grid>
+              <pre>{JSON.stringify(values, null, 2)}</pre>
             </Form>
           )}
         </Formik>

@@ -1,46 +1,32 @@
-import React, { ReactElement, useEffect, useState } from "react";
-import { useRouter } from "next/router";
+import React, { ChangeEvent, ReactElement, useEffect, useState } from "react";
 
 // Formik & Yup
 import * as yup from "yup";
 import { Field, FieldArray, Form, Formik } from "formik";
 
 // Material UI Components
-import { Box, Button, Divider, Grid, Paper, Typography } from "@mui/material";
+import { Button, Grid, Typography, Paper, Divider } from "@mui/material";
 import { TextField } from "formik-mui";
+import { Remove, Add } from "@material-ui/icons";
+import { styled } from "@mui/material/styles";
+import LandscapeIcon from "@mui/icons-material/Landscape";
 
 // Queries
 import {
-  DELETE_SPECIALISATION,
-  GET_SPECIALISATION_BY_ID,
-  UPDATE_SPECIALISATION,
-} from "../../../../../graphql/specialisations";
-import { useMutation, useQuery } from "@apollo/client";
-import { Intern, Specialisation } from "../../../../../interfaces";
-
-// Custom Components
-import BasicContainer from "../../../../components/Admin/style/BasicContainer";
-import Dashboard from "../../../../components/Admin/Dashboard";
-import CustomLoading from "../../../../components/Admin/style/CustomLoading";
-
-// Variabels
-import { colors } from "../../../../utils/constants";
-import {
-  DELETE_TESTIMONIAL,
-  GET_TESTIMONIAL_BY_ID,
-  UPDATE_TESTIMONIAL,
-} from "../../../../../graphql/testimonials";
-import {
+  CREATE_COMPANY,
   DELETE_COMPANY,
   GET_COMPANY_BY_ID,
   UPDATE_COMPANY,
 } from "../../../../../graphql/companies";
-import { UPDATE_COURSE } from "../../../../../graphql/courses";
 import { GET_ALL_STUDENTS } from "../../../../../graphql/persons";
+import { useMutation, useQuery } from "@apollo/client";
+
+// Custom Components
+import BasicContainer from "../../../../components/Admin/style/BasicContainer";
+import CustomLoading from "../../../../components/Admin/style/CustomLoading";
 import CustomSingleSelect from "../../../../components/Admin/Form/CustomSingleSelect";
-import { Remove, Add } from "@material-ui/icons";
-import { styled } from "@mui/material/styles";
-import LandscapeIcon from "@mui/icons-material/Landscape";
+import { useRouter } from "next/router";
+import { Intern } from "../../../../../interfaces";
 
 const validationSchema = yup.object({
   name: yup.string().required("Naam van het leerbedrijf is verplicht"),
@@ -50,7 +36,6 @@ const validationSchema = yup.object({
       description: yup.string().required("Beschrijving is verplicht"),
       year: yup
         .string()
-        // .length(4, "Jaar moet 4 cijfers bevatten")
         .matches(/^[0-9]{4}$/, "Jaar moet 4 cijfers bevatten")
         .required("Jaar is verplicht"),
     })
@@ -60,9 +45,8 @@ const validationSchema = yup.object({
 export default function editCompany(): ReactElement {
   const router = useRouter();
   const { id } = router.query;
-  const adminPath = router.pathname.split("/admin/")[1].split("/")[0];
-  const [imageSrc, setImageSrc] = useState();
-  const [uploadData, setUploadData] = useState();
+  const [imageSrc, setImageSrc] = useState<string>();
+  const [uploadData, setUploadData] = useState<File>();
 
   const {
     data: dataGet,
@@ -91,27 +75,31 @@ export default function editCompany(): ReactElement {
   });
 
   const [
-    deleteCompany,
+    deleteCourse,
     { data: dataDelete, loading: loadingDelete, error: errorDelete },
-  ] = useMutation(DELETE_COMPANY);
-
-  const handleDelete = () => {
-    deleteCompany({
-      variables: {
-        id: Number(id),
-      },
-      notifyOnNetworkStatusChange: true,
-    }).then(() => (window.location.href = `/admin/${adminPath}`));
-  };
+  ] = useMutation(DELETE_COMPANY, {
+    notifyOnNetworkStatusChange: true,
+  });
 
   const Input = styled("input")({
     display: "none",
   });
 
-  const handleOnChangeImage = ({ target: { files } }) => {
-    const file = files[0];
-    console.log("...file", file);
-    if (files.length > 0) {
+  const handleDelete = () => {
+    deleteCourse({
+      variables: {
+        id: Number(id),
+      },
+      notifyOnNetworkStatusChange: true,
+    });
+    if (!errorDelete && !loadingDelete) {
+      window.location.href = "/admin/courses";
+    }
+  };
+
+  const handleOnChangeImage = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target?.files && e.target?.files.length > 0) {
+      const file = e.target.files[0];
       setUploadData(file);
       setImageSrc(URL.createObjectURL(file));
     }
@@ -143,185 +131,149 @@ export default function editCompany(): ReactElement {
 
   return (
     <BasicContainer title="Bewerk Leerbedrijf">
-      {loadingGet || loadingStudents ? (
+      {loadingStudents || loadingGet ? (
         <CustomLoading />
       ) : (
-        <>
-          {/* {console.log("dataGET.....", dataGet)} */}
-          {/* {dataGet.company?.teaserImage &&
-            setImageSrc(dataGet.company.teaserImage)} */}
-          <Formik
-            initialValues={{
-              name: dataGet?.company.name || "",
-              teaserImage: dataGet?.company.teaserImage || "",
-              interns: dataGet?.company.interns || [],
-            }}
-            validationSchema={validationSchema}
-            onSubmit={async (values, { setSubmitting }) => {
-              setSubmitting(true);
+        <Formik
+          initialValues={{
+            name: dataGet?.company.name || "",
+            teaserImage: dataGet?.company.teaserImage || "",
+            interns: dataGet?.company.interns || [],
+          }}
+          validationSchema={validationSchema}
+          onSubmit={async (values, { setSubmitting }) => {
+            setSubmitting(true);
 
-              let imageUpload;
+            let imageUpload;
 
-              if (imageSrc && imageSrc.split("http").length <= 1) {
-                imageUpload = await handleUpload();
-              }
+            if (imageSrc && imageSrc.split("http").length <= 1) {
+              imageUpload = await handleUpload();
+            }
 
-              updateCompany({
-                variables: {
-                  input: {
-                    name: values.name,
-                    // teaserImage: values.teaserImage,
-                    teaserImage: imageUpload && imageUpload.imagePath,
-
-                    //   interns: values.interns,
-                    interns: values.interns.map((intern) => {
-                      const { __typename, ...rest } = intern;
-                      return rest;
-                    }),
-                    //   internIds: values.interns.map(
-                    //     (intern: Intern) => intern.studentId
-                    //   ),
-                    //   interns: values.interns.map((intern: Intern) => {
-                    //     const { __typename, ...rest } = intern;
-                    //     return rest;
-                    //   }),
-                  },
-                  id: Number(id),
+            updateCompany({
+              variables: {
+                input: {
+                  name: values.name,
+                  teaserImage: imageUpload && imageUpload.imagePath,
+                  interns: values.interns.map((intern: any) => {
+                    const { __typename, ...rest } = intern;
+                    return rest;
+                  }),
                 },
-              });
-              if (!errorUpdate && !loadingUpdate) {
-                window.location.href = `/admin/${adminPath}`;
-              }
-            }}
-          >
-            {({ values, submitForm, isSubmitting }) => (
-              <Form
-                style={{
-                  width: "100%",
+                id: Number(id),
+              },
+            });
+            if (!errorUpdate && !loadingUpdate) {
+              window.location.href = "/admin/companies";
+            }
+          }}
+        >
+          {({ values, submitForm, isSubmitting }) => (
+            <Form
+              style={{
+                width: "100%",
+              }}
+            >
+              <Grid
+                container
+                spacing={2}
+                sx={{
+                  maxWidth: "xl",
+                  mb: 4,
                 }}
               >
-                <Grid
-                  container
-                  spacing={{ xs: 2 }}
-                  sx={{
-                    maxWidth: "xl",
-                    mb: 4,
-                  }}
-                >
-                  <Grid item xs={12}>
-                    <Field
-                      required
-                      component={TextField}
-                      name="name"
-                      type="text"
-                      label="Naam"
-                      fullWidth
-                      multiline
-                      maxRows={2}
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <Field
-                      component={TextField}
-                      name="teaserImage"
-                      type="text"
-                      label="Teaser Image"
-                      helperText="link naar de teaser image"
-                      fullWidth
-                    />
-                  </Grid>
+                <Grid item xs={12}>
+                  <Field
+                    required
+                    component={TextField}
+                    name="name"
+                    type="text"
+                    label="Naam"
+                    fullWidth
+                    multiline
+                    maxRows={2}
+                  />
+                </Grid>
 
-                  <Grid item xs={12} md={4}>
-                    <label htmlFor="contained-button-file">
-                      <Input
-                        accept="image/*"
-                        id="contained-button-file"
-                        multiple
-                        type="file"
-                        onChange={handleOnChangeImage}
+                <Grid item xs={12} md={4}>
+                  <Paper
+                    sx={{
+                      height: 180,
+                      width: 320,
+                      mt: 2,
+                      mb: 2,
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      backgroundColor: "#E5E5E5",
+                      overflow: "hidden",
+                    }}
+                  >
+                    {imageSrc ? (
+                      <img
+                        src={imageSrc}
+                        alt="teaser image"
+                        style={{
+                          height: 180,
+                          width: 320,
+                          objectFit: "cover",
+                        }}
                       />
-                      <Button
-                        variant="outlined"
-                        component="span"
-                        color={imageSrc && "warning"}
-                      >
-                        {imageSrc
-                          ? "Teaser Image aanpassen"
-                          : "Teaser Image toevoegen"}
-                      </Button>
-                    </label>
-                    <Paper
-                      sx={{
-                        width: "100%",
-                        height: 180,
-                        width: 320,
-                        mt: 2,
-                        mb: 2,
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        backgroundColor: "#E5E5E5",
-                        overflow: "hidden",
-                      }}
+                    ) : (
+                      <LandscapeIcon
+                        sx={{
+                          color: "#FFF",
+                          fontSize: 64,
+                        }}
+                      />
+                    )}
+                  </Paper>
+                  <label htmlFor="contained-button-file">
+                    <Input
+                      accept="image/*"
+                      id="contained-button-file"
+                      multiple
+                      type="file"
+                      onChange={handleOnChangeImage}
+                    />
+                    <Button
+                      variant="outlined"
+                      component="span"
+                      color={imageSrc ? "warning" : "primary"}
                     >
-                      {imageSrc ? (
-                        <img
-                          src={imageSrc}
-                          alt="teaser image"
-                          style={{
-                            height: 180,
-                            width: 320,
-                            objectFit: "cover",
-                          }}
-                        />
-                      ) : (
-                        <LandscapeIcon
-                          sx={{
-                            color: "#FFF",
-                            fontSize: 64,
-                          }}
-                        />
-                      )}
-                    </Paper>
-                  </Grid>
+                      {imageSrc
+                        ? "Teaser Image aanpassen"
+                        : "Teaser Image toevoegen"}
+                    </Button>
+                  </label>
+                </Grid>
 
-                  <Grid item xs={12}>
-                    <Typography variant="h2" component="h2">
-                      Studenten
-                    </Typography>
-                    <Typography variant="subtitle1">
-                      Studenten die bij dit leerbedrijf hun werkplekleren hebben
-                      beoefend
-                    </Typography>
-                  </Grid>
-                  <Grid item xs={12}>
-                    <FieldArray
-                      name="interns"
-                      render={(arrayHelpers) => (
-                        <div>
-                          {values.interns && values.interns.length > 0 ? (
-                            values.interns.map((tag, index) => (
-                              // <Grid
-                              //   item
-                              //   xs={12}
-                              //   key={index}
-                              //   sx={
-                              //     {
-                              //       // mb: "1rem",
-                              //     }
-                              //   }
-                              //   container
-                              //   // CHECK SPACING
-                              //   //   spacing={{ xs: 2 }}
-                              // >
-
+                <Grid item xs={12}>
+                  <Typography variant="h2" component="h2">
+                    Studenten
+                  </Typography>
+                  <Typography variant="subtitle1">
+                    Studenten die bij dit leerbedrijf hun werkplekleren hebben
+                    beoefend
+                  </Typography>
+                </Grid>
+                <Grid item xs={12}>
+                  <FieldArray
+                    name="interns"
+                    render={(arrayHelpers) => (
+                      <div>
+                        {values.interns && values.interns.length > 0 ? (
+                          values.interns.map(
+                            (intern: Intern, index: number) => (
                               <Grid
-                                container
-                                spacing={{ xs: 2 }}
+                                item
+                                xs={12}
                                 key={index}
                                 sx={{
-                                  maxWidth: "xl",
+                                  mb: "1rem",
                                 }}
+                                container
+                                spacing={2}
                               >
                                 <Grid item xs={12} lg={5} xl={4}>
                                   <Field
@@ -333,8 +285,6 @@ export default function editCompany(): ReactElement {
                                     fullWidth
                                     data={dataStudents.students}
                                     value={values.interns[index].studentId}
-                                    otherId="studentId"
-                                    //   value={75}
                                     labelProps={[
                                       "firstName",
                                       "lastName",
@@ -395,7 +345,7 @@ export default function editCompany(): ReactElement {
                                     variant="outlined"
                                     disabled={isSubmitting}
                                     onClick={() =>
-                                      arrayHelpers.insert(index + 1, {
+                                      arrayHelpers.push({
                                         function: "",
                                         description: "",
                                         year: "",
@@ -421,60 +371,60 @@ export default function editCompany(): ReactElement {
                                   </Grid>
                                 )}
                               </Grid>
-                            ))
-                          ) : (
-                            <Grid item xs={12}>
-                              <Button
-                                variant="outlined"
-                                disabled={isSubmitting}
-                                onClick={() =>
-                                  arrayHelpers.push({
-                                    function: "",
-                                    description: "",
-                                    year: "",
-                                    studentId: "",
-                                  })
-                                }
-                              >
-                                studenten toevoegen
-                              </Button>
-                            </Grid>
-                          )}
-                        </div>
-                      )}
-                    />
-                  </Grid>
-                  <Grid
-                    item
-                    xs={12}
-                    sx={{
-                      display: "flex",
-                    }}
-                  >
-                    <Button
-                      variant="contained"
-                      disabled={isSubmitting || loadingDelete}
-                      onClick={submitForm}
-                    >
-                      Pas aan
-                    </Button>
-                    <Button
-                      variant="outlined"
-                      color="error"
-                      sx={{
-                        marginLeft: "auto",
-                      }}
-                      disabled={isSubmitting || loadingDelete}
-                      onClick={(e) => handleDelete()}
-                    >
-                      Verwijder
-                    </Button>
-                  </Grid>
+                            )
+                          )
+                        ) : (
+                          <Grid item xs={12}>
+                            <Button
+                              variant="outlined"
+                              disabled={isSubmitting}
+                              onClick={() =>
+                                arrayHelpers.push({
+                                  function: "",
+                                  description: "",
+                                  year: "",
+                                  studentId: "",
+                                })
+                              }
+                            >
+                              studenten toevoegen
+                            </Button>
+                          </Grid>
+                        )}
+                      </div>
+                    )}
+                  />
                 </Grid>
-              </Form>
-            )}
-          </Formik>
-        </>
+                <Grid
+                  item
+                  xs={12}
+                  sx={{
+                    display: "flex",
+                  }}
+                >
+                  <Button
+                    variant="contained"
+                    disabled={isSubmitting || loadingDelete}
+                    onClick={submitForm}
+                  >
+                    Pas aan
+                  </Button>
+                  <Button
+                    variant="outlined"
+                    color="error"
+                    sx={{
+                      marginLeft: "auto",
+                    }}
+                    disabled={isSubmitting || loadingDelete}
+                    onClick={(e) => handleDelete()}
+                  >
+                    Verwijder
+                  </Button>
+                </Grid>
+              </Grid>
+            </Form>
+          )}
+        </Formik>
       )}
     </BasicContainer>
   );

@@ -1,21 +1,15 @@
 import * as React from "react";
-import { fieldToTextField, TextFieldProps } from "formik-mui";
 
 import { TextField, Autocomplete, Checkbox } from "@mui/material";
 import { Person } from "../../../../interfaces";
 import { CheckBoxOutlineBlank } from "@mui/icons-material";
 import CheckBoxIcon from "@material-ui/icons/CheckBox";
-import { ReactElement, useState } from "react";
-
-interface CustomMultiSelectWithChipsProps {
-  data: any[];
-  props: TextFieldProps;
-}
+import { ReactElement } from "react";
 
 export default function CustomMultiSelectWithChips({
   data,
   ...props
-}: CustomMultiSelectWithChipsProps): ReactElement {
+}: any): ReactElement {
   const {
     form: { setFieldValue, values },
     field: { name },
@@ -23,9 +17,6 @@ export default function CustomMultiSelectWithChips({
     sx,
     placeholder,
     labelProps,
-
-    // extraData,
-    // data,
   } = props;
 
   const checkBoxIconUnchecked = <CheckBoxOutlineBlank fontSize="small" />;
@@ -68,37 +59,17 @@ export default function CustomMultiSelectWithChips({
       getOptionLabel={(option: any) =>
         option[labelProps[0]] + " " + option[labelProps[1]]
       }
-      renderOption={(props, option, { selected }) => (
+      renderOption={(props, option: any, { selected }) => (
         <li {...props}>
           <Checkbox
             icon={checkBoxIconUnchecked}
             checkedIcon={checkedIconChecked}
             style={{ marginRight: 8 }}
-            // checked={selected}
             checked={values[name].some(
               (element: Person) => element.id === option.id
             )}
-            // checked={values[name].inclues(option)}
-            // checked={props.form.values[name]}
-            // checked={props.form.values[name].includes(option)}
           />
-          {/* {option.firstName + " " + option.lastName} */}
-          {/* {labelProps.length == 2
-            ? option[labelProps[0]] + " - " + option[labelProps[1]]
-            : ""}
-
-          {labelProps.length == 3
-            ? option[labelProps[0]] +
-              " " +
-              option[labelProps[1]] +
-              " ( " +
-              option[labelProps[2]] +
-              " ) "
-            : ""} */}
           {getLabelContent(option)}
-
-          {/* //   {option[labelProps[0]] + " - " + option[labelProps[1]]} */}
-          {/* {option.firstName + " " + option.lastName} */}
         </li>
       )}
       renderInput={(params) => (
@@ -106,11 +77,7 @@ export default function CustomMultiSelectWithChips({
           {...params}
           variant="standard"
           label={label}
-          //   placeholder="Docent"
-
           placeholder={placeholder}
-          //   placeholder="...."
-          // variant="outlined"
           fullWidth
         />
       )}

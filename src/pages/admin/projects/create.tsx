@@ -39,7 +39,9 @@ const validationSchema = yup.object({
 });
 
 export default function createProject(): ReactElement {
-  const [addProject, { data, loading, error }] = useMutation(CREATE_PROJECT);
+  const [addProject, { data, loading, error }] = useMutation(CREATE_PROJECT, {
+    notifyOnNetworkStatusChange: true,
+  });
   const checkBoxIcon = <CheckBoxOutlineBlank fontSize="small" />;
   const checkedIconChecked = <CheckBox fontSize="small" />;
 

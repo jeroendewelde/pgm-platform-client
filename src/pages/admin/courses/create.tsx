@@ -42,7 +42,9 @@ const validationSchema = yup.object({
 
 export default function createCourse(): ReactElement {
   const router = useRouter();
-  const [addCourse, { data, loading, error }] = useMutation(CREATE_COURSE);
+  const [addCourse, { data, loading, error }] = useMutation(CREATE_COURSE, {
+    notifyOnNetworkStatusChange: true,
+  });
   const checkBoxIcon = <CheckBoxOutlineBlank fontSize="small" />;
   const checkedIconChecked = <CheckBox fontSize="small" />;
 
@@ -79,6 +81,7 @@ export default function createCourse(): ReactElement {
         <Formik
           initialValues={{
             name: "",
+            teaserImage: "",
             description: "",
             term: "",
             academicYear: "",

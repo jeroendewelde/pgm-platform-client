@@ -24,6 +24,10 @@ export const GET_ALL_COURSES = gql`
         name
         color
       }
+      specialisation {
+        id
+        name
+      }
     }
   }
 `;

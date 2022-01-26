@@ -1,5 +1,4 @@
 import { GridRenderCellParams } from "@mui/x-data-grid";
-import { GET_ALL_COURSES } from "../../graphql/attachments";
 import { DELETE_COURSE } from "../../graphql/courses";
 import {
   DELETE_LEARNING_LINE,
@@ -9,7 +8,7 @@ import {
   DELETE_SPECIALISATION,
   GET_ALL_SPECIALISATIONS,
 } from "../../graphql/specialisations";
-import { LearningLine } from "../../interfaces";
+import { Course, LearningLine, Specialisation } from "../../interfaces";
 
 const colors = {
   primary: "#7e57c5",
@@ -39,46 +38,53 @@ const tableColumns = {
     {
       field: "id",
       headerName: "id",
+      width: 20,
     },
     {
       field: "name",
       headerName: "name",
+      width: 300,
     },
   ],
   courses: [
     {
       field: "id",
       headerName: "id",
+      width: 20,
     },
     {
       field: "name",
       headerName: "naam",
-    },
-    {
-      field: "description",
-      headerName: "beschrijving",
+      width: 300,
     },
     {
       field: "term",
       headerName: "periode",
+      width: 100,
     },
     {
       field: "academicYear",
       headerName: "academiejaar",
-    },
-    {
-      field: "learningLineId",
-      headerName: "leerlijn ID",
+      width: 150,
     },
     {
       field: "learningLine",
       headerName: "leerlijn",
       renderCell: (params: GridRenderCellParams<LearningLine>) =>
         params.value.name,
+      width: 200,
     },
     {
-      field: "specialisationId",
-      headerName: "specialisatie ID",
+      field: "description",
+      headerName: "beschrijving",
+      width: 200,
+    },
+    {
+      field: "specialisation",
+      headerName: "afstudeerrichting",
+      renderCell: (params: GridRenderCellParams<Specialisation>) =>
+        params.value?.name,
+      width: 300,
     },
   ],
   learningLines: [
@@ -119,26 +125,45 @@ const tableColumns = {
     {
       field: "id",
       headerName: "id",
+      width: 20,
     },
     {
       field: "name",
       headerName: "naam",
+      width: 300,
     },
     {
       field: "teaserText",
       headerName: "teaser",
-    },
-    {
-      field: "body",
-      headerName: "body",
+      width: 200,
     },
     {
       field: "academicYear",
       headerName: "academiejaar",
+      width: 150,
     },
     {
-      field: "courseId",
-      headerName: "vak id",
+      field: "course",
+      headerName: "vak",
+      renderCell: (params: GridRenderCellParams<Course>) => params.value.name,
+      width: 200,
+    },
+  ],
+  specialisations: [
+    {
+      field: "id",
+      headerName: "id",
+      width: 20,
+    },
+    {
+      field: "name",
+      headerName: "naam",
+      width: 300,
+    },
+    {
+      field: "academicYear",
+      headerName: "academiejaren",
+      width: 150,
     },
   ],
   students: [
@@ -162,14 +187,6 @@ const tableColumns = {
       headerName: "academiejaar",
       width: 150,
     },
-    // {
-    //   field: "type",
-    //   headerName: "type",
-    // },
-    // {
-    //   field: "generationId",
-    //   headerName: "generation ID",
-    // },
   ],
   teachers: [
     {
@@ -186,58 +203,42 @@ const tableColumns = {
       headerName: "familienaam",
       width: 200,
     },
-    // {
-    //   field: "type",
-    //   headerName: "type",
-    // },
   ],
   testimonials: [
-    {
-      field: "id",
-      headerName: "id",
-    },
-    {
-      field: "quote",
-      headerName: "quote",
-    },
-    {
-      field: "name",
-      headerName: "auteur",
-    },
-    {
-      field: "company",
-      headerName: "bedrijf",
-    },
-  ],
-  specialisations: [
     {
       field: "id",
       headerName: "id",
       width: 20,
     },
     {
-      field: "name",
-      headerName: "naam",
-      width: 300,
+      field: "quote",
+      headerName: "quote",
+      width: 200,
     },
     {
-      field: "academicYear",
-      headerName: "academiejaren",
-      width: 150,
+      field: "name",
+      headerName: "auteur",
+      width: 200,
+    },
+    {
+      field: "company",
+      headerName: "bedrijf",
+      width: 200,
     },
   ],
 };
 
-let deleteQueries: { [key: string]: any } = {
-  specialisations: DELETE_SPECIALISATION,
-  courses: DELETE_COURSE,
-};
+// let deleteQueries: { [key: string]: any } = {
+//   specialisations: DELETE_SPECIALISATION,
+//   courses: DELETE_COURSE,
+// };
 
-deleteQueries["learning-lines"] = DELETE_LEARNING_LINE;
+// deleteQueries["learning-lines"] = DELETE_LEARNING_LINE;
 
-let fetchQueries: { [key: string]: any } = {
-  specialisations: GET_ALL_SPECIALISATIONS,
-  courses: GET_ALL_COURSES,
-};
-fetchQueries["learning-lines"] = GET_ALL_LEARNING_LINES;
-export { colors, deleteQueries, fetchQueries, tableColumns };
+// let fetchQueries: { [key: string]: any } = {
+//   specialisations: GET_ALL_SPECIALISATIONS,
+//   courses: GET_ALL_COURSES,
+// };
+// fetchQueries["learning-lines"] = GET_ALL_LEARNING_LINES;
+// export { colors, deleteQueries, fetchQueries, tableColumns };
+export { colors, tableColumns };

@@ -5,7 +5,7 @@ import * as yup from "yup";
 import { Field, FieldArray, Form, Formik } from "formik";
 
 // Material UI Components
-import { Button, Grid, Typography, Paper } from "@mui/material";
+import { Button, Divider, Grid, Typography, Paper } from "@mui/material";
 import { TextField } from "formik-mui";
 import { Remove, Add } from "@material-ui/icons";
 import { styled } from "@mui/material/styles";
@@ -54,7 +54,6 @@ export default function createCompany(): ReactElement {
   });
 
   const handleOnChangeImage = (e: ChangeEvent<HTMLInputElement>) => {
-    // console.log("...file", file);
     if (e.target?.files && e.target?.files.length > 0) {
       const file = e.target.files[0];
       setUploadData(file);
@@ -73,7 +72,6 @@ export default function createCompany(): ReactElement {
       if (!response.ok) {
         throw new Error(response.statusText);
       }
-      //   console.log(await response.json());
       return await response.json();
     } catch (err) {
       console.log(err);
@@ -94,10 +92,8 @@ export default function createCompany(): ReactElement {
           validationSchema={validationSchema}
           onSubmit={async (values, { setSubmitting }) => {
             setSubmitting(true);
-            console.log("....UPLOAD", uploadData);
 
             const imageUpload = await handleUpload();
-            // console.log("....res", await res);
 
             addCompany({
               variables: {
@@ -105,12 +101,11 @@ export default function createCompany(): ReactElement {
                   name: values.name,
                   teaserImage: imageUpload && imageUpload.imagePath,
                   interns: values.interns,
-                  // file: uploadData || null,
                 },
               },
             });
             if (!error && !loading) {
-              //   window.location.href = "/admin/companies";
+              window.location.href = "/admin/companies";
             }
           }}
         >
@@ -144,7 +139,6 @@ export default function createCompany(): ReactElement {
                 <Grid item xs={12} md={4}>
                   <Paper
                     sx={{
-                      //   width: "100%",
                       height: 180,
                       width: 320,
                       mt: 2,
@@ -301,6 +295,17 @@ export default function createCompany(): ReactElement {
                                   <Add />
                                 </Button>
                               </Grid>
+                              {index < values.interns.length - 1 && (
+                                <Grid
+                                  item
+                                  xs={12}
+                                  sx={{
+                                    mb: 5,
+                                  }}
+                                >
+                                  <Divider orientation="horizontal" flexItem />
+                                </Grid>
+                              )}
                             </Grid>
                           ))
                         ) : (
