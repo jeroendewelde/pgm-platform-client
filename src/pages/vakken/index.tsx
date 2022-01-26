@@ -305,5 +305,6 @@ export async function getStaticProps() {
       courses: data.courses,
       learningLines: data_LearningLines.learningLines,
     },
+    revalidate: 60,
   };
 }

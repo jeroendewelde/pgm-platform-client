@@ -76,5 +76,6 @@ export const getStaticProps = async (context: { params: { id: any } }) => {
     props: {
       course: data.course,
     },
+    revalidate: 60,
   };
 };

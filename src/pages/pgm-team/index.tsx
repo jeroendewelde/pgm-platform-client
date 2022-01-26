@@ -108,5 +108,6 @@ export async function getStaticProps() {
       students: data_Students.students,
       generations: data_Generations.generations,
     },
+    revalidate: 60,
   };
 }

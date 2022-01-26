@@ -65,5 +65,6 @@ export const getStaticProps = async (context: { params: { id: any } }) => {
     props: {
       project: data.project,
     },
+    revalidate: 60,
   };
 };
