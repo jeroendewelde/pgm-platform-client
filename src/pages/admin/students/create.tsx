@@ -88,13 +88,13 @@ export default function CreateStudentPage(): ReactElement {
                 lastName: values.lastName,
                 academicYear: values.academicYear,
                 type: "STUDENT",
-                avatarUrl: imageUpload && imageUpload.imagePath,
+                avatarUrl: imageUpload ? imageUpload.imagePath : null,
               },
             },
           });
           if (!error && !loading) {
             setSubmitting(false);
-            // window.location.href = "/admin/students";
+            window.location.href = "/admin/students";
           }
         }}
       >
