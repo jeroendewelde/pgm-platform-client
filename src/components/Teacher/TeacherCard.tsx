@@ -5,7 +5,7 @@ import React, { useContext } from "react";
 import styled from "styled-components";
 import { CgChevronRightO } from "react-icons/cg";
 
-import teacher from "../../assets/test/teacher.png";
+import fallback from "../../assets/fallback_images/fallback_teacher.png";
 import { SocialMedia } from "../../../interfaces";
 import { CursorContext } from "../../context/CursorContext";
 import SocialMediaListItem from "./SocialMediaListItem";
@@ -178,6 +178,7 @@ const Bio = styled.div`
 export interface TeacherCardProps {
   firstName: string;
   lastName: string;
+  avatarUrl: string;
   bio: string;
   id: number;
   socialMedia: SocialMedia[];
@@ -189,6 +190,7 @@ const TeacherCard = ({
   socialMedia,
   bio,
   id,
+  avatarUrl,
 }: TeacherCardProps) => {
   const { setCursorHover } = useContext(CursorContext);
 
@@ -239,7 +241,7 @@ const TeacherCard = ({
             </TeacherInfo>
             <ImageContainer>
               <Image
-                src={teacher}
+                src={avatarUrl ? avatarUrl : fallback}
                 layout="fill"
                 alt="teacher"
                 objectFit="contain"

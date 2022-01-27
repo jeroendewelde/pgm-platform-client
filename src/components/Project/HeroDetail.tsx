@@ -6,7 +6,7 @@ import { Project } from "../../../interfaces";
 import { GlitchTitle } from "../Titles/GlitchTitle";
 
 import profileImage from "../../assets/test/profile.jpg";
-import test from "../../assets/test/test.jpg";
+import fallback from "../../assets/fallback_images/fallback_course.jpg";
 import Terminal from "./Terminal";
 import { motion } from "framer-motion";
 
@@ -150,7 +150,11 @@ const HeroDetail = ({ project }: HeroDetailProps) => {
             duration: 0.65,
           }}
         >
-          <Image src={test} layout="fill" objectFit="cover" />
+          <Image
+            src={project.teaserImage ? project.teaserImage : fallback}
+            layout="fill"
+            objectFit="cover"
+          />
         </motion.div>
 
         <Terminal project={project} />

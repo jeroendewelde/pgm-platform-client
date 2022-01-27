@@ -60,6 +60,7 @@ export const GET_ALL_PROJECTS_CLIENT = gql`
       academicYear
       tags
       courseId
+      teaserImage
       course {
         name
       }
