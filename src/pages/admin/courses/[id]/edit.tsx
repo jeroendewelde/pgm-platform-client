@@ -168,7 +168,15 @@ export default function EditCoursePage(): ReactElement {
             setSubmitting(true);
             console.log(dataGet.course);
 
-            const imageUpload = uploadData ? await handleUpload() : null;
+            let imageUpload;
+
+            if (imageSrc && imageSrc.split("http").length <= 1) {
+              imageUpload = await handleUpload();
+              console.log("lokale image", imageUpload);
+            } else {
+              imageUpload = uploadData ? await handleUpload() : null;
+              console.log("externe image", imageUpload);
+            }
 
             updateCourse({
               variables: {
@@ -177,7 +185,7 @@ export default function EditCoursePage(): ReactElement {
                   description: values.description,
                   term: values.term,
                   academicYear: values.academicYear,
-                  teaserImage: imageUpload && imageUpload.imagePath,
+                  teaserImage: imageUpload ? imageUpload.imagePath : null,
                   tags: values.tags,
                   learningLineId: values.learningLineId,
                   specialisationId: values.specialisationId,
