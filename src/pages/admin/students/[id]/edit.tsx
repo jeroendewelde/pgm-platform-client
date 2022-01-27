@@ -82,6 +82,7 @@ export default function EditStudentPage(): ReactElement {
   const handleOnChangeImage = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target?.files && e.target?.files.length > 0) {
       const file = e.target.files[0];
+      console.log("....file", file);
       setUploadData(file);
       setImageSrc(URL.createObjectURL(file));
     }
@@ -132,6 +133,8 @@ export default function EditStudentPage(): ReactElement {
 
             if (imageSrc && imageSrc.split("http").length <= 1) {
               imageUpload = await handleUpload();
+            } else {
+              imageUpload = uploadData ? await handleUpload() : null;
             }
 
             updateStudent({
@@ -140,7 +143,7 @@ export default function EditStudentPage(): ReactElement {
                   firstName: values.firstName,
                   lastName: values.lastName,
                   type: "STUDENT",
-                  avatarUrl: imageUpload && imageUpload.imagePath,
+                  avatarUrl: imageUpload ? imageUpload.imagePath : null,
                   academicYear: values.academicYear,
                 },
                 id: Number(id),
