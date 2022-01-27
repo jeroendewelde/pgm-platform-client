@@ -29,6 +29,8 @@ const CourseProjects = ({ course }: CourseProjectsProps) => {
   const { ref, inView } = useInView();
   const animation = useInViewObserver(inView);
 
+  console.log(course);
+
   return (
     <>
       {course.projects && course.projects.length > 0 ? (

@@ -116,6 +116,7 @@ export const GET_ALL_TEACHERS_CLIENT = gql`
       id
       firstName
       lastName
+      avatarUrl
 
       personInformation {
         bio
@@ -135,6 +136,7 @@ export const GET_TEACHER_BY_ID = gql`
       id
       firstName
       lastName
+      avatarUrl
 
       courses {
         id

@@ -122,6 +122,7 @@ const TeachersCarousel = ({ teachers }: TeachersCarouselProps) => {
               firstName={teacher.firstName}
               lastName={teacher.lastName}
               socialMedia={teacher.personInformation.socialMedias}
+              avatarUrl={teacher.avatarUrl}
             />
           </SwiperSlide>
         ))}
