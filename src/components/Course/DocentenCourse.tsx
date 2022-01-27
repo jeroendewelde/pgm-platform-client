@@ -11,6 +11,8 @@ import { SocialMediaListItem, TeacherImage } from "../Teacher";
 import { GlitchTitle } from "../Titles/GlitchTitle";
 import { H2 } from "../Titles/H2";
 import CTALink from "./CTALink";
+// import teacherFallback from "../../assets/fallback_images/fallback_teacher.png";
+import teacherFallback from "../../assets/fallback_images/fallback_teacher.png";
 
 const Container = styled(motion.section)`
   padding-top: 5rem;
@@ -180,7 +182,11 @@ const DocentenCourse = ({ course }: DocentenCourseProps) => {
                 <div className="mobile">
                   <H2>{teacher.firstName + " " + teacher.lastName}</H2>
                   <div className="mobileImage">
-                    <TeacherImage />
+                    <TeacherImage
+                      image={
+                        teacher.avatarUrl ? teacher.avatarUrl : teacherFallback
+                      }
+                    />
                   </div>
                   <div className="flex-end">
                     <CTALink href={`/pgm-team/${teacher.id}`}>
@@ -212,7 +218,13 @@ const DocentenCourse = ({ course }: DocentenCourseProps) => {
 
                   <div className="flex">
                     <div className="desktopImage">
-                      <TeacherImage />
+                      <TeacherImage
+                        image={
+                          teacher.avatarUrl
+                            ? teacher.avatarUrl
+                            : teacherFallback
+                        }
+                      />
                     </div>
 
                     <div className="content">
