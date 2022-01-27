@@ -638,7 +638,6 @@ export default function EditTeacherPage(): ReactElement {
                   </Button>
                 </Grid>
               </Grid>
-              <pre>{JSON.stringify(values, null, 2)}</pre>
             </Form>
           )}
         </Formik>

@@ -2,13 +2,10 @@ import React, { ReactElement } from "react";
 
 import {
   AltRoute,
-  Attachment,
   BackupTable,
   Business,
   Category,
   CollectionsBookmark,
-  Groups,
-  HistoryEdu,
   Home,
   People,
   School,
@@ -31,7 +28,6 @@ const routes = [
         }}
       />
     ),
-    // component: Dashboard,
   },
   {
     label: "Vakken",
@@ -44,7 +40,6 @@ const routes = [
         }}
       />
     ),
-    // component: Dashboard,
   },
   {
     label: "Projecten",
@@ -57,20 +52,18 @@ const routes = [
         }}
       />
     ),
-    // component: Dashboard,
   },
   {
     label: "Docenten",
     path: "/admin/teachers",
-    icon: <HistoryEdu />,
+    icon: <People />,
     activeIcon: (
-      <HistoryEdu
+      <People
         sx={{
           color: colors.primary,
         }}
       />
     ),
-    // component: Dashboard,
   },
   {
     label: "Studenten",
@@ -83,7 +76,6 @@ const routes = [
         }}
       />
     ),
-    // component: Dashboard,
   },
   {
     label: "Leerlijnen",
@@ -96,7 +88,6 @@ const routes = [
         }}
       />
     ),
-    // component: Dashboard,
   },
   {
     label: "Afstudeerrichtingen",
@@ -109,7 +100,6 @@ const routes = [
         }}
       />
     ),
-    // component: Dashboard,
   },
   {
     label: "Leerbedrijven",
@@ -122,7 +112,6 @@ const routes = [
         }}
       />
     ),
-    // component: Dashboard,
   },
   {
     label: "Testimonials",
@@ -135,35 +124,7 @@ const routes = [
         }}
       />
     ),
-    // component: Dashboard,
   },
-  //   {
-  //     label: "Bijlagen",
-  //     path: "/admin/attachments",
-  //     icon: <Attachment/>,
-  //     activeIcon: <Attachment sx={{
-  // 		color: colors.primary
-  // 	}}/>,
-  //     // component: Dashboard,
-  //   },
-  //   {
-  //     label: "Generaties",
-  //     path: "/admin/generations",
-  //     icon: <Groups/>,
-  //     activeIcon: <Groups sx={{
-  // 		color: colors.primary
-  // 	}}/>,
-  //     // component: Dashboard,
-  //   },
-  //   {
-  //     label: "Personen",
-  //     path: "/admin/persons",
-  //     icon: <People/>,
-  //     activeIcon: <People sx={{
-  // 		color: colors.primary
-  // 	}}/>,
-  //     // component: Dashboard,
-  //   },
 ];
 
 // Custom imports

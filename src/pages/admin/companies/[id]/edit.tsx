@@ -146,6 +146,8 @@ export default function EditCompanyPage(): ReactElement {
 
             if (imageSrc && imageSrc.split("http").length <= 1) {
               imageUpload = await handleUpload();
+            } else {
+              imageUpload = uploadData ? await handleUpload() : null;
             }
 
             updateCompany({
