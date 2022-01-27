@@ -183,9 +183,7 @@ const DocentenCourse = ({ course }: DocentenCourseProps) => {
                   <H2>{teacher.firstName + " " + teacher.lastName}</H2>
                   <div className="mobileImage">
                     <TeacherImage
-                      image={
-                        teacher.avatarUrl ? teacher.avatarUrl : teacherFallback
-                      }
+                      image={teacher.avatarUrl ? teacher.avatarUrl : ""}
                     />
                   </div>
                   <div className="flex-end">
@@ -220,9 +218,7 @@ const DocentenCourse = ({ course }: DocentenCourseProps) => {
                     <div className="desktopImage">
                       <TeacherImage
                         image={
-                          teacher.avatarUrl
-                            ? teacher.avatarUrl
-                            : teacherFallback
+                          teacher.avatarUrl ? teacher.avatarUrl.toString() : ""
                         }
                       />
                     </div>
