@@ -77,14 +77,14 @@ const ProjectContent = ({ project }: ProjectContentProps) => {
   return (
     <Container ref={ref} animate={animation}>
       <H2>Beschrijving</H2>
-      <div className="flex">
-        <div className="body">
-          <p>{project.body}</p>
-        </div>
+      <div className="body">
+        <p>{project.body}</p>
+      </div>
+      {/* <div className="flex">
         <div className="image-container">
           <Image src={test} layout="fill" objectFit="cover" />
         </div>
-      </div>
+      </div> */}
     </Container>
   );
 };

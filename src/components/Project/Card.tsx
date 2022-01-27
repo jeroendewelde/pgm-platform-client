@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { transparentize } from "polished";
 
 import Tag from "./Tag";
-import test from "../../assets/test/test.jpg";
+import fallback from "../../assets/fallback_images/fallback_course.jpg";
 import { Project } from "../../../interfaces";
 import Link from "next/link";
 import { CursorContext } from "../../context/CursorContext";
@@ -166,7 +166,12 @@ const Card = ({ key, project }: CardProps) => {
         onClick={handleMouseLeave}
       >
         <CardImage>
-          <Image src={test} layout="fill" alt="project-1" objectFit="cover" />
+          <Image
+            src={project.teaserImage ? project.teaserImage : fallback}
+            layout="fill"
+            alt="project-1"
+            objectFit="cover"
+          />
           <ul>
             {project.tags.map((tag, index) => (
               <Tag key={index} title={tag} />

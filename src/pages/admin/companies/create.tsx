@@ -99,13 +99,13 @@ export default function CreateCompanyPage(): ReactElement {
               variables: {
                 input: {
                   name: values.name,
-                  teaserImage: imageUpload && imageUpload.imagePath,
+                  teaserImage: imageUpload ? imageUpload.imagePath : null,
                   interns: values.interns,
                 },
               },
             });
             if (!error && !loading) {
-              // window.location.href = "/admin/companies";
+              window.location.href = "/admin/companies";
             }
           }}
         >

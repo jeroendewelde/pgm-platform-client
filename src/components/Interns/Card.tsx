@@ -236,19 +236,23 @@ const Card = ({ company }: CardProps) => {
 
           <CardContent>
             <FlexContainer>
-              <ActiveStudent>
-                <Image src={profile} layout="fill" alt="student-1" />
-              </ActiveStudent>
-              <div className="intern-info">
-                <span className="name">
-                  {company.interns[activeStudent]?.student.firstName +
-                    " " +
-                    company.interns[activeStudent].student.lastName}
-                </span>
-                <span className="function">
-                  {company.interns[activeStudent]?.function}
-                </span>
-              </div>
+              {company?.interns[activeStudent] && (
+                <>
+                  <ActiveStudent>
+                    <Image src={profile} layout="fill" alt="student-1" />
+                  </ActiveStudent>
+                  <div className="intern-info">
+                    <span className="name">
+                      {company?.interns[activeStudent]?.student.firstName +
+                        " " +
+                        company?.interns[activeStudent]?.student.lastName}
+                    </span>
+                    <span className="function">
+                      {company.interns[activeStudent]?.function}
+                    </span>
+                  </div>
+                </>
+              )}
             </FlexContainer>
             <p>{company.interns[activeStudent]?.description} </p>
           </CardContent>

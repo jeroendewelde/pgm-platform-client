@@ -171,7 +171,7 @@ const HeroDetail = ({ teacher }: HeroDetailProps) => {
     <Container initial="initial" animate="animate" exit={{ opacity: 0 }}>
       <div className="mobile">
         <motion.div className="mobileImage" variants={imageFadeIn}>
-          <TeacherImage />
+          <TeacherImage image={teacher.avatarUrl} />
         </motion.div>
         <motion.div
           initial={{ opacity: 0, x: -100 }}
@@ -215,7 +215,7 @@ const HeroDetail = ({ teacher }: HeroDetailProps) => {
 
         <div className="flex">
           <motion.div className="desktopImage" variants={imageFadeIn}>
-            <TeacherImage />
+            <TeacherImage image={teacher.avatarUrl} />
           </motion.div>
 
           <div className="content">

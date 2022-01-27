@@ -2,8 +2,7 @@ import Image from "next/image";
 import React from "react";
 import styled from "styled-components";
 
-import teacher from "../../assets/test/teacher.png";
-
+import teacherFallback from "../../assets/fallback_images/fallback_teacher.png";
 const Container = styled.div`
   position: relative;
 
@@ -26,13 +25,20 @@ const ImageContainer = styled.div`
   }
 `;
 
-export interface TeacherImageProps {}
+export interface TeacherImageProps {
+  image: string;
+}
 
-const TeacherImage = () => {
+const TeacherImage = ({ image }: TeacherImageProps) => {
   return (
     <Container>
       <ImageContainer>
-        <Image src={teacher} layout="fill" alt="teacher" objectFit="contain" />
+        <Image
+          src={image ? image : teacherFallback}
+          layout="fill"
+          alt="teacher"
+          objectFit="contain"
+        />
       </ImageContainer>
       <svg
         xmlns="http://www.w3.org/2000/svg"

@@ -130,6 +130,7 @@ export const GET_COURSE_BY_ID_client = gql`
       tags
       learningLineId
       specialisationId
+      teaserImage
       learningLine {
         id
         name
@@ -139,6 +140,7 @@ export const GET_COURSE_BY_ID_client = gql`
         id
         name
         teaserText
+        teaserImage
         tags
         students {
           id

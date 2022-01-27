@@ -2,7 +2,7 @@ import Image from "next/image";
 import React from "react";
 import styled from "styled-components";
 
-import test from "../../assets/test/test.jpg";
+import fallback_course from "../../assets/fallback_images/fallback_course.jpg";
 
 import { CourseClient } from "../../../interfaces";
 import Tag from "./Tag";
@@ -116,7 +116,11 @@ const HeroCourse = ({ course }: HeroCourseProps) => {
             duration: 0.65,
           }}
         >
-          <Image src={test} objectFit="cover" layout="fill" />
+          <Image
+            src={course.teaserImage ? course.teaserImage : fallback_course}
+            objectFit="cover"
+            layout="fill"
+          />
         </motion.div>
         <motion.div
           className="description"

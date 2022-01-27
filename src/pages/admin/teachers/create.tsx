@@ -23,7 +23,7 @@ import { useMutation, useQuery } from "@apollo/client";
 import { GET_ALL_SOCIAL_MEDIA_PLATFORMS } from "../../../../graphql/enums";
 import { GET_ALL_COURSES } from "../../../../graphql/courses";
 import { CREATE_PERSON } from "../../../../graphql/persons";
-import { Course, SocialMedia } from "../../../../interfaces";
+import { Course, FieldExperience, SocialMedia } from "../../../../interfaces";
 
 // Custom Components
 import BasicContainer from "../../../components/Admin/style/BasicContainer";
@@ -142,7 +142,7 @@ export default function CreateTeacherPage(): ReactElement {
             });
             if (!error && !loading) {
               setSubmitting(false);
-              //   window.location.href = "/admin/teachers";
+              window.location.href = "/admin/teachers";
             }
           }}
         >
@@ -333,7 +333,7 @@ export default function CreateTeacherPage(): ReactElement {
                             {values.fieldExperiences &&
                             values.fieldExperiences.length > 0 ? (
                               values.fieldExperiences.map(
-                                (tag: string, index: number) => (
+                                (fe: FieldExperience, index: number) => (
                                   <Grid
                                     item
                                     xs={12}

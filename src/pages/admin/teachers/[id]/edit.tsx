@@ -202,6 +202,8 @@ export default function EditTeacherPage(): ReactElement {
 
             if (imageSrc && imageSrc.split("http").length <= 1) {
               imageUpload = await handleUpload();
+            } else {
+              imageUpload = uploadData ? await handleUpload() : null;
             }
 
             updateTeacher({
@@ -210,7 +212,7 @@ export default function EditTeacherPage(): ReactElement {
                   firstName: values.firstName,
                   lastName: values.lastName,
                   type: "TEACHER",
-                  avatarUrl: imageUpload && imageUpload.imagePath,
+                  avatarUrl: imageUpload ? imageUpload.imagePath : null,
                   courseIds: values.courses.map((course: Course) => course.id),
                   personInformation: {
                     dob: values.dob,
@@ -636,7 +638,6 @@ export default function EditTeacherPage(): ReactElement {
                   </Button>
                 </Grid>
               </Grid>
-              <pre>{JSON.stringify(values, null, 2)}</pre>
             </Form>
           )}
         </Formik>
