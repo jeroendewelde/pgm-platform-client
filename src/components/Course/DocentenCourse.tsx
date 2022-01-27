@@ -182,9 +182,7 @@ const DocentenCourse = ({ course }: DocentenCourseProps) => {
                 <div className="mobile">
                   <H2>{teacher.firstName + " " + teacher.lastName}</H2>
                   <div className="mobileImage">
-                    <TeacherImage
-                      image={teacher.avatarUrl ? teacher.avatarUrl : ""}
-                    />
+                    <TeacherImage image={teacher.avatarUrl} />
                   </div>
                   <div className="flex-end">
                     <CTALink href={`/pgm-team/${teacher.id}`}>
@@ -216,11 +214,7 @@ const DocentenCourse = ({ course }: DocentenCourseProps) => {
 
                   <div className="flex">
                     <div className="desktopImage">
-                      <TeacherImage
-                        image={
-                          teacher.avatarUrl ? teacher.avatarUrl.toString() : ""
-                        }
-                      />
+                      <TeacherImage image={teacher.avatarUrl} />
                     </div>
 
                     <div className="content">
