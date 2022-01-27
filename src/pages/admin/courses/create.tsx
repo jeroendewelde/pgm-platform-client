@@ -154,7 +154,7 @@ export default function CreateCoursePage(): ReactElement {
             });
             if (!error && !loading) {
               setSubmitting(false);
-              //   window.location.href = "/admin/courses";
+              window.location.href = "/admin/courses";
             }
           }}
         >
